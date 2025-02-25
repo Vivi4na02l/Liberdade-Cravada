@@ -39,8 +39,9 @@
         border-radius: 7.5px;
     } #yearsBarFilled {
         width: 100%;
-        height: 20%;
         border-radius: 7.5px;
+
+        height: 20%; /* VALUE WILL CHANGE WITH JAVASCRIPT */
     }
 
     .yearActive {

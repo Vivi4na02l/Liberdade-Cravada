@@ -28,6 +28,18 @@
         text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     }
 
+    /** MARGIN DIV*/
+    .margin {
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+
+    /** NAVBAR */
+    #navbarContent {
+        width: 80%;
+        margin-top: 2%;
+    }
+    
     /** BUTTONS */
     #navbar a p {
         font-size: 34px;
@@ -45,9 +57,16 @@
         padding-bottom: 5%;
     }
 
-    /** NAVBAR */
-    #navbarContent {
-        width: 80%;
-        margin-top: 2%;
+    .infoBtn {
+        border-width: 2px;
+
+        width: 15px;
+        height: 15px;
+
+        margin-left: 5px;
+        padding: 3px;
+    } .infoBtn p {
+        font-size: 14px;
+        font-weight: bold;
     }
 }

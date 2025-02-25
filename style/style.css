@@ -41,7 +41,7 @@ body {
 }
 
 
-/** specifics */
+/** NAVBAR */
 a {
     text-decoration: none;
 } .navlinkInactive:hover {
@@ -55,11 +55,14 @@ a {
     z-index: 1;
 }
 
-#section1 {
-    position: relative;
+/** BUTTONS */
+.infoBtn {
+    border: solid #FDEBD0;
+    border-radius: 100px;
+
+    /*any position/margin/padding related CSS in the "everyPage.css"*/
 }
 
-#sectionTimer {
-    padding: 0px;
-    margin: 0px;
+#section1 {
+    position: relative;
 }

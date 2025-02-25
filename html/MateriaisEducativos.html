@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../style/style.css">
     <link rel="stylesheet" type="text/css" href="../style/structuring.css">
     <link rel="stylesheet" type="text/css" href="../style/mediaqueries/everyPage.css">
-    <link rel="stylesheet" type="text/css" href="../style/mediaqueries/materaisEducativos.css">
+    <link rel="stylesheet" type="text/css" href="../style/mediaqueries/materiaisEducativos.css">
 
     <!-- font JERSEY -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,13 +38,72 @@
     </nav>
 
     <!-- FIGURAS/GRUPOS IMPORTANTES -->
-    <div id="figuresContent" class="dflex fdc jcc aic">
+    <div id="figuresContent" class="dflex fdc aic">
         <div class="w80">
-            <div>
+            <!-- INFO BUTTON -->
+            <div class="dflex fdr">
                 <p class="m0 p0 jersey beige fontSubitleSize">Figuras/Grupos Importantes</p>
-                <span class=""></span>
+                <span class="infoBtn dflex jcc aic">
+                    <p class="m0 p0 IBM beige">?</p>
+                </span>
             </div>
 
+            <p id="figuresTxt" class="m0 IBM beige fontNormalSize">
+                Integer faucibus tellus sem, quis pellentesque tellus commodo sit amet. Duis nec auctor mi. Integer ut cursus mi. Vivamus malesuada enim ac suscipit interdum. Pellentesque in dolor ultricies, accumsan eros id, aliquam orci.
+                <br><br>
+                Vestibulum tristique justo sed mauris rhoncus, eu pulvinar nisi mattis. Phasellus eu semper odio. Phasellus eu risus eget risus vulputate semper ac nec nibh.
+            </p>
+
+            <div id="figuresImgDiv" class="w100 dflex fdr">
+                <a class="bgBeige">
+                    <!-- figure image -->
+                </a>
+                <a class="bgBeige">
+                    <!-- figure image -->
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINHA DO TEMPO -->
+    <div id="timelineContent" class="dflex fdc aic">
+        <div class="w80">
+            <!-- INFO BUTTON -->
+            <div class="dflex fdr">
+                <p class="m0 p0 jersey beige fontSubitleSize">Linha do Tempo</p>
+                <span class="infoBtn dflex jcc aic">
+                    <p class="m0 p0 IBM beige">?</p>
+                </span>
+            </div>
+
+            <p id="timelineTxt" class="m0 IBM beige fontNormalSize">
+                Integer faucibus tellus sem, quis pellentesque tellus commodo sit amet. Duis nec auctor mi. Integer ut cursus mi. Vivamus malesuada enim ac suscipit interdum. Pellentesque in dolor ultricies, accumsan eros id, aliquam orci.
+                <br><br>
+                Vestibulum tristique justo sed mauris rhoncus, eu pulvinar nisi mattis. Phasellus eu semper odio. Phasellus eu risus eget risus vulputate semper ac nec nibh.
+            </p>
+
+            <!-- TIMELINE -->
+            <div class="dflex fdr aic">
+                <!-- years + vertical line -->
+                <div id="yearsBarContent" class="dflex fdrr">
+                    <div id="yearsBar" class="bgBeige">
+                        <!-- this div is the vertical beige bar -->
+
+                        <div id="yearsBarFilled" class="bgRed">
+                            <!-- this div is the vertical red/filling bar -->
+
+                            <div>
+                                <span>
+                                    <!-- this span is each individual ball -->
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="IBM yearActive">1928</p>
+                    <p class="IBM yearInactive">1935</p>
+                </div>
+            </div>
         </div>
     </div>
 </body>

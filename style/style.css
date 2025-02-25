@@ -1,0 +1,65 @@
+body {
+    padding: 0px;
+    margin: 0px;
+    overflow-x: hidden;
+}
+
+/** FONTS */
+.jersey {
+    font-family: "Jersey 10", serif;
+    font-weight: 400;
+    font-style: normal;      
+} .IBM {
+    font-family: "IBM Plex Sans", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:"wdth" 100;
+}
+
+/** COLORS */
+.grey {
+    color: #434343;
+} .bgGrey {
+    background-color: #434343;
+}
+
+.beige {
+    color: #FDEBD0
+} .bgBeige {
+    background-color: #FDEBD0;
+}
+
+.red {
+    color: #C0392B;
+} .bgRed {
+    background-color: #C0392B;
+}
+
+.imgBlur {
+    filter: blur(5px);
+}
+
+
+/** specifics */
+a {
+    text-decoration: none;
+} .navlinkInactive:hover {
+    border-bottom: dotted #FDEBD0;
+} .navlinkActive {
+    color: #C0392B;
+    border-bottom: dotted #C0392B;
+}
+
+#navbar {
+    z-index: 1;
+}
+
+#section1 {
+    position: relative;
+}
+
+#sectionTimer {
+    padding: 0px;
+    margin: 0px;
+}

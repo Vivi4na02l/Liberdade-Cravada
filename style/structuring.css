@@ -1,0 +1,50 @@
+/** CSS for structuring */
+.w50 {
+    width: 50%;
+} .w80 {
+    width: 80%;
+} .w100 {
+    width: 100%;
+}
+
+.m0 {
+    margin: 0px;
+} .p0 {
+    padding: 0px;
+}
+
+.pa00 {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+.dflex {
+    display: flex;
+} .dif {
+    display: inline-flex;
+} .dib {
+    display: inline-block;
+}
+  
+.fdc {
+    flex-direction: column;
+} .fdr {
+    flex-direction: row;
+} .fdcr {
+    flex-direction: column-reverse;
+} .fdrr {
+    flex-direction: row-reverse;
+}
+  
+.jcc {
+    justify-content: center;
+} .jcsa {
+    justify-content: space-around;
+} .jcsb {
+    justify-content: space-between;
+}
+  
+.aic {
+    align-items: center;
+}

@@ -1,0 +1,129 @@
+/* @media (max-width: 700px) {
+    .form {
+        transform: scaleX(0.9) scaleY(0.9);
+    }
+}
+
+@media (max-width: 400px) {
+    .form {
+        transform: scaleX(0.8) scaleY(0.8);
+    }
+}
+
+@media (max-width: 320px) {
+    .form {
+        transform: scaleX(0.65) scaleY(0.65);
+    }
+} */
+
+/** mobile */
+@media screen and (min-width: 320px) {
+    
+}
+
+/** tablet vertical portrait */
+@media screen and (min-width: 768px) {
+       
+}
+
+/** desktop vertical portrait */
+@media screen and (min-width: 1024px) {
+    /** SECTION 1 */
+    #section1Content {
+        position: absolute;
+        top: 40%;
+        margin-left: 10%;
+    } #mainTitle {
+        font-size: 100px;
+        line-height: 70%;
+    }
+
+    /** SECTION TIMER / DIVIDING PART */
+    #sectionTimer {
+        height: 15px;
+        width: 100%;
+    } #boxTimer {
+        position: relative;
+        top: -102.5px; /* -height_boxTimer/2 + height_sectionTimer/2 */
+
+        height: 220px;
+        width: 30%;
+
+        border-radius: 40px;
+    }
+
+    /** SECTION 2 */
+    #section2 {
+        padding-top: 10%;
+        padding-bottom: 10%;
+    } #section2Content {
+        width: 80%;
+        padding-top: 2%;
+        padding-bottom: 2%;
+    } #section2Txt {
+        width: 50%;
+    } #section2Img {
+        margin-left: 5%;
+    }
+
+    /** SECTION 3 */
+    #section3 {
+        padding-top: 5%; /* half of section2's padding */
+        padding-bottom: 5%; /* half of section2's padding */
+    } #section3Content {
+        width: 80%;
+        padding-top: 2%;
+        padding-bottom: 2%;
+    } #section3Images {
+        width: 100%;
+        height: 500px;
+        padding-top: 2%;
+        padding-bottom: 2%;
+    } #section3Img1 {
+        height: 100%;
+        width: 40%;
+
+        background-image: url("https://imagens.publico.pt/imagens.aspx/800670?tp=KM&db=IMAGENS&type=JPG");
+        background-size: cover;
+        background-repeat: no-repeat;
+    } #section3Img2 {
+        height: 100%;
+        width: 20%;
+
+        background-image: url("https://postal.pt/wp-content/uploads/2023/04/25-de-Abril-3.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+    } #section3Img3 {
+        height: 100%;
+        width: 35%;
+
+        background-image: url("https://www.jpn.up.pt/wp-content/uploads/2016/04/Sem-Título-18.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    /** FOOTER */
+    #footer {
+        width: 80%;
+        padding-top: 7%;
+        padding-bottom: 7%;
+        
+        display: grid;
+        grid-template-columns: 25% 25% 25% 25%;
+    } #footerLeft {
+        grid-column-start: 1;
+    } #footerImg {
+        width: 80px;
+        height: 80px;
+        border-radius: 20px;
+    } #footerMiddleRight {
+        grid-column-start: 3;
+    } #footerRight {
+        grid-column-start: 4;
+    } #footerLinkTitle {
+        margin-bottom: 20%;
+    } #footerLink {
+        margin-top: 10%;
+        margin-bottom: 10%;
+    }
+}

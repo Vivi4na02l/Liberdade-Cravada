@@ -1,0 +1,53 @@
+/** mobile */
+@media screen and (min-width: 320px) {
+    
+}
+
+/** tablet vertical portrait */
+@media screen and (min-width: 768px) {
+       
+}
+
+/** desktop vertical portrait */
+@media screen and (min-width: 1024px) {
+    .fontNormalSize {
+        font-size: 22px;
+    } .fontTitleSize {
+        font-size: 80px;
+    } .fontSubitleSize {
+        font-size: 50px;
+    } .fontFooterTitleSize {
+        font-size: 35px;
+    } .fontFooterSize {
+        font-size: 18px;
+    }
+    
+    .fontOutline {
+        text-shadow: -0.7px -1px 0 #000, 0.7px -1px 0 #000, -0.7px 1px 0 #000, 0.7px 1px 0 #000;
+    } .fontOutlineBig {
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    }
+
+    /** BUTTONS */
+    #navbar a p {
+        font-size: 34px;
+    }
+
+    .btnStart {
+        margin-top: 2%;
+        border-radius: 20px;
+    } .btnStart p {
+        font-size: 50px;
+
+        padding-left: 50px;
+        padding-right: 50px;
+        padding-top: 5%;
+        padding-bottom: 5%;
+    }
+
+    /** NAVBAR */
+    #navbarContent {
+        width: 80%;
+        margin-top: 2%;
+    }
+}

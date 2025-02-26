@@ -33,22 +33,68 @@
         margin-bottom: 2%;
     }
 
+    #ballYears {
+        height: 800px;
+    } #ballYearsResponsive {
+        height: 40%;
+
+        position: relative;
+        left: 23%;
+        bottom: 2.2%;
+    } .ballYear {
+        height: 16.6%;
+    } #ballYear:hover {
+        cursor: pointer;
+    }
+
     #yearsBar {
         width: 15px;
         height: 800px;
         border-radius: 7.5px;
-    } #yearsBarFilled {
+    } #yearsBarFilledDefault {
         width: 100%;
-        border-radius: 7.5px;
+        border-top-left-radius: 7.5px;
+        border-top-right-radius: 7.5px;
 
-        height: 20%; /* VALUE WILL CHANGE WITH JAVASCRIPT */
+        height: 25%;
+    } #yearsBarResponsive {
+        height: 40%; /* VALUE WILL CHANGE WITH JAVASCRIPT */
+    } .yearsBarFilled {
+        width: 15px;
+        height: 16.6%;
     }
 
-    .yearActive {
-        font-size: 50px;
-        color: #C0392B;
-    } .yearInactive {
+    .timelineBall {
+        width: 25px;
+        height: 25px;
+        border-radius: 12.5px;
+        margin-left: 10px;
+    } .activeBall {
+        background-color: #C0392B;
+        border: solid #C0392B;
+        border-width: 1px;
+    } .inactiveBall {
+        background-color: #FDEBD0;
+        border: solid #000;
+        border-width: 1px;
+    }
+
+    .timelineBar {
+        height: 30px;  
+        width: 15px;
+    }
+
+    .firstBallActive {
+        margin-bottom: 80%;
+    } .middleBallActive {
+        padding-top: 80%;
+        margin-bottom: 80%;
+    } .lastBallActive {
+        margin-top: 80%;
+    }
+
+    .timelineYear {
         font-size: 30px;
-        color: #FDEBD0;
+        margin-right: 20px
     }
 }

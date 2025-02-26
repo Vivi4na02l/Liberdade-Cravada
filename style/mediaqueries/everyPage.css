@@ -11,14 +11,14 @@
 /** desktop vertical portrait */
 @media screen and (min-width: 1024px) {
     .fontNormalSize {
-        font-size: 22px;
+        font-size: 20px;
     } .fontTitleSize {
         font-size: 80px;
-    } .fontSubitleSize {
+    } .fontSubtitleSize {
         font-size: 50px;
-    } .fontFooterTitleSize {
+    } .fontSubtitleSize2 {
         font-size: 35px;
-    } .fontFooterSize {
+    } .fontNormalSize2 {
         font-size: 18px;
     }
     
@@ -68,5 +68,30 @@
     } .infoBtn p {
         font-size: 14px;
         font-weight: bold;
+    }
+
+    /** FOOTER */
+    #footer {
+        width: 80%;
+        padding-top: 7%;
+        padding-bottom: 7%;
+        
+        display: grid;
+        grid-template-columns: 25% 25% 25% 25%;
+    } #footerLeft {
+        grid-column-start: 1;
+    } #footerImg {
+        width: 80px;
+        height: 80px;
+        border-radius: 20px;
+    } #footerMiddleRight {
+        grid-column-start: 3;
+    } #footerRight {
+        grid-column-start: 4;
+    } #footerLinkTitle {
+        margin-bottom: 20%;
+    } #footerLink {
+        margin-top: 10%;
+        margin-bottom: 10%;
     }
 }

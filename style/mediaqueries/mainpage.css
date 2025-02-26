@@ -101,29 +101,4 @@
         background-size: cover;
         background-repeat: no-repeat;
     }
-
-    /** FOOTER */
-    #footer {
-        width: 80%;
-        padding-top: 7%;
-        padding-bottom: 7%;
-        
-        display: grid;
-        grid-template-columns: 25% 25% 25% 25%;
-    } #footerLeft {
-        grid-column-start: 1;
-    } #footerImg {
-        width: 80px;
-        height: 80px;
-        border-radius: 20px;
-    } #footerMiddleRight {
-        grid-column-start: 3;
-    } #footerRight {
-        grid-column-start: 4;
-    } #footerLinkTitle {
-        margin-bottom: 20%;
-    } #footerLink {
-        margin-top: 10%;
-        margin-bottom: 10%;
-    }
 }

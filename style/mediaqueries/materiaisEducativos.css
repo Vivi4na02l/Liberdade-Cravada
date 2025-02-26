@@ -27,16 +27,17 @@
         margin-right: 15px;
     }
 
-    /** LINHA DO TEMPO */
-    #timelineTxt {
+    /** TIMELINE */
+    #timelineIntro {
         margin-top: 2%;
         margin-bottom: 2%;
     }
 
+    /** structure of year+ball of timeline vertical bar */
     #ballYears {
         height: 800px;
     } #ballYearsResponsive {
-        height: 40%;
+        height: 50%;
 
         position: relative;
         left: 23%;
@@ -47,23 +48,7 @@
         cursor: pointer;
     }
 
-    #yearsBar {
-        width: 15px;
-        height: 800px;
-        border-radius: 7.5px;
-    } #yearsBarFilledDefault {
-        width: 100%;
-        border-top-left-radius: 7.5px;
-        border-top-right-radius: 7.5px;
-
-        height: 25%;
-    } #yearsBarResponsive {
-        height: 40%; /* VALUE WILL CHANGE WITH JAVASCRIPT */
-    } .yearsBarFilled {
-        width: 15px;
-        height: 16.6%;
-    }
-
+    /** balls format of timeline vertical bar */
     .timelineBall {
         width: 25px;
         height: 25px;
@@ -79,22 +64,54 @@
         border-width: 1px;
     }
 
-    .timelineBar {
-        height: 30px;  
+    /** structure of timeline vertical bar*/
+    #yearsBar {
         width: 15px;
+        height: 800px;
+        border-radius: 7.5px;
+    } #yearsBarFilledDefault {
+        width: 100%;
+        border-top-left-radius: 7.5px;
+        border-top-right-radius: 7.5px;
+
+        height: 25%;
+    } #yearsBarResponsive {
+        height: 50%; /* VALUE WILL CHANGE WITH JAVASCRIPT */
+    } .yearsBarFilled {
+        width: 15px;
+        height: 16.6%;
     }
 
-    .firstBallActive {
-        margin-bottom: 80%;
-    } .middleBallActive {
-        padding-top: 80%;
-        margin-bottom: 80%;
-    } .lastBallActive {
-        margin-top: 80%;
+
+    /** TIMELINE DESCRIPTION/INFO CONTENT */
+    #timelineDescriptionBg {
+        height: 800px;
+        width: 100%;
+
+        background-image: url(../../images/pgPrincipal2.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+    } #timelineDescription {
+        height: 100%;
+        width: 100%;
+
+        background-image: linear-gradient(to right, #434343e8 , #434343);
+    } #timelineDescription div {
+        width: 80%;
+        margin-top: 80px;
+    } #timelineTxt {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    } #timelineDescriptionPages {
+        margin-bottom: 40px;
+    } #timelineDescriptionPages p {
+        margin-left: 5px;
+        margin-right: 5px;
+    } #timelineDescriptionPages p {
+        cursor: pointer;
     }
 
-    .timelineYear {
-        font-size: 30px;
-        margin-right: 20px
+    #timelineContent {
+        margin-bottom: 100px;
     }
 }

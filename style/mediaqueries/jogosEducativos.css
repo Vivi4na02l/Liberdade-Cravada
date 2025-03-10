@@ -56,6 +56,7 @@
     #gameSection {
         padding-top: 2.5%;
         padding-bottom: 2.5%;
+        margin-bottom: 100px;
     } #gameList {
         display: grid;
         grid-template-columns: 33% 33% 33%;

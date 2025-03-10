@@ -1,0 +1,27 @@
+/** mobile */
+@media screen and (min-width: 320px) {
+    
+}
+
+/** tablet vertical portrait */
+@media screen and (min-width: 768px) {
+       
+}
+
+/** desktop vertical portrait */
+@media screen and (min-width: 1024px) {
+    .sectionsHeight {
+        height: 500px;
+    }
+
+    #secondSectionTxt {
+        width: 55%;
+    }
+
+    #thirdSection {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    } #contentCreditsTxt {
+        margin: 80px;
+    }
+}

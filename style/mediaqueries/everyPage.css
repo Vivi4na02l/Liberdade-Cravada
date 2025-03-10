@@ -32,6 +32,8 @@
     .margin {
         margin-left: 10%;
         margin-right: 10%;
+    } .mainWidth {
+        width: 80%;
     }
 
     /** NAVBAR */

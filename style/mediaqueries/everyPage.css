@@ -39,14 +39,16 @@
     /** NAVBAR */
     #navbarContent {
         width: 80%;
-        margin-top: 2%;
+        height: 90px;
+    } #logo {
+        height: 70%;
+    } #links a {
+        margin-left: 50px;
+    } #links a p {
+        font-size: 34px;
     }
     
     /** BUTTONS */
-    #navbar a p {
-        font-size: 34px;
-    }
-
     .btnStart {
         margin-top: 2%;
         border-radius: 20px;

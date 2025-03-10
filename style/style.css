@@ -44,6 +44,8 @@ body {
 /** NAVBAR */
 a {
     text-decoration: none;
+} .navlinkInactive {
+    border-bottom: dotted #fdebd000;
 } .navlinkInactive:hover {
     border-bottom: dotted #FDEBD0;
 } .navlinkActive {

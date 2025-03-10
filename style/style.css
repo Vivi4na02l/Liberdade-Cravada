@@ -36,10 +36,6 @@ body {
     background-color: #C0392B;
 }
 
-.imgBlur {
-    filter: blur(5px);
-}
-
 
 /** NAVBAR */
 a {

@@ -26,6 +26,8 @@
         text-shadow: -0.7px -1px 0 #000, 0.7px -1px 0 #000, -0.7px 1px 0 #000, 0.7px 1px 0 #000;
     } .fontOutlineBig {
         text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    } .fontOutlineSmall {
+        text-shadow: -0.5px -1px 0 #000, 0.5px -1px 0 #000, -0.5px 1px 0 #000, 0.5px 1px 0 #000;
     }
 
     /** MARGIN DIV*/

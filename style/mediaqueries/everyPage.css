@@ -50,15 +50,37 @@
     
     /** BUTTONS */
     .btnStart {
-        margin-top: 2%;
         border-radius: 20px;
+        height: 100px;
+        width: 250px;
+        padding-left: 20px;
+        padding-right: 20px;
     } .btnStart p {
-        font-size: 50px;
+        /* width: 70%; */
 
-        padding-left: 50px;
-        padding-right: 50px;
+        font-size: 40px;
+
         padding-top: 5%;
         padding-bottom: 5%;
+    } #btnStartImg {
+        width: 25%;
+        height: 100%;
+        transform: translateY(-30%);
+        /* overflow: visible; */
+    } #btnStartImg img {
+        object-fit: contain;
+        object-position: 0% 250%;
+    } .btnStart:hover img {
+        animation: ease slideUp 1s forwards;
+    }
+
+    @keyframes slideUp {
+        0% {
+            object-position: 0% 270%;
+        }
+        100% {
+            object-position: 0% 100%;
+        }
     }
 
     .infoBtn {

@@ -1,20 +1,50 @@
 /** mobile */
-@media screen and (min-width: 320px) {
+@media screen and (min-width: 320px) and (max-width: 767px) {
     
 }
 
 /** tablet vertical portrait */
-@media screen and (min-width: 768px) {
-       
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .sectionsHeight {
+        height: 500px; /* 500 */
+    }
+    
+    #secondSection {
+        height: 700px;
+    } #secondContent {
+        display: flex;
+        flex-direction: column;
+    } #secondContent img {
+        width: 100%;
+    } #secondSectionTxt {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    #thirdSection {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    } #contentCreditsTxt {
+        margin: 80px;
+    }  
 }
 
 /** desktop screen */
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1024px) and (max-width: 1369px) {
     .sectionsHeight {
         height: 400px; /* 500 */
     }
-
-    #secondSectionTxt {
+    
+    #secondSection {
+        height: 400px; /* 500 */
+    } #secondContent {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    } #secondContent img {
+        width: 40%;
+    } #secondSectionTxt {
         width: 55%;
     }
 
@@ -32,7 +62,16 @@
         height: 500px;
     }
 
-    #secondSectionTxt {
+    #secondSection {
+        height: 500px;
+    } #secondContent {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    } #secondContent img {
+        width: 40%;
+    } #secondSectionTxt {
         width: 55%;
     }
 

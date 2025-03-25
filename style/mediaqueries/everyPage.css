@@ -5,7 +5,118 @@
 
 /** tablet vertical portrait */
 @media screen and (min-width: 768px) {
-       
+    .fontNormalSize {
+        font-size: 16px; /* 20 */
+    } .fontTitleSize {
+        font-size: 60px; /* 80 */
+    } .fontSubtitleSize {
+        font-size: 35px; /* 50 */
+    } .fontSubtitleSize2 {
+        font-size: 25px; /* 35 */
+    } .fontNormalSize2 {
+        font-size: 14px; /* 18 */
+    }
+    
+    .fontOutline {
+        text-shadow: -0.7px -1px 0 #000, 0.7px -1px 0 #000, -0.7px 1px 0 #000, 0.7px 1px 0 #000;
+    } .fontOutlineBig {
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    } .fontOutlineSmall {
+        text-shadow: -0.5px -1px 0 #000, 0.5px -1px 0 #000, -0.5px 1px 0 #000, 0.5px 1px 0 #000;
+    }
+
+    /** MARGIN DIV*/
+    .margin {
+        margin-left: 10%;
+        margin-right: 10%;
+    } .mainWidth {
+        width: 80%;
+    }
+
+    /** NAVBAR */
+    #navbarContent {
+        width: 80%;
+        height: 90px;
+    } #logo {
+        height: 55%;
+    } #links a {
+        margin-left: 50px;
+    } #links a p {
+        font-size: 28px;
+    }
+    
+    /** BUTTONS */
+    .btnStart {
+        border-radius: 15px; /* 20 */
+        height: 72px; /* 100 */
+        width: 180px; /* 250 */
+        padding-left: 12px; /* 20 */
+        padding-right: 12px; /* 20 */
+    } .btnStart p {
+        /* width: 70%; */
+
+        font-size: 28px; /* 40 */
+
+        padding-top: 5%;
+        padding-bottom: 5%;
+    } #btnStartImg {
+        width: 25%;
+        height: 100%;
+        transform: translateY(-30%);
+        /* overflow: visible; */
+    } #btnStartImg img {
+        object-fit: contain;
+        object-position: 0% 250%;
+    } .btnStart:hover img {
+        animation: ease slideUp 1s forwards;
+    }
+
+    @keyframes slideUp {
+        0% {
+            object-position: 0% 270%;
+        }
+        100% {
+            object-position: 0% 100%;
+        }
+    }
+
+    .infoBtn {
+        border-width: 2px;
+
+        width: 15px;
+        height: 15px;
+
+        margin-left: 5px;
+        padding: 3px;
+    } .infoBtn p {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    /** FOOTER */
+    #footer {
+        width: 80%;
+        padding-top: 7%;
+        padding-bottom: 7%;
+        
+        display: grid;
+        grid-template-columns: 25% 25% 25% 25%;
+    } #footerLeft {
+        grid-column-start: 1;
+    } #footerImg {
+        width: 60px; /* 80 */
+        height: 60px; /* 80 */
+        border-radius: 12px; /* 20 */
+    } #footerMiddleRight {
+        grid-column-start: 3;
+    } #footerRight {
+        grid-column-start: 4;
+    } #footerLinkTitle {
+        margin-bottom: 20%;
+    } #footerLink {
+        margin-top: 10%;
+        margin-bottom: 10%;
+    }  
 }
 
 /** desktop screen */

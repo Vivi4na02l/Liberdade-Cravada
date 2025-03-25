@@ -19,6 +19,7 @@
     } #secondSectionTxt {
         width: 100%;
         margin-top: 20px;
+        text-wrap: pretty;
     }
 
     #thirdSection {
@@ -26,6 +27,7 @@
         margin-bottom: 50px;
     } #contentCreditsTxt {
         margin: 80px;
+        text-wrap: pretty;
     }  
 }
 
@@ -46,6 +48,7 @@
         width: 40%;
     } #secondSectionTxt {
         width: 55%;
+        text-wrap: pretty;
     }
 
     #thirdSection {
@@ -53,6 +56,7 @@
         margin-bottom: 50px;
     } #contentCreditsTxt {
         margin: 80px;
+        text-wrap: pretty;
     }
 }
 

@@ -7,6 +7,8 @@ function timer(revolutionDate) {
     let currentMonth = date.getMonth();
     let currentYear = date.getFullYear();
 
+    let currentHours = date.getHours();
+
     //* year's count */
     let beenYears = currentYear - revolutionDate.year - 1;
 
@@ -24,6 +26,11 @@ function timer(revolutionDate) {
     } else {
         beenMonths += 1;
         beenDays = 0;
+    }
+
+    if (beenDays == 0) {
+        beenDays = currentHours;
+        document.querySelector("#daysWord").innerHTML = "Horas";
     }
 
     document.querySelector("#yearsNbr").innerHTML = beenYears;

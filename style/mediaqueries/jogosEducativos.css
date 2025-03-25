@@ -8,8 +8,78 @@
        
 }
 
-/** desktop vertical portrait */
+/** desktop screen */
 @media screen and (min-width: 1024px) {
+    #timelineContent {
+        padding-top: 14%; /* 10 */
+    }
+
+    /** TIME LINE BAR */
+    #timelineBar {
+        margin-top: 2%;
+        margin-bottom: 10%;
+
+        width: 100%;
+        height: 15px;
+
+        border-radius: 10px;
+    } #timelineBarFilled {
+        width: 20%; /* to be changed by js frontend*/
+        height: 15px;
+
+        border-radius: 10px;
+    } #timelineBall {
+        width: 25px;
+        height: 25px;
+
+        border-radius: 12.5px;
+
+        position: relative;
+        top: -5px; /* (timelineBall_height - timelineBar_height) / 2 */
+    } #yearOnTimeline {
+        position: relative;
+        top: 125%;
+    }
+
+    /** YEAR GAME LIST TITLE */
+    .yearGameTitle {
+        width: 10%;
+        border-bottom: solid #C0392B;
+        border-radius: 5px;
+    } .yearGameTitle2 {
+        width: 70%;
+        border-bottom: solid #C0392B;
+        border-radius: 5px;
+    }
+
+    /** GAME LIST */
+    #gameSection {
+        padding-top: 2.5%;
+        padding-bottom: 2.5%;
+        margin-bottom: 100px;
+    } #gameList {
+        width: 80%;
+        display: grid;
+        grid-template-columns: 30% 30% 30%;
+        grid-auto-rows: 180px;
+        row-gap: 40px;
+        column-gap: 5%;
+    } #divGame {
+        width: 100%;
+        height: 180px;
+    } #divGameTitle {
+        width: 100%;
+        height: 20%;
+    } #divGameImg {
+        width: 100%;
+        height: 80%;
+
+        border-radius: 20px;
+    }
+}
+
+/** bigger desktop screen */
+@media screen and (min-width: 1370px) {
     #timelineContent {
         padding-top: 10%;
     }
@@ -58,12 +128,21 @@
         padding-bottom: 2.5%;
         margin-bottom: 100px;
     } #gameList {
+        width: 80%;
         display: grid;
-        grid-template-columns: 33% 33% 33%;
+        grid-template-columns: 30% 30% 30%;
         grid-auto-rows: 250px;
+        row-gap: 40px;
+        column-gap: 5%;
+    } #divGame {
+        width: 100%;
+        height: 250px;
+    } #divGameTitle {
+        width: 100%;
+        height: 20%;
     } #divGameImg {
         width: 100%;
-        height: 100%;
+        height: 80%;
 
         border-radius: 20px;
     }

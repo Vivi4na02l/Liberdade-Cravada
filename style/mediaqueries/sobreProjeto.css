@@ -8,8 +8,26 @@
        
 }
 
-/** desktop vertical portrait */
+/** desktop screen */
 @media screen and (min-width: 1024px) {
+    .sectionsHeight {
+        height: 400px; /* 500 */
+    }
+
+    #secondSectionTxt {
+        width: 55%;
+    }
+
+    #thirdSection {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    } #contentCreditsTxt {
+        margin: 80px;
+    }
+}
+
+/** bigger desktop screen */
+@media screen and (min-width: 1370px) {
     .sectionsHeight {
         height: 500px;
     }

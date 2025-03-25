@@ -8,8 +8,122 @@
        
 }
 
-/** desktop vertical portrait */
+/** desktop screen */
 @media screen and (min-width: 1024px) {
+    /** FIGURAS/GRUPOS IMPORTANTES */
+    #figuresContent {
+        padding-top: 14%;
+        padding-bottom: 10%;
+    } #figuresTxt {
+        margin-top: 2%;
+        margin-bottom: 2%;
+    }
+    
+    #figuresImgDiv a {
+        width: 75px; /* 100 */
+        height: 75px; /* 100 */
+        border: solid #000;
+        border-radius: 100px;
+        margin-right: 15px;
+    }
+
+    /** TIMELINE */
+    #timelineIntro {
+        margin-top: 2%;
+        margin-bottom: 2%;
+    }
+
+    #timelineDiv {
+        height: 600px; /* 800 */
+    }
+
+    /** structure of year+ball of timeline vertical bar */
+    #ballYears {
+        height: 100%;
+    } #ballYearsResponsive {
+        height: 50%;
+
+        position: relative;
+        left: 28%;
+        bottom: 2.2%;
+    } .ballYear {
+        height: 16.6%;
+    } #ballYear:hover {
+        cursor: pointer;
+    }
+
+    /** balls format of timeline vertical bar */
+    .timelineBall {
+        width: 25px;
+        height: 25px;
+        border-radius: 12.5px;
+        margin-left: 10px;
+    } .activeBall {
+        background-color: #C0392B;
+        border: solid #C0392B;
+        border-width: 1px;
+    } .inactiveBall {
+        background-color: #FDEBD0;
+        border: solid #000;
+        border-width: 1px;
+    }
+
+    /** structure of timeline vertical bar*/ 
+    #yearsBarContent {
+        height: 100%;
+    } #yearsBar {
+        width: 15px;
+        height: 100%;
+        border-radius: 7.5px;
+    } #yearsBarFilledDefault {
+        width: 100%;
+        border-top-left-radius: 7.5px;
+        border-top-right-radius: 7.5px;
+
+        height: 25%;
+    } #yearsBarResponsive {
+        height: 50%; /* VALUE WILL CHANGE WITH JAVASCRIPT */
+    } .yearsBarFilled {
+        width: 15px;
+        height: 16.6%;
+    }
+
+
+    /** TIMELINE DESCRIPTION/INFO CONTENT */
+    #timelineDescriptionBg {
+        height: 100%;
+        width: 100%;
+
+        background-image: url(../../images/pgPrincipal2.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+    } #timelineDescription {
+        height: 100%;
+        width: 100%;
+
+        background-image: linear-gradient(to right, #434343e8 , #434343);
+    } #timelineDescription div {
+        width: 80%;
+        margin-top: 80px;
+    } #timelineTxt {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    } #timelineDescriptionPages {
+        margin-bottom: 40px;
+    } #timelineDescriptionPages p {
+        margin-left: 5px;
+        margin-right: 5px;
+    } #timelineDescriptionPages p {
+        cursor: pointer;
+    }
+
+    #timelineContent {
+        margin-bottom: 100px;
+    }
+}
+
+/** bigger desktop screen */
+@media screen and (min-width: 1370px) {
     /** FIGURAS/GRUPOS IMPORTANTES */
     #figuresContent {
         padding-top: 10%;
@@ -33,9 +147,15 @@
         margin-bottom: 2%;
     }
 
+    #timelineDiv {
+        height: 800px; /* 800 */
+    }
+
     /** structure of year+ball of timeline vertical bar */
-    #ballYears {
-        height: 800px;
+    #yearsBarContent {
+        height: 100%;
+    } #ballYears {
+        height: 100%;
     } #ballYearsResponsive {
         height: 50%;
 
@@ -67,7 +187,7 @@
     /** structure of timeline vertical bar*/
     #yearsBar {
         width: 15px;
-        height: 800px;
+        height: 100%;
         border-radius: 7.5px;
     } #yearsBarFilledDefault {
         width: 100%;
@@ -85,7 +205,7 @@
 
     /** TIMELINE DESCRIPTION/INFO CONTENT */
     #timelineDescriptionBg {
-        height: 800px;
+        height: 100%;
         width: 100%;
 
         background-image: url(../../images/pgPrincipal2.png);

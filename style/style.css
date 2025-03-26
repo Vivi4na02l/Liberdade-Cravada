@@ -47,6 +47,10 @@ a {
 } .navlinkActive {
     color: #C0392B;
     border-bottom: dotted #C0392B;
+} .navlinkInactiveHamburger {
+    border-bottom: dotted #fdebd000;
+} .navlinkInactiveHamburger:hover {
+    border-bottom: dotted #000;
 }
 
 #navbar {

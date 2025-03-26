@@ -18,7 +18,7 @@
 </head>
 <body>
     <!-- NAVBAR -->
-    <nav id="navbar" class="pa00 w100 dflex jcc">
+    <nav aria-label="primary" id="navbar" class="pa00 w100 dflex jcc">
         <div id="navbarContent" class="dflex jcsb aic">
             <a id="logo" href="index.html">
                 <img src="images/cravo_logo.png" height="100%">
@@ -35,8 +35,43 @@
                     <p class="m0 jersey beige fontOutline navlinkInactive">Sobre o Projeto</p>
                 </a>
             </div>
+
+            <!-- menu hamburger -->
+            <div id="iconHamburger">
+                <img src="images/iconography/hamburger_menu.png" height="100%">
+            </div>
         </div>
     </nav>
+
+    <!-- HAMBURGER MENU -->
+    <div id="menuHamburgerBg"></div>
+    <nav aria-label="secundary" id="menuHamburger" class="bgBeige">
+        <div class="dflex fdrr">
+            <button id="btnCloseHamburger">
+                <img src="images/iconography/close.png" height="30vh" alt="button that closes side hamburger bar">
+            </button>
+        </div>
+
+        <ul class="hamburger-sidebar-navigation">
+            <li>
+                <a role="menuitem" href="html/JogosEducativos.html">
+                    <p class="m0 jersey grey navlinkInactiveHamburger">Jogos Educativos</p>
+                </a>
+            </li>
+            <li>
+                <a role="menuitem" href="html/MateriaisEducativos.html">
+                    <p class="m0 jersey grey navlinkInactiveHamburger">Materiais Educativos</p>
+                </a>
+            </li>
+            <li>
+                <a role="menuitem" href="html/SobreProjeto.html">
+                    <p class="m0 jersey grey navlinkInactiveHamburger">Sobre o Projeto</p>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    
 
     
     <!-- SECTION 1 // main div -->
@@ -180,15 +215,15 @@
                     <div>
                         <!-- Jogos Educativos -->
                         <a href="html/JogosEducativos.html">
-                            <p class="m0 IBM beige fontNormalSize2">> Jogos Educativos</p>
+                            <p class="m0 IBM beige fontNormalSize2"> Jogos Educativos</p>
                         </a>
                         <!-- Materiais Educativos -->
                         <a href="html/MateriaisEducativos.html">
-                            <p id="footerLink" class="m0 IBM beige fontNormalSize2">> Materiais Educativos</p>
+                            <p id="footerLink" class="m0 IBM beige fontNormalSize2"> Materiais Educativos</p>
                         </a>
                         <!-- Sobre o Projeto -->
                         <a href="html/SobreProjeto.html">
-                            <p class="m0 IBM beige fontNormalSize2">> Sobre o Projeto</p>
+                            <p class="m0 IBM beige fontNormalSize2"> Sobre o Projeto</p>
                         </a>
                     </div>
                 </div>
@@ -196,6 +231,7 @@
         </div>
     </footer>
 
+    <script src="javascript/everyPage.js"></script>
     <script src="javascript/mainpage.js"></script>
 </body>
 </html>

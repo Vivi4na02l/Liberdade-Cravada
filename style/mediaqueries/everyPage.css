@@ -55,7 +55,7 @@
         display: none;
         z-index: 2;
         
-        position: absolute;
+        position: fixed;
         top: 0px;
         left: 0px;
 
@@ -65,7 +65,7 @@
     } #menuHamburger {
         z-index: 2;
 
-        position: absolute;
+        position: fixed;
         top: 0%;
         right: -45%;
 

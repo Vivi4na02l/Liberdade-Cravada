@@ -28,10 +28,15 @@ function timer(revolutionDate) {
         beenDays = 0;
     }
 
+    // when it's a month-niversary show "years-months-hours" instead of "years-months-days"
     if (beenDays == 0) {
         beenDays = currentHours;
         document.querySelector("#daysWord").innerHTML = "Horas";
     }
+
+    // when it's withing the month of the anniversary, after the 25th, show "years-days-hours" instead of "years-months-days"
+
+    // when it's an anniversary show "years-hours-minutes" instead of "years-hours-days"
 
     document.querySelector("#yearsNbr").innerHTML = beenYears;
     document.querySelector("#monthsNbr").innerHTML = beenMonths;

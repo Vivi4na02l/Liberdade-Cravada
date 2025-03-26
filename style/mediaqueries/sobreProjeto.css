@@ -1,6 +1,34 @@
 /** mobile */
 @media screen and (min-width: 320px) and (max-width: 767px) {
+    .sectionsHeight {
+        height: 300px; /* 500 */
+    }
+
+    #firstSection p {
+        width: 60%;
+        text-align: center;
+    }
     
+    #secondSection {
+        height: 500px;
+    } #secondContent {
+        display: flex;
+        flex-direction: column;
+    } #secondContent img {
+        width: 100%;
+    } #secondSectionTxt {
+        width: 100%;
+        margin-top: 20px;
+        text-wrap: pretty;
+    }
+
+    #thirdSection {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    } #contentCreditsTxt {
+        margin: 40px;
+        text-wrap: pretty;
+    }  
 }
 
 /** tablet vertical portrait */

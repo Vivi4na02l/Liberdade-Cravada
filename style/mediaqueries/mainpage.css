@@ -1,11 +1,105 @@
 /** mobile */
 @media screen and (min-width: 320px) and (max-width: 767px)  {
-    
+    /** SECTION 1 */
+    #section1 {
+        height: 620px; /* 700 */
+        background-image: url("../../images/pgPrincipal1_Vertical_blurred.jpg");
+        background-position: 0% 20%;
+        background-color: rgba(0,0,0,0.25);
+        background-blend-mode: darken;
+        background-size: cover;
+    } #section1Content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    } #mainTitle {
+        display: none;
+    } #mainTitleVertical {
+        display: flex;
+        text-align: center;
+        font-size: 40px; /* 100 */
+        line-height: 70%;
+    } #mainTxt {
+        text-align: center;
+
+        width: 50%;
+        margin-top: 2.5%;
+        /* margin-bottom: 2.5%; */
+    }
+
+    /** SECTION TIMER / DIVIDING PART */
+    #sectionTimer {
+        height: 10px; /* 15 */
+        width: 100%;
+    } #boxTimer {
+        position: relative;
+        top: -60px; /* -height_boxTimer/2 + height_sectionTimer/2 */ /* -102.5 */
+
+        height: 130px; /* 220 */
+        width: 60%;
+
+        border-radius: 25px; /* 40 */
+    }
+
+    /** SECTION 2 */
+    #section2 {
+        padding-top: 30%; /* 10 */
+        padding-bottom: 30%; /* 10 */
+    } #section2Content {
+        display: flex;
+        flex-direction: column-reverse;
+
+        width: 80%;
+        padding-top: 2%;
+        padding-bottom: 2%;
+    } #section2Txt {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        text-wrap: pretty;
+    } #section2Txt a {
+        margin-top: 20px;
+    } #section2Img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        object-position: 0% 10%;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    /** SECTION 3 */
+    #section3 {
+        padding-top: 15%; /* half of section2's padding */
+        padding-bottom: 15%; /* half of section2's padding */
+    } #section3Content {
+        width: 80%;
+        padding-top: 2%;
+        padding-bottom: 2%;
+    } #section3Images {
+        width: 100%;
+        height: 270px; /* 500 */
+        padding-top: 5%;
+        padding-bottom: 5%;
+    } #section3Img1 {
+        display: none;
+    } #section3Img2 {
+        height: 100%;
+        width: 100%;
+        object-position: 0% 0%;
+
+        background-image: url("https://postal.pt/wp-content/uploads/2023/04/25-de-Abril-3.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+    } #section3Img3 {
+        display: none;
+    }
 }
 
 /** tablet vertical portrait */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
-       /** SECTION 1 */
+    /** SECTION 1 */
     #section1 {
         height: 850px; /* 700 */
         background-image: url("../../images/pgPrincipal1_Vertical_blurred.jpg");

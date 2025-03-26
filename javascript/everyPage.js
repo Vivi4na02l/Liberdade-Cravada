@@ -8,5 +8,10 @@ document.querySelector("#menuHamburgerBg").addEventListener("click", closeMenuHa
 
 function closeMenuHamburger() {
     document.querySelector("#menuHamburgerBg").style.display = "none";
-    document.querySelector("#menuHamburger").style.right = "-45%";
+
+    if (window.innerWidth > 767) {
+        document.querySelector("#menuHamburger").style.right = "-45%";
+    } else {
+        document.querySelector("#menuHamburger").style.right = "-70%";
+    }
 };

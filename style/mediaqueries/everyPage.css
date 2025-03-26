@@ -1,10 +1,171 @@
 /** mobile */
-@media screen and (min-width: 320px) {
+@media screen and (min-width: 320px) and (max-width: 676px) {
+    .fontNormalSize {
+        font-size: 12px; /* 20 */
+    } .fontTitleSize {
+        font-size: 34px; /* 80 */
+    } .fontSubtitleSize {
+        font-size: 28px; /* 50 */
+    } .fontSubtitleSize2 {
+        font-size: 16px; /* 35 */
+    } .fontNormalSize2 {
+        font-size: 8px; /* 18 */
+    }
     
+    .fontOutline {
+        text-shadow: -0.7px -1px 0 #000, 0.7px -1px 0 #000, -0.7px 1px 0 #000, 0.7px 1px 0 #000;
+    } .fontOutlineBig {
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    } .fontOutlineSmall {
+        text-shadow: -0.5px -1px 0 #000, 0.5px -1px 0 #000, -0.5px 1px 0 #000, 0.5px 1px 0 #000;
+    }
+
+    /** MARGIN DIV*/
+    .margin {
+        margin-left: 10%;
+        margin-right: 10%;
+    } .mainWidth {
+        width: 80%;
+    }
+
+    /** NAVBAR */
+    #navbarContent {
+        width: 80%;
+        height: 60px; /* 90 */
+    } #logo {
+        height: 55%;
+    } #links {
+        display: none;
+    } #links a {
+        margin-left: 50px;
+    } #links a p {
+        font-size: 28px;
+    }
+
+    /** NAVBAR HAMBURGER */
+    #iconHamburger {
+        display: flex;
+        height: 35%;
+    } #menuHamburgerBg {
+        display: none;
+        z-index: 2;
+        
+        position: fixed;
+        top: 0px;
+        left: 0px;
+
+        background-color: #0000002c;
+        width: 100%;
+        height: 100vh;
+    } #menuHamburger {
+        z-index: 2;
+
+        position: fixed;
+        top: 0%;
+        right: -100%;
+
+        height: 100vh;
+        width: 70%;
+        
+        transition: all 0.2s ease-in-out;
+    } #menuHamburger div img {
+        margin-top: 35px;
+        margin-right: 35px;
+    } .hamburger-sidebar-navigation {
+        margin-top: 15vh;
+    } .hamburger-sidebar-navigation li {
+        list-style: none;
+        margin-bottom: 20%;
+    } .hamburger-sidebar-navigation p {
+        font-size: 24px; /* 32 */
+        /* color: #000; */
+        display: inline-block;
+    } #btnCloseHamburger {
+        background-color: #00000000;
+        border-width: 0px;
+        margin: 0;
+        padding: 0;
+    } #btnCloseHamburger img {
+        height: 25px;
+    }
+    
+    /** BUTTONS */
+    .btnStart {
+        border-radius: 10px; /* 20 */
+        height: 55px; /* 100 */
+        width: 135px; /* 250 */
+        padding-left: 12px; /* 20 */
+        padding-right: 12px; /* 20 */
+    } .btnStart p {
+        /* width: 70%; */
+
+        font-size: 20px; /* 40 */
+
+        padding-top: 5%;
+        padding-bottom: 5%;
+    } #btnStartImg {
+        width: 25%;
+        height: 100%;
+        transform: translateY(-30%);
+        /* overflow: visible; */
+    } #btnStartImg img {
+        object-fit: contain;
+        object-position: 0% 250%;
+    } .btnStart:hover img {
+        animation: ease slideUp 1s forwards;
+    }
+
+    @keyframes slideUp {
+        0% {
+            object-position: 0% 270%;
+        }
+        100% {
+            object-position: 0% 100%;
+        }
+    }
+
+    .infoBtn {
+        border-width: 1px;
+
+        width: 8px;
+        height: 8px;
+
+        margin-left: 5px;
+        padding: 3px;
+    } .infoBtn p {
+        font-size: 10px;
+    }
+
+    /** FOOTER */
+    #footer {
+        width: 80%;
+        padding-top: 7%;
+        padding-bottom: 7%;
+        
+        display: grid;
+        grid-template-columns: 20% 50% 30%;
+    } #footerLeft {
+        grid-column-start: 1;
+    } #footerImg {
+        width: 45px; /* 80 */
+        height: 45px; /* 80 */
+        border-radius: 8px; /* 20 */
+    } #footerMiddleRight {
+        grid-column-start: 2;
+        text-align: center;
+    } #footerRight {
+        grid-column-start: 3;
+        text-align: right;
+    } #footerLinkTitle {
+        margin-bottom: 20%;
+    } #footerLink {
+        margin-top: 10%;
+        margin-bottom: 10%;
+    }
 }
 
 /** tablet vertical portrait */
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 768px) and (max-width: 1023px) {
     .fontNormalSize {
         font-size: 16px; /* 20 */
     } .fontTitleSize {
@@ -90,6 +251,8 @@
         border-width: 0px;
         margin: 0;
         padding: 0;
+    } #btnCloseHamburger img {
+        height: 40px;
     }
     
     /** BUTTONS */
@@ -167,7 +330,7 @@
 }
 
 /** desktop screen */
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1024px) and (max-width: 1369px) {
     .fontNormalSize {
         font-size: 16px; /* 20 */
     } .fontTitleSize {

@@ -1,5 +1,5 @@
 /** mobile */
-@media screen and (min-width: 320px) and (max-width: 676px) {
+@media screen and (min-width: 320px) and (max-width: 767px) {
     .fontNormalSize {
         font-size: 12px; /* 20 */
     } .fontTitleSize {

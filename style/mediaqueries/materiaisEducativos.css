@@ -26,31 +26,20 @@
         text-wrap: pretty;
     }
 
-    #timelineDiv {
-        height: 900px; /* 800 */
-    }
-
-    /** structure of year+ball of timeline vertical bar */
-    #ballYears {
-        height: 100%;
-    } #ballYearsResponsive {
-        height: 50%;
-
-        position: relative;
-        left: 28%;
-        bottom: 2.2%;
-    } .ballYear {
-        height: 16.6%;
-    } #ballYear:hover {
-        cursor: pointer;
+    #timelineContent {
+        display: none;
     }
 
     /** balls format of timeline vertical bar */
     .timelineBall {
-        width: 25px;
-        height: 25px;
+        width: 20px;
+        height: 20px;
         border-radius: 12.5px;
         margin-left: 10px;
+
+        position: relative;
+        top: -2.5px; /* height/2 - bar_height/2 */
+        left: 10px;
     } .activeBall {
         background-color: #C0392B;
         border: solid #C0392B;
@@ -59,26 +48,6 @@
         background-color: #FDEBD0;
         border: solid #000;
         border-width: 1px;
-    }
-
-    /** structure of timeline vertical bar*/ 
-    #yearsBarContent {
-        height: 100%;
-    } #yearsBar {
-        width: 15px;
-        height: 100%;
-        border-radius: 7.5px;
-    } #yearsBarFilledDefault {
-        width: 100%;
-        border-top-left-radius: 7.5px;
-        border-top-right-radius: 7.5px;
-
-        height: 25%;
-    } #yearsBarResponsive {
-        height: 50%; /* VALUE WILL CHANGE WITH JAVASCRIPT */
-    } .yearsBarFilled {
-        width: 15px;
-        height: 16.6%;
     }
 
 
@@ -110,8 +79,29 @@
         cursor: pointer;
     }
 
-    #timelineContent {
+    #timelineContentM {
+        /* margin-top: 15px; */
         margin-bottom: 100px;
+    } #timelineBarM {
+        height: 15px;
+        border-radius: 7.5px;
+    } #alwaysFilled {
+        border-top-left-radius: 7.5px;
+        border-bottom-left-radius: 7.5px;
+    } .timelineSectionBar {
+        width: 12.5%;
+        height: 100%;
+    } #timelineDescriptionBgM {
+        height: 100%;
+        width: 80%;
+        
+        position: relative;
+        top: -5px;
+        z-index: -1;
+
+        background-image: url(../../images/pgPrincipal2.png);
+        background-size: cover;
+        background-repeat: no-repeat;
     }
 }
 
@@ -144,6 +134,10 @@
 
     #timelineDiv {
         height: 900px; /* 800 */
+    }
+
+    #timelineContentM {
+        display: none;
     }
 
     /** structure of year+ball of timeline vertical bar */
@@ -258,6 +252,10 @@
 
     #timelineDiv {
         height: 600px; /* 800 */
+    }
+
+    #timelineContentM {
+        display: none;
     }
 
     /** structure of year+ball of timeline vertical bar */
@@ -389,6 +387,10 @@
         height: 16.6%;
     } #ballYear:hover {
         cursor: pointer;
+    }
+
+    #timelineContentM {
+        display: none;
     }
 
     /** balls format of timeline vertical bar */

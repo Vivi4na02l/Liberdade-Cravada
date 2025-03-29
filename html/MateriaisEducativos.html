@@ -99,8 +99,8 @@
         </div>
     </div>
 
-    <!-- LINHA DO TEMPO PC -->
-    <div id="timelineContent" class="dflex fdc aic">
+    <!-- TIMELINE INTRO  -->
+    <div id="timelineSection" class="dflex fdc aic">
         <div class="w80">
             <!-- INFO BUTTON -->
             <div class="dflex fdr">
@@ -115,141 +115,113 @@
                 <br><br>
                 Clica num ano para ver como os eventos se desenrolaram e como ajudaram a moldar o caminho para a liberdade em Portugal.
             </p>
+        </div>
+    </div>
 
-            <!-- TIMELINE -->
-            <div id="timelineDiv" class="dflex fdr aic">
-                <!-- years + vertical line -->
-                <div id="yearsBarContent" class="dflex fdr">
-                    
-                    <div id="ballYears" class="dflex fdc">
-                        <div id="yearsBarFilledDefault"></div>
+    <!-- TIMELINE (devices != mobile) -->
+    <div id="timelineContent" class="dflex fdr">
+        <div id="timelineBar" class="bgBeige">
+            <div id="alwaysFilled" class="timelineSectionBar bgRed dflex fdcr">
+                <button id="1928" class="timelineBall activeBall">
+                    <p class="m0 p0 IBM fontNormalSize beige">1928</p>
+                </button>
+            </div>
+            <div class="timelineSectionBar bgBeige dflex fdcr">
+                <button id="1933" class="timelineBall inactiveBall">
+                    <p class="m0 p0 IBM fontNormalSize beige">1933</p>
+                </button>
+            </div>
+            <div class="timelineSectionBar bgBeige dflex fdcr">
+                <button id="1945" class="timelineBall inactiveBall">
+                    <p class="m0 p0 IBM fontNormalSize beige">1945</p>
+                </button>
+            </div>
+            <div class="timelineSectionBar bgBeige dflex fdcr">
+                <button id="1958" class="timelineBall inactiveBall">
+                    <p class="m0 p0 IBM fontNormalSize beige">1958</p>
+                </button>
+            </div>
+            <div class="timelineSectionBar bgBeige dflex fdcr">
+                <button id="1961" class="timelineBall inactiveBall">
+                    <p class="m0 p0 IBM fontNormalSize beige">1961</p>
+                </button>
+            </div>
+            <div class="timelineSectionBar bgBeige dflex fdcr">
+                <button id="1968" class="timelineBall inactiveBall">
+                    <p class="m0 p0 IBM fontNormalSize beige">1968</p>
+                </button>
+            </div>
+            <div class="timelineSectionBar bgBeige dflex fdcr">
+                <button id="1974" class="timelineBall inactiveBall">
+                    <p class="m0 p0 IBM fontNormalSize beige">1974</p>
+                </button>
+            </div>
+        </div>
 
-                        <div id="ballYearsResponsive">
-                            <!-- ball 1928 -->
-                            <div id="ballYear" class="dflex fdr aic">
-                                <p class="m0 p0 IBM fontNormalSize red">1928</p>
-                                <div class="timelineBall activeBall"></div>
-                            </div>
-    
-                            <!-- ball 1933 -->
-                            <div id="ballYear" class="ballYear dflex fdcr">
-                                <div class="dflex fdr aic">
-                                    <p class="m0 p0 IBM fontNormalSize beige">1933</p>
-                                    <div class="timelineBall inactiveBall"></div>
-                                </div>
-                            </div>
-    
-                            <!-- ball 1945 -->
-                            <div id="ballYear" class="ballYear dflex fdcr">
-                                <div class="dflex fdr aic">
-                                    <p class="m0 p0 IBM fontNormalSize beige">1945</p>
-                                    <div class="timelineBall inactiveBall"></div>
-                                </div>
-                            </div>
-    
-                            <!-- ball 1958 -->
-                            <div id="ballYear" class="ballYear dflex fdcr">
-                                <div class="dflex fdr aic">
-                                    <p class="m0 p0 IBM fontNormalSize beige">1958</p>
-                                    <div class="timelineBall inactiveBall"></div>
-                                </div>
-                            </div>
-    
-                            <!-- ball 1961 -->
-                            <div id="ballYear" class="ballYear dflex fdcr">
-                                <div class="dflex fdr aic">
-                                    <p class="m0 p0 IBM fontNormalSize beige">1961</p>
-                                    <div class="timelineBall inactiveBall"></div>
-                                </div>
-                            </div>
-    
-                            <!-- ball 1968 -->
-                            <div id="ballYear" class="ballYear dflex fdcr">
-                                <div class="dflex fdr aic">
-                                    <p class="m0 p0 IBM fontNormalSize beige">1968</p>
-                                    <div class="timelineBall inactiveBall"></div>
-                                </div>
-                            </div>
-    
-                            <!-- ball 1974 -->
-                            <div id="ballYear" class="ballYear dflex fdcr">
-                                <div class="dflex fdr aic">
-                                    <p class="m0 p0 IBM fontNormalSize beige">1974</p>
-                                    <div class="timelineBall inactiveBall"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <!-- respective year info content -->
+        <div id="timelineDescriptionBg">
+            <div id="timelineDescription" class="dflex fdc aic jcsb">
+                <div>
+                    <p id="timelineTxtTitle" class="m0 p0 jersey fontTitleSize red">Lorem Ipsum</p>
+                    <p id="timelineTxtYear" class="m0 p0 IBM fontSubtitleSize2 beige">1928</p>
 
-                    <div id="yearsBar" class="bgBeige">
-                        <!-- this div is the vertical beige bar -->
-
-                        <div id="yearsBarFilledDefault" class="bgRed"></div>
-
-                        <!-- divs with vertical progressive bar corresponding to the years -->
-                        <div id="yearsBarResponsive" class="dflex fdc aic">
-                            <div id="yearsBarFilled1" class="yearsBarFilled"><!-- 1933 --></div>
-                            <div id="yearsBarFilled2" class="yearsBarFilled"><!-- 1945 --></div>
-                            <div id="yearsBarFilled3" class="yearsBarFilled"><!-- 1958 --></div>
-                            <div id="yearsBarFilled4" class="yearsBarFilled"><!-- 1961 --></div>
-                            <div id="yearsBarFilled5" class="yearsBarFilled"><!-- 1968 --></div>
-                            <div id="yearsBarFilled6" class="yearsBarFilled"><!-- 1974 --></div>
-                        </div>
-                    </div>
+                    <p id="timelineTxt" class="m0 IBM beige fontNormalSize">
+                        Integer faucibus tellus sem, quis pellentesque tellus commodo sit amet. Duis nec auctor mi. Integer ut cursus mi. Vivamus malesuada enim ac suscipit interdum. Pellentesque in dolor ultricies, accumsan eros id, aliquam orci.
+                        <br><br>
+                        Vestibulum tristique justo sed mauris rhoncus, eu pulvinar nisi mattis. Phasellus eu semper odio. Phasellus eu risus eget risus vulputate semper ac nec nibh.
+                    </p>
                 </div>
 
-                <!-- respective year info content -->
-                <div id="timelineDescriptionBg">
-                    <div id="timelineDescription" class="dflex fdc aic jcsb">
-                        <div>
-                            <p id="timelineTxtTitle" class="m0 p0 jersey fontTitleSize red">Lorem Ipsum</p>
-                            <p id="timelineTxtYear" class="m0 p0 IBM fontSubtitleSize2 beige">1928</p>
-    
-                            <p id="timelineTxt" class="m0 IBM beige fontNormalSize">
-                                Integer faucibus tellus sem, quis pellentesque tellus commodo sit amet. Duis nec auctor mi. Integer ut cursus mi. Vivamus malesuada enim ac suscipit interdum. Pellentesque in dolor ultricies, accumsan eros id, aliquam orci.
-                                <br><br>
-                                Vestibulum tristique justo sed mauris rhoncus, eu pulvinar nisi mattis. Phasellus eu semper odio. Phasellus eu risus eget risus vulputate semper ac nec nibh.
-                            </p>
-                        </div>
-    
-                        <div id="timelineDescriptionPages" class="dflex fdr jcc">
-                            <p id="pagesLeft" class="m0 p0 IBM fontNormalSize2 beige"><</p>
-                            <p id="pages1" class="m0 p0 IBM fontNormalSize2 red">1</p>
-                            <p id="pages2" class="m0 p0 IBM fontNormalSize2 beige">2</p>
-                            <p id="pages3" class="m0 p0 IBM fontNormalSize2 beige">3</p>
-                            <p id="pages4" class="m0 p0 IBM fontNormalSize2 beige">4</p>
-                            <p id="pages5" class="m0 p0 IBM fontNormalSize2 beige">5</p>
-                            <p id="pagesRight" class="m0 p0 IBM fontNormalSize2 beige">></p>
-                        </div>
-                    </div>
+                <div id="timelineDescriptionPages" class="dflex fdr jcc">
+                    <p id="pagesLeft" class="m0 p0 IBM fontNormalSize2 beige"><</p>
+                    <p id="pages1" class="m0 p0 IBM fontNormalSize2 red">1</p>
+                    <p id="pages2" class="m0 p0 IBM fontNormalSize2 beige">2</p>
+                    <p id="pages3" class="m0 p0 IBM fontNormalSize2 beige">3</p>
+                    <p id="pages4" class="m0 p0 IBM fontNormalSize2 beige">4</p>
+                    <p id="pages5" class="m0 p0 IBM fontNormalSize2 beige">5</p>
+                    <p id="pagesRight" class="m0 p0 IBM fontNormalSize2 beige">></p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- LINHA DO TEMPO MOBILE -->
+    <!-- TIMELINE (for mobile devices) -->
     <div id="timelineContentM" class="dflex fdc aic">
         <div id="timelineBarM" class="w80 bgBeige dflex fdr">
-            <div id="alwaysFilled" class="timelineSectionBar bgRed dflex fdrr">
-                <button id="ball1928" class="timelineBall activeBall"></button>
+            <div id="alwaysFilledM" class="timelineSectionBarM bgRed dflex fdrr">
+                <button id="1928" class="timelineBallM activeBall">
+                    <p class="m0 p0 IBM">1928</p>
+                </button>
             </div>
-            <div id="year1933" class="timelineSectionBar bgBeige dflex fdrr">
-                <button id="ball1933" class="timelineBall inactiveBall"></button>
+            <div class="timelineSectionBarM bgBeige dflex fdrr">
+                <button id="1933" class="timelineBallM inactiveBall">
+                    <p class="m0 p0 IBM">1933</p>
+                </button>
             </div>
-            <div id="year1945" class="timelineSectionBar bgBeige dflex fdrr">
-                <button id="ball1945" class="timelineBall inactiveBall"></button>
+            <div class="timelineSectionBarM bgBeige dflex fdrr">
+                <button id="1945" class="timelineBallM inactiveBall">
+                    <p class="m0 p0 IBM">1945</p>
+                </button>
             </div>
-            <div id="year1958" class="timelineSectionBar bgBeige dflex fdrr">
-                <button id="ball1958" class="timelineBall inactiveBall"></button>
+            <div class="timelineSectionBarM bgBeige dflex fdrr">
+                <button id="1958" class="timelineBallM inactiveBall">
+                    <p class="m0 p0 IBM">1958</p>
+                </button>
             </div>
-            <div id="year1961" class="timelineSectionBar bgBeige dflex fdrr">
-                <button id="ball1961" class="timelineBall inactiveBall"></button>
+            <div class="timelineSectionBarM bgBeige dflex fdrr">
+                <button id="1961" class="timelineBallM inactiveBall">
+                    <p class="m0 p0 IBM">1961</p>
+                </button>
             </div>
-            <div id="year1968" class="timelineSectionBar bgBeige dflex fdrr">
-                <button id="ball1968" class="timelineBall inactiveBall"></button>
+            <div class="timelineSectionBarM bgBeige dflex fdrr">
+                <button id="1968" class="timelineBallM inactiveBall">
+                    <p class="m0 p0 IBM">1968</p>
+                </button>
             </div>
-            <div id="year1974" class="timelineSectionBar bgBeige dflex fdrr">
-                <button id="ball1974" class="timelineBall inactiveBall"></button>
+            <div class="timelineSectionBarM bgBeige dflex fdrr">
+                <button id="1974" class="timelineBallM inactiveBall">
+                    <p class="m0 p0 IBM">1974</p>
+                </button>
             </div>
         </div>
 

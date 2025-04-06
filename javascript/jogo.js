@@ -8,6 +8,11 @@ import {
     game1_keyReleased,
 } from './games/game1.js';
 
+//* PREVENTS PAGE SCROLLING DOWN WHEN SPACEBAR IS PRESSED */
+window.onkeydown = function(e) { 
+    return !(e.keyCode == 32 && e.target == document.body);
+}; 
+
 function preload() {
     game1_preload();
 }

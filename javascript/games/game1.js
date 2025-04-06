@@ -1,11 +1,13 @@
-export let imgBgLvl1, imgNews, imgPencil;
-export let imgPencilRotate = -90;
+let imgBgLvl1, imgNews, imgPencil;
+let imgPencilRotate = -90;
 let goingLeft = false, goingRight = false;
 
-let flowers = [];
+let isScenarioCreated;
+
+let scribbles = [];
 let fontPX;
 
-export let sentences = [{
+let sentences = [{
     txt: "O governo enfrenta críticas crescentes devido à sua política de medidas rigorosas contra a contestação.",
     censured: ["medidas", "rigorosas"]
   },
@@ -27,10 +29,10 @@ export let sentences = [{
   },
 ];
 
-export let wordsCensuredAll = [];
+let wordsCensuredAll = [];
 
-export let randomNbr1, randomNbr2;
-export let marginLeftLeft, marginLeftTop, marginRightLeft, marginRightTop, maxWidth;
+let randomNbr1, randomNbr2;
+let marginLeftLeft, marginLeftTop, marginRightLeft, marginRightTop, maxWidth;
 
 export function game1_preload() {
     //* font */
@@ -53,19 +55,22 @@ export function game1_draw() {
     imgNews.resize(0, height);
     image(imgNews, width/2, height-(imgNews.height/2));
 
-    for (let i = flowers.length - 1; i >= 0; i--) {
-        flowers[i].update();
-        flowers[i].display();
+    for (let i = scribbles.length - 1; i >= 0; i--) {
+        scribbles[i].update();
+        scribbles[i].display();
 
-        if (flowers[i].offscreen()) {
-            flowers.splice(i, 1);
+        if (scribbles[i].offscreen()) {
+            scribbles.splice(i, 1);
         }
     }
 
     let allWordsCensured = (currentValue) => currentValue.hasBeenHit == true;
   
+    //* if not every word has been censored yet */
     if (wordsCensuredAll.length == 0 || !wordsCensuredAll.every(allWordsCensured)) {
         newspaper();
+    } else {  //* else */
+        isGameOver = true;
     }
 
     movingPencil();
@@ -101,9 +106,9 @@ export function game1_keyReleased() {
         goingRight = false;
     }
 
-    if (key === ' ') { //isFlowerOut
+    if (key === ' ') { //isScribbleOut
         fill('#0099D6')
-        flowers.push(new Flower(createVector(width/2, height-(imgPencil.width*0.2)), imgPencilRotate, imgPencil.height*0.2));
+        scribbles.push(new Scribble(createVector(width/2, height-(imgPencil.width*0.2)), imgPencilRotate, imgPencil.height*0.2));
     }
 }
 
@@ -112,8 +117,8 @@ function newspaper() {
     textFont(fontPX, 25);
     textAlign(LEFT, TOP);
   
-    // if (!isScenario1Created) {
-    //   isScenario1Created = true;
+    if (!isScenarioCreated) {
+      isScenarioCreated = true;
   
       randomNbr1 = Math.floor(Math.random() * sentences.length);
       for (const word of sentences[randomNbr1].censured) {
@@ -156,10 +161,10 @@ function newspaper() {
       marginRightLeft = width/2 + imgNews.width*0.08
       marginRightTop = imgNews.height*0.47
       maxWidth = marginRightLeft - marginLeftLeft - imgNews.width*0.11;
-    // }
+    }
   
-    // let {w, h} = txtDimensions(1, randomNbr1, maxWidth, marginLeftLeft, marginLeftTop)
-    // let {w2, h2} = txtDimensions(2, randomNbr2, maxWidth, marginRightLeft, marginRightTop)
+    let {w, h} = txtDimensions(1, randomNbr1, maxWidth, marginLeftLeft, marginLeftTop)
+    let {w2, h2} = txtDimensions(2, randomNbr2, maxWidth, marginRightLeft, marginRightTop)
 }
 
 function movingPencil() {
@@ -181,18 +186,18 @@ function movingPencil() {
     pop()
 }
 
-class Flower {
+class Scribble {
     constructor(pos, angle, hitbox) {
         this.pos = pos;
         this.vel = p5.Vector.fromAngle(radians(angle)).mult(10);
         this.moving = true;
         this.toRemove = false;
-        this.radius = hitbox; //hitboxes flower
+        this.radius = hitbox; //hitboxes scribble
     }
     
     update() {
         if (this.moving) {
-            this.pos.add(this.vel); // moves flower projectile
+            this.pos.add(this.vel); // moves scribble projectile
         }
     }
     
@@ -207,7 +212,7 @@ class Flower {
     }
     
     offscreen() {
-        // if flower left the screen
+        // if scribble left the screen
         return (this.pos.x < 0 || this.pos.x > width || this.pos.y < 0 || this.pos.y > height);
     }
   
@@ -236,4 +241,82 @@ class Flower {
             }
         }
     }
+}
+
+function txtDimensions(sentence, sent, maxWidth, marginLeft, marginTop) {
+    let words = sentences[sent].txt.split(' ');
+    let line = '';
+    let testLine;
+    let lineHeight = textSize() * 1.2; // Line height
+    let wordSpace = textSize() * 0.5;
+    let textHeight = 0;
+    let firstWord = true;
+    let lastWordWidth;
+    let lastWordHeight;
+    let lastWordX;
+  
+    for (const word of words) {
+        testLine = line + word + ' ';
+    
+        if (firstWord) {
+            firstWord = false;
+    
+            text(word, marginLeft, marginTop);
+    
+            lastWordX = marginLeft;
+            lastWordWidth = textWidth(word);
+            lastWordHeight = marginTop;
+    
+        } else {
+            if (textWidth(testLine) > maxWidth && line.length > 0) { // add a new line if width passes max width
+                line = word + ' ';
+    
+                if (!sentences[sent].censured.includes(word)) {
+                    fill('#000');
+                } else {
+                    fill('#0099d6');
+                    // saves the coordinates
+                    let wordPos = wordsCensuredAll.findIndex(item => item.sentence == sentence && item.word == word);
+                    wordsCensuredAll[wordPos].x = marginLeft+textWidth(word)/2;
+                    wordsCensuredAll[wordPos].y = lastWordHeight+lineHeight+lineHeight/2;
+                    wordsCensuredAll[wordPos].w = textWidth(word);
+                    wordsCensuredAll[wordPos].h = lineHeight;
+                }
+    
+                text(word, marginLeft, lastWordHeight+lineHeight) // marginTop + lineHeight = new line
+    
+                lastWordX = marginLeft;
+                lastWordWidth = textWidth(word);
+                lastWordHeight = lastWordHeight+lineHeight;
+    
+            } else {
+                if (!sentences[sent].censured.includes(word)) {
+                    fill('#000');
+                } else {
+                    fill('#0099d6');
+                    let wordPos = wordsCensuredAll.findIndex(item => item.sentence == sentence && item.word == word);
+                    wordsCensuredAll[wordPos].x = lastWordX+lastWordWidth+wordSpace+textWidth(word)/2;
+                    wordsCensuredAll[wordPos].y = lastWordHeight+lineHeight/2;
+                    wordsCensuredAll[wordPos].w = textWidth(word);
+                    wordsCensuredAll[wordPos].h = lineHeight;
+                }
+    
+                line = testLine;
+                text(word, lastWordX+lastWordWidth+wordSpace, lastWordHeight);
+    
+                lastWordX = lastWordX+lastWordWidth+wordSpace;
+                lastWordWidth = textWidth(word);
+            }
+        }
+  
+        // "for" to verify if the censuredWord was already hit by player
+        for (const censuredWord of wordsCensuredAll) {
+            if (censuredWord.sentence == sentence && censuredWord.word == word && censuredWord.hasBeenHit) {
+                fill('#0099d6');
+                rect(censuredWord.x, censuredWord.y, censuredWord.w, censuredWord.h);
+            }
+        }
+    }
+  
+    return { w: maxWidth, h: textHeight };
 }

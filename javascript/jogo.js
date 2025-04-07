@@ -28,6 +28,7 @@ function setup() {
     
     //* default settings to rotate images */
     imageMode(CENTER);
+    rectMode(CENTER);
     angleMode(DEGREES);
     
     game1_setup();

@@ -50,6 +50,7 @@ export function game1_setup() {
 export function game1_draw() {
     clear();
 
+    noStroke();
     imgBgLvl1.resize(width, 0);
     image(imgBgLvl1, width-imgBgLvl1.width/2, height-(imgBgLvl1.height/2));
     imgNews.resize(0, height);
@@ -302,10 +303,6 @@ function txtDimensions(sentence, sent, maxWidth, marginLeft, marginTop) {
                     wordsCensuredAll[wordPos].y = lastWordHeight+lineHeight/2;
                     wordsCensuredAll[wordPos].w = textWidth(word);
                     wordsCensuredAll[wordPos].h = lineHeight;
-
-                    console.log(wordsCensuredAll[wordPos]);
-                    
-                    //* BUG */
                 }
     
                 line = testLine;
@@ -324,8 +321,6 @@ function txtDimensions(sentence, sent, maxWidth, marginLeft, marginTop) {
                 console.log(censuredWord);
                 
             }
-
-            //* BUG (ELES ESTÃO A SALVAR POSIÇÕES DE X E TAL DIFERENTES */
         }
     }
   

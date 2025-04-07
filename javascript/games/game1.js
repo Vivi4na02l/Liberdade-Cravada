@@ -36,11 +36,11 @@ let marginLeftLeft, marginLeftTop, marginRightLeft, marginRightTop, maxWidth;
 
 export function game1_preload() {
     //* font */
-    fontPX = loadFont('../.././fonts/VT323/VT323-Regular.ttf');
+    fontPX = loadFont('.././fonts/VT323/VT323-Regular.ttf');
 
-    imgBgLvl1 = loadImage('../.././images/games/pixelart/cs1-3_blurry.png');
-    imgNews = loadImage('../.././images/games/pixelart/jornal.png');
-    imgPencil = loadImage('../.././images/games/pixelart/lapis_azul.png');
+    imgBgLvl1 = loadImage('../images/games/pixelart/cs1-3_blurry.png');
+    imgNews = loadImage('.././images/games/pixelart/jornal.png');
+    imgPencil = loadImage('.././images/games/pixelart/lapis_azul.png');
 };
 
 export function game1_setup() {

@@ -44,7 +44,7 @@ export function game1_preload() {
 };
 
 export function game1_setup() {
-    
+    rectMode(CENTER);
 }
 
 export function game1_draw() {

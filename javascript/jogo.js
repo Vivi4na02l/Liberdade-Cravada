@@ -13,8 +13,12 @@ window.onkeydown = function(e) {
     return !(e.keyCode == 32 && e.target == document.body);
 }; 
 
+let game = sessionStorage.getItem("game");
+
 function preload() {
-    game1_preload();
+    if (game == "game1") {
+        game1_preload();
+    }    
 }
 
 function setup() {
@@ -28,25 +32,32 @@ function setup() {
     
     //* default settings to rotate images */
     imageMode(CENTER);
-    rectMode(CENTER);
     angleMode(DEGREES);
-    
-    game1_setup();
+
+    if (game == "game1") {
+        game1_setup();
+    }
 }
 
 function draw() {
     clear();
-    // background("#000");
+    background("#000");
 
-    game1_draw();
+    if (game == "game1") {
+        game1_draw();
+    }
 }
 
 function keyPressed() {
-    game1_keyPressed();
+    if (game == "game1") {
+        game1_keyPressed();
+    }
 }
 
 function keyReleased() {
-    game1_keyReleased();
+    if (game == "game1") {
+        game1_keyReleased();
+    }
 }
 
 window.preload = preload

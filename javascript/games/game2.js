@@ -1,8 +1,8 @@
 /** game variables */
-let gameSpeed = 1, ms, sec;
+let gameSpeed = 1, ms;
 
 /** character variables */
-let charX, charY, charW, charH;
+let charX, charY, charW, charH, charYDefault;
 
 /** floor variables */
 let floorX, floorY, floorH;
@@ -12,7 +12,7 @@ let obsX, obsY, obsW, obsH;
 let obstacles = [];
 
 /** movement keyboard variables */
-let goingLeft = false, goingRight = false;
+let startJumpCounter, endJumpCounter, howLongJump, jump = false, isJumping = false, isHovering = false, isHoveringStart, isHoveringShouldEnd = 50, isJumpingDown = false;
 
 export function game2_preload() {
     
@@ -29,6 +29,7 @@ export function game2_setup() {
     charH = width*0.1;
     charX = width*0.15;
     charY = floorY - charH/2;
+    charYDefault = charY;
 
     //* obstacle
     obsW = width*0.08;
@@ -38,7 +39,6 @@ export function game2_setup() {
 
     //* game variables
     ms = millis();
-    sec = ms / 1000;
 
     rectMode(CENTER);
 }
@@ -46,17 +46,55 @@ export function game2_setup() {
 export function game2_draw() {
     background('#aaffff')
 
-    //* variables responsible for the movement of the scenario */
+    //************ variables responsible for the MOVEMENT of the SCENARIO */
     gameSpeed += 0.001;
     obsX -= 5 * gameSpeed;
 
-    //* character */
+
+    //************ CHARACTER */
+    if (jump) {
+        jump = false;
+        isJumping = true;
+        isJumpingDown = false;
+        
+        console.log(howLongJump);
+    }
+
+    if (isJumping) {
+        if (howLongJump >= 29) {
+            if (!isJumpingDown) {
+                charY -= 2;
+                
+                if (charY <= charYDefault-height*0.1) {
+                    isHoveringStart = frameCount;
+
+                    isHovering = true;
+                    isJumpingDown = true;
+                }  
+            } else {
+                if (isHovering) {
+                    if (frameCount - isHoveringStart >= isHoveringShouldEnd) {
+                        isHovering = false;
+                    }
+                } else {
+                    charY += 2;
+
+                    if (charY >= charYDefault) {
+                        isJumpingDown = false;
+                        isJumping = false;
+                    }
+                }
+            }
+        }
+    }
+
     rect(charX, charY, charW, charH) /* x,y,w,h */
 
-    //* floor */
+
+    //************ FLOOR */
     rect(floorX, floorY + (floorH/2), width, floorH) /* x,y,w,h */
 
-    //* obstacles */
+    //************ OBSTACLES */
     /** spawns the first obstacle */
     if (frameCount == 10) {
         obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH)); //createVector(width/2, height-(imgPencil.width*0.2)), imgPencilRotate, imgPencil.height*0.2
@@ -75,37 +113,17 @@ export function game2_draw() {
 }
 
 export function game2_keyPressed() {
-    if (keyCode === LEFT_ARROW) {
-        goingLeft = true;
-    }
-      
-    if (keyCode === RIGHT_ARROW) {
-        goingRight = true;
-    }
-
-    /* if the player is holding both arrows down, then it will prioritaze the last one */
-    if (keyCode === LEFT_ARROW && goingRight == true) {
-        goingRight = false;
-        goingLeft = true;
-    }
-
-    if (keyCode === RIGHT_ARROW && goingLeft == true) {
-        goingLeft = false;
-        goingRight = true;
+    if (key === ' ') {
+        startJumpCounter = frameCount;
     }
 }
 
 export function game2_keyReleased() {
-    if (keyCode === LEFT_ARROW) {
-        goingLeft = false;
-    }
-    
-    if (keyCode === RIGHT_ARROW) {
-        goingRight = false;
-    }
-
     if (key === ' ') {
-        //* ESPAÇO
+        endJumpCounter = frameCount;
+        howLongJump = endJumpCounter - startJumpCounter; /** determines how long the user was pressing jump */
+
+        jump = true;
     }
 }
 
@@ -127,7 +145,7 @@ class Obstacle {
          */
     }
     
-    display() {
+    display() { /** makes the obstacle appear on the canvas */
         rect(this.obsX, this.obsY, this.obsW, this.obsH)
     }
     

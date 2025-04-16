@@ -8,6 +8,14 @@ import {
     game1_keyReleased,
 } from './games/game1.js';
 
+import {
+    game2_preload,
+    game2_setup,
+    game2_draw,
+    game2_keyPressed,
+    game2_keyReleased,
+} from './games/game2.js';
+
 //* PREVENTS PAGE SCROLLING DOWN WHEN SPACEBAR IS PRESSED */
 window.onkeydown = function(e) { 
     return !(e.keyCode == 32 && e.target == document.body);
@@ -18,7 +26,9 @@ let game = sessionStorage.getItem("game");
 function preload() {
     if (game == "game1") {
         game1_preload();
-    }    
+    } else if (game == "game2") {
+        game2_preload();
+    }
 }
 
 function setup() {
@@ -36,6 +46,8 @@ function setup() {
 
     if (game == "game1") {
         game1_setup();
+    } else if (game == "game2") {
+        game2_setup();
     }
 }
 
@@ -45,18 +57,24 @@ function draw() {
 
     if (game == "game1") {
         game1_draw();
+    } else if (game == "game2") {
+        game2_draw();
     }
 }
 
 function keyPressed() {
     if (game == "game1") {
         game1_keyPressed();
+    } else if (game == "game2") {
+        game2_keyPressed();
     }
 }
 
 function keyReleased() {
     if (game == "game1") {
         game1_keyReleased();
+    } else if (game == "game2") {
+        game2_keyReleased();
     }
 }
 

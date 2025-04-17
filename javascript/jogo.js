@@ -16,10 +16,12 @@ import {
     game2_keyReleased,
 } from './games/game2.js';
 
-//* PREVENTS PAGE SCROLLING DOWN WHEN SPACEBAR IS PRESSED */
-window.onkeydown = function(e) { 
-    return !(e.keyCode == 32 && e.target == document.body);
-}; 
+//* PREVENTS PAGE SCROLLING WHEN SPACEBAR OR ANY ARROW KEY IS PRESSED */
+window.addEventListener("keydown", function(e) {
+    if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+        e.preventDefault();
+    }
+}, false);
 
 let game = sessionStorage.getItem("game");
 

@@ -3,6 +3,7 @@ let gameSpeed = 1, ms;
 
 /** character variables */
 let charX, charY, charW, charH, charYDefault;
+let charSlidingH, charSlidingY;
 let char_running_R, char_sliding, char_mid_sliding, char_jumping;
 
 /** floor variables */
@@ -13,7 +14,8 @@ let obsX, obsY, obsW, obsH;
 let obstacles = [];
 
 /** movement keyboard variables */
-let startJumpCounter, endJumpCounter, howLongJump, jump = false, isHovering = false, isHoveringStart, isHoveringShouldEnd = 50, isJumpingDown = false;
+let startJumpCounter, endJumpCounter, howLongJump, jump = false, isHovering = false, isHoveringStart, isHoveringShouldEndShort = 15, isHoveringShouldEndLong = 35, isJumpingDown = false;
+let slide = false, startSlide, endSlide, timeOfSlide = 50;
 
 export function game2_preload() {
     char_running_R = loadImage('../images/games/characters/char_running_R.png');
@@ -35,6 +37,9 @@ export function game2_setup() {
     charY = floorY - charH/2;
     charYDefault = charY;
 
+    charSlidingH = charH * 0.6;
+    charSlidingY = floorY - charSlidingH/2;
+
     //* obstacle
     obsW = width*0.08;
     obsH = width*0.03;
@@ -51,46 +56,47 @@ export function game2_setup() {
 export function game2_draw() {
     background('#aaffff')
 
-    //************ variables responsible for the MOVEMENT of the SCENARIO */
+    //************ MOVEMENT and SCENERY */
     gameSpeed += 0.0001;
     obsX -= 5 * gameSpeed;
 
 
     //************ CHARACTER */
 
-    /** determines when character is jumping */
-    if (jump) {
+    /** when character is jumping */
+
+//if para variavel jump ter imagem de mid jump, if variavel is hovering ter a imagem do actual jumping
+
+
+    if (jump && !slide) { 
+        /** longest jump (activated by user pressing the spacebar long enough) */
         if (howLongJump >= 29) {
-            if (!isJumpingDown) {
-                charY -= 2;
-                
-                if (charY <= charYDefault-height*0.1) {
-                    isHoveringStart = frameCount;
-
-                    isHovering = true;
-                    isJumpingDown = true;
-                }  
-            } else {
-                if (isHovering) {
-                    if (frameCount - isHoveringStart >= isHoveringShouldEnd) {
-                        isHovering = false;
-                    }
-                } else {
-                    charY += 2;
-
-                    if (charY >= charYDefault) {
-                        isJumpingDown = false;
-                        isJumping = false;
-                        jump = false;
-                    }
-                }
-            }
+            charIsJumping(0.1, isHoveringShouldEndLong)
+        } else if (howLongJump >= 15 && howLongJump < 29) {
+            charIsJumping(0.1, isHoveringShouldEndShort)
+        } else {
+            charIsJumping(0.05, isHoveringShouldEndShort)
         }
-    }
 
-    // rect(charX, charY, charW, charH) /* x,y,w,h */
-    char_running_R.resize(0, charH);
-    image(char_running_R, charX, charY)
+        char_jumping.resize(0, charH * 0.666);
+        image(char_jumping, charX, charY)
+
+    /** when character is sliding */
+    } else if (slide && !jump) {
+        endSlide = frameCount;
+
+        if (endSlide - startSlide >= timeOfSlide) {
+            slide = false;
+        } else {
+            char_sliding.resize(0, charSlidingH);
+            image(char_sliding, charX, charSlidingY)
+        }
+
+    /** when character is just running (default) */
+    } else {
+        char_running_R.resize(0, charH);
+        image(char_running_R, charX, charYDefault)
+    }
 
 
     //************ FLOOR */
@@ -116,16 +122,48 @@ export function game2_draw() {
 
 export function game2_keyPressed() {
     if (key === ' ') {
-        startJumpCounter = frameCount;
+        startJumpCounter = frameCount; /** keeps in mind when user first pressed the spacebar down */
     }
 }
 
 export function game2_keyReleased() {
     if (key === ' ') {
         endJumpCounter = frameCount;
-        howLongJump = endJumpCounter - startJumpCounter; /** determines how long the user was pressing jump */
+        howLongJump = endJumpCounter - startJumpCounter; /** calculates how long the user was pressing the spacebar */
 
         jump = true;
+    }
+
+    if (keyCode === DOWN_ARROW) {
+        startSlide = frameCount;
+
+        slide = true;
+    }
+}
+
+function charIsJumping(heightOfJump, hoveringEnd) {
+    if (!isJumpingDown) {
+        charY -= 2;
+        
+        if (charY <= charYDefault-height*heightOfJump) {
+            isHoveringStart = frameCount;
+
+            isHovering = true;
+            isJumpingDown = true;
+        }  
+    } else {
+        if (isHovering) {
+            if (frameCount - isHoveringStart >= hoveringEnd) {
+                isHovering = false;
+            }
+        } else {
+            charY += 2;
+
+            if (charY >= charYDefault) {
+                isJumpingDown = false;
+                jump = false;
+            }
+        }
     }
 }
 

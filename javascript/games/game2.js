@@ -3,6 +3,7 @@ let gameSpeed = 1, ms;
 
 /** character variables */
 let charX, charY, charW, charH, charYDefault;
+let char_running_R, char_sliding, char_mid_sliding, char_jumping;
 
 /** floor variables */
 let floorX, floorY, floorH;
@@ -12,17 +13,20 @@ let obsX, obsY, obsW, obsH;
 let obstacles = [];
 
 /** movement keyboard variables */
-let startJumpCounter, endJumpCounter, howLongJump, jump = false, isJumping = false, isHovering = false, isHoveringStart, isHoveringShouldEnd = 50, isJumpingDown = false;
+let startJumpCounter, endJumpCounter, howLongJump, jump = false, isHovering = false, isHoveringStart, isHoveringShouldEnd = 50, isJumpingDown = false;
 
 export function game2_preload() {
-    
+    char_running_R = loadImage('../images/games/characters/char_running_R.png');
+    char_sliding = loadImage('../images/games/characters/char_sliding.png');
+    char_mid_sliding = loadImage('../images/games/characters/char_mid_sliding.png');
+    char_jumping = loadImage('../images/games/characters/char_jumping.png');
 }
 
 export function game2_setup() {
     //* floor
     floorH = height*0.4;
     floorX = 0 + (width/2);
-    floorY = height*0.6;
+    floorY = height*0.7;
 
     //* character
     charW = width*0.05;
@@ -40,6 +44,7 @@ export function game2_setup() {
     //* game variables
     ms = millis();
 
+    imageMode(CENTER);
     rectMode(CENTER);
 }
 
@@ -47,20 +52,14 @@ export function game2_draw() {
     background('#aaffff')
 
     //************ variables responsible for the MOVEMENT of the SCENARIO */
-    gameSpeed += 0.001;
+    gameSpeed += 0.0001;
     obsX -= 5 * gameSpeed;
 
 
     //************ CHARACTER */
-    if (jump) {
-        jump = false;
-        isJumping = true;
-        isJumpingDown = false;
-        
-        console.log(howLongJump);
-    }
 
-    if (isJumping) {
+    /** determines when character is jumping */
+    if (jump) {
         if (howLongJump >= 29) {
             if (!isJumpingDown) {
                 charY -= 2;
@@ -82,13 +81,16 @@ export function game2_draw() {
                     if (charY >= charYDefault) {
                         isJumpingDown = false;
                         isJumping = false;
+                        jump = false;
                     }
                 }
             }
         }
     }
 
-    rect(charX, charY, charW, charH) /* x,y,w,h */
+    // rect(charX, charY, charW, charH) /* x,y,w,h */
+    char_running_R.resize(0, charH);
+    image(char_running_R, charX, charY)
 
 
     //************ FLOOR */

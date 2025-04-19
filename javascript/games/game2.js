@@ -1,13 +1,16 @@
-/** game variables */
+/** game rules and scenery variables */
 let gameSpeed = 1, ms;
+let backgroundW, backgroundH, backgroundX, backgroundY;
+
+let floor_subway, floor_subway_bg, bg_subway;
 
 /** character variables */
 let charX, charY, charW, charH, charYDefault;
 let charSlidingH, charSlidingY;
-let char_running_R, char_sliding, char_mid_sliding, char_jumping;
+let char_running_R, char_sliding, char_mid_sliding, char_jumping; //images
 
 /** floor variables */
-let floorX, floorY, floorH;
+let floorX, floorY, floorW, floorH, floorYPlacement;
 
 /** obstacles variables */
 let obsX, obsY, obsW, obsH;
@@ -22,29 +25,41 @@ export function game2_preload() {
     char_sliding = loadImage('../images/games/characters/char_sliding.png');
     char_mid_sliding = loadImage('../images/games/characters/char_mid_sliding.png');
     char_jumping = loadImage('../images/games/characters/char_jumping.png');
+
+    floor_subway = loadImage('../images/games/scenery/floor_subway.png');
+    floor_subway_bg = loadImage('../images/games/scenery/floor_subway_bg.png');
+    bg_subway = loadImage('../images/games/scenery/bg_subway_blurred.png');
 }
 
 export function game2_setup() {
+    //* background */
+    backgroundW = width*1.5;
+    backgroundH = height*1.5;
+    backgroundX = backgroundW/2;
+    backgroundY = backgroundH/2;
+
     //* floor
     floorH = height*0.4;
-    floorX = 0 + (width/2);
-    floorY = height*0.7;
+    floorW = (floor_subway.width*floorH)/floor_subway.height /* makes width of image proportionate to its height. Assuming the img "floor_subway" dimensions are gonna be standard for other floor images */
+    floorX = floorW/2;
+    floorY = height - floorH/2;
+    floorYPlacement = floorY - floorH/4;
 
     //* character
-    charW = width*0.05;
-    charH = width*0.1;
-    charX = width*0.15;
-    charY = floorY - charH/2;
+    charW = width*0.1;
+    charH = width*0.15;
+    charX = width*0.2;
+    charY = floorYPlacement - charH/2;
     charYDefault = charY;
 
     charSlidingH = charH * 0.6;
-    charSlidingY = floorY - charSlidingH/2;
+    charSlidingY = floorYPlacement - charSlidingH/2;
 
     //* obstacle
     obsW = width*0.08;
     obsH = width*0.03;
     obsX = width*0.7;
-    obsY = floorY - obsH/2;
+    obsY = floorYPlacement - obsH/2;
 
     //* game variables
     ms = millis();
@@ -59,6 +74,20 @@ export function game2_draw() {
     //************ MOVEMENT and SCENERY */
     gameSpeed += 0.0001;
     obsX -= 5 * gameSpeed;
+
+    /** BACKGROUND */
+    image(bg_subway, /* img */
+        backgroundX, backgroundY*0.8, /* x, y */
+        backgroundW, backgroundH) /* w, h */
+    
+    //************ FLOOR */
+    image(floor_subway, /* img */
+        floorX, floorY, /* x, y */
+        floorW, floorH) /* w, h */
+
+    image(floor_subway_bg, /* img */
+        floorX, floorY/2+floorH/2-((floor_subway_bg.height*floorW)/floor_subway_bg.width)/2, /* x, y */
+        floorW, (floor_subway_bg.height*floorW)/floor_subway_bg.width) /* w, h */
 
 
     //************ CHARACTER */
@@ -78,8 +107,9 @@ export function game2_draw() {
             charIsJumping(0.05, isHoveringShouldEndShort)
         }
 
-        char_jumping.resize(0, charH * 0.666);
-        image(char_jumping, charX, charY)
+        image(char_jumping, /* img */
+            charX, charY, /* x, y */
+            (char_jumping.width * (charH*0.666))/char_jumping.height, charH*0.666) /* w, h */
 
     /** when character is sliding */
     } else if (slide && !jump) {
@@ -88,19 +118,17 @@ export function game2_draw() {
         if (endSlide - startSlide >= timeOfSlide) {
             slide = false;
         } else {
-            char_sliding.resize(0, charSlidingH);
-            image(char_sliding, charX, charSlidingY)
+            image(char_sliding, /* img */
+                charX, charSlidingY, /* x, y */
+                (char_sliding.width * charSlidingH)/char_sliding.height, charSlidingH) /* w, h */
         }
 
     /** when character is just running (default) */
     } else {
-        char_running_R.resize(0, charH);
-        image(char_running_R, charX, charYDefault)
+        image(char_running_R, /* img */
+            charX, charYDefault, /* x, y */
+            (char_running_R.width * charH)/char_running_R.height, charH) /* w, h */
     }
-
-
-    //************ FLOOR */
-    rect(floorX, floorY + (floorH/2), width, floorH) /* x,y,w,h */
 
     //************ OBSTACLES */
     /** spawns the first obstacle */

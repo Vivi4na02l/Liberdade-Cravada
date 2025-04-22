@@ -1,15 +1,19 @@
 /** game rules and scenery variables */
-let gameSpeed = 1, ms;
-let scenery = "subway";
+let gameSpeed = 1;
+let scenery = "subway", newScenery = "default";
+let fade = 0, fadeIn = true;
 let backgroundW, backgroundH, backgroundX, backgroundY;
 
-let floor_subway, floor_subway_bg, bg_subway;
+/** transitions between scenarios */
+let subwayX, subwayY, subwayW, subwayH;
+
+let floor_subway, floor_subway_bg, bg_front_subway, bg_subway;
 let floors = [];
 
 /** character variables */
 let charX, charY, charW, charH, charYDefault;
 let charSlidingH, charSlidingY;
-let char_running_R, char_sliding, char_mid_sliding, char_jumping; //images
+let char_running_R, char_running_M, char_running_L, char_sliding, char_mid_sliding, char_jumping; //images
 
 /** floor variables */
 let floorX, floorY, floorW, floorH, floorYPlacement;
@@ -21,15 +25,19 @@ let obstacles = [];
 /** movement keyboard variables */
 let startJumpCounter, endJumpCounter, howLongJump, jump = false, isHovering = false, isHoveringStart, isHoveringShouldEndShort = 15, isHoveringShouldEndLong = 35, isJumpingDown = false;
 let slide = false, startSlide, endSlide, timeOfSlide = 50;
+let runSwitch = true, runWhenSwitch = 15, runWhenSwitchStart, runWhenSwitchEnd, runningImages = 0;
 
 export function game2_preload() {
     char_running_R = loadImage('../images/games/characters/char_running_R.png');
+    char_running_M = loadImage('../images/games/characters/char_running_M.png');
+    char_running_L = loadImage('../images/games/characters/char_running_L.png');
     char_sliding = loadImage('../images/games/characters/char_sliding.png');
     char_mid_sliding = loadImage('../images/games/characters/char_mid_sliding.png');
     char_jumping = loadImage('../images/games/characters/char_jumping.png');
 
     floor_subway = loadImage('../images/games/scenery/floor_subway.png');
     floor_subway_bg = loadImage('../images/games/scenery/floor_subway_bg.png');
+    bg_front_subway = loadImage('../images/games/scenery/bg_front_subway.png');
     bg_subway = loadImage('../images/games/scenery/bg_subway_blurred.png');
 }
 
@@ -54,7 +62,7 @@ export function game2_setup() {
     charY = floorYPlacement - charH/2;
     charYDefault = charY;
 
-    charSlidingH = charH * 0.6;
+    charSlidingH = charH * 0.55;
     charSlidingY = floorYPlacement - charSlidingH/2;
 
     //* obstacle
@@ -63,19 +71,22 @@ export function game2_setup() {
     obsX = width*0.7;
     obsY = floorYPlacement - obsH/2;
 
-    //* game variables
-    ms = millis();
+    subwayH = height/1.7;
+    subwayW = (bg_front_subway.width*(subwayH))/bg_front_subway.height;
+    subwayX = width+subwayW/2;
+    subwayY = height-(subwayH)/2;
 
     imageMode(CENTER);
     rectMode(CENTER);
 }
 
 export function game2_draw() {
-    background('#aaffff')
+    noStroke();
+    background('#aaffff');
 
     //************ MOVEMENT and SCENERY */
     gameSpeed += 0.0001;
-    backgroundX -= 0.25;
+    backgroundX -= 0.25 * gameSpeed;
 
     /** BACKGROUND */
     image(bg_subway, /* img */
@@ -94,8 +105,6 @@ export function game2_draw() {
             }
         }
     }
-
-    console.log(floors);
     
     for (let i = floors.length - 1; i >= 0; i--) {
         floors[i].update();
@@ -107,14 +116,6 @@ export function game2_draw() {
             floors.push(new Floor((floors[floors.length-1].floorX + floorW), scenery));
         }
     }
-
-    // image(floor_subway, /* img */
-    //     floorX, floorY, /* x, y */
-    //     floorW, floorH) /* w, h */
-        
-    // image(floor_subway_bg, /* img */
-    //     floorX, floorY/2+floorH/2-((floor_subway_bg.height*floorW)/floor_subway_bg.width)/2, /* x, y */
-    //     floorW, (floor_subway_bg.height*floorW)/floor_subway_bg.width) /* w, h */
 
 
     //************ CHARACTER */
@@ -152,9 +153,36 @@ export function game2_draw() {
 
     /** when character is just running (default) */
     } else {
-        image(char_running_R, /* img */
-            charX, charYDefault, /* x, y */
-            (char_running_R.width * charH)/char_running_R.height, charH) /* w, h */
+        if (runSwitch) {
+            runSwitch = false;
+            runWhenSwitchStart = frameCount;    
+        } else {
+            runWhenSwitchEnd = frameCount
+            
+            if (runWhenSwitchEnd - runWhenSwitchStart >= runWhenSwitch) {
+                if (runningImages >= 3) {
+                    runningImages = 0;
+                } else {
+                    runningImages++;
+                }
+
+                runSwitch = true;
+            }
+        }
+
+        if (runningImages == 0) {
+            image(char_running_R, /* img */
+                charX, charYDefault, /* x, y */
+                (char_running_R.width * charH)/char_running_R.height, charH) /* w, h */
+        } else if (runningImages == 1 || runningImages == 3) {
+            image(char_running_M, /* img */
+                charX, charYDefault, /* x, y */
+                (char_running_M.width * charH)/char_running_M.height, charH) /* w, h */
+        } else {
+            image(char_running_L, /* img */
+                charX, charYDefault, /* x, y */
+                (char_running_L.width * charH)/char_running_L.height, charH) /* w, h */
+        }
     }
 
     //************ OBSTACLES */
@@ -171,6 +199,17 @@ export function game2_draw() {
         if (obstacles[i].offscreen()) {
             obstacles.splice(i, 1);
             obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH));
+        }
+    }
+
+
+    //************ TRANSITIONS */
+    
+    if (((backgroundX + backgroundW)-width*0.8) <= width) {
+        newScenery = sceneryTransition(scenery);
+
+        if (newScenery != undefined) {
+            scenery = newScenery;    
         }
     }
 }
@@ -219,6 +258,38 @@ function charIsJumping(heightOfJump, hoveringEnd) {
                 jump = false;
             }
         }
+    }
+}
+
+function sceneryTransition(scenery) {
+    if (scenery == "subway") {
+        if (subwayX <= width*0.4) { /** when the middle of the subway reaches 60% of the screen */
+            fill(0, 0, 0, fade)
+            rect(width/2, height/2, width, height)
+
+            if (fade <= 255 && fadeIn) { /** black screen fades in and covers everything but the subway */
+                fade += 5
+            } else if (fade >= 250 || (!fadeIn && fade > 0)) {
+                fadeIn = false;
+                
+                scenery = "";
+                fade -= 5;
+            } else if (fade <= 0) {
+                if (subwayX + subwayW/2 < 0) { /** when the end of the subway is no longer visible */
+                    subwayX = width+subwayW/2; /* reset OG subway position for next time this scene comes */
+                    fadeIn = true;
+                    backgroundX = backgroundW/2; /** resets the initial position of the background for the following scene */
+                    return "Lisboa" /** changes to next scenery */ //* MUDAR PARA RANDOM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+                }
+            }
+        }
+
+        /** subway appears to cover most elements on the screen */
+        image(bg_front_subway, /* img */
+            subwayX, subwayY, /* x, y */
+            subwayW, subwayH) /* w, h */   
+
+        subwayX -= 20 * gameSpeed;
     }
 }
 

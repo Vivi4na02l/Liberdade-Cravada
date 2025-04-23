@@ -1,20 +1,52 @@
 /** mobile */
 @media screen and (min-width: 320px) and (max-width: 767px) {
+    #navbar, #menuHamburgerBg, #menuHamburger, #divGame, footer, #footer {
+        display: none;
+    }
 
-}
-
+    #sorry {
+        width: 100%;
+        height: 100vh;
+    } #sorry div {
+        width: 80%;
+        height: 100%;
+    }
+}   
 /** tablet vertical portrait */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
+    #navbar, #menuHamburgerBg, #menuHamburger, #divGame, footer, #footer {
+        display: none;
+    }
 
-}
-
+    #sorry {
+        width: 100%;
+        height: 100vh;
+    } #sorry div {
+        width: 80%;
+        height: 100%;
+    }
+}   
 /** desktop screen */
 @media screen and (min-width: 1024px) and (max-width: 1369px) {
+    #navbar, #menuHamburgerBg, #menuHamburger, #divGame, footer, #footer {
+        display: none;
+    }
 
+    #sorry {
+        width: 100%;
+        height: 100vh;
+    } #sorry div {
+        width: 80%;
+        height: 100%;
+    }
 }
 
 /** bigger desktop screen */
 @media screen and (min-width: 1370px) {
+    #sorry {
+        display: none;
+    }
+
     .wm {
         margin-left: 10%;
         margin-right: 10%;

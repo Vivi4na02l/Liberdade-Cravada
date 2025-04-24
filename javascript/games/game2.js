@@ -17,6 +17,12 @@ let floor_lisbon;
 let charX, charY, charW, charH, charYDefault;
 let charSlidingH, charSlidingY;
 let char_running_R, char_running_M, char_running_L, char_sliding, char_mid_sliding, char_jumping; //images
+let char_position = {
+    x: 0,
+    y: 0,
+    w: 0,
+    h: 0,
+}
 
 /** floor variables */
 let floorX, floorY, floorW, floorH, floorYPlacement;
@@ -144,6 +150,12 @@ export function game2_draw() {
             charX, charY, /* x, y */
             (char_jumping.width * (charH*0.666))/char_jumping.height, charH*0.666) /* w, h */
 
+        char_position.x = charX;
+        char_position.y = charY;
+        char_position.w = (char_jumping.width * (charH*0.666))/char_jumping.height;
+        char_position.h = charH*0.666;
+
+
     /** when character is sliding */
     } else if (slide && !jump) {
         endSlide = frameCount;
@@ -154,6 +166,11 @@ export function game2_draw() {
             image(char_sliding, /* img */
                 charX, charSlidingY, /* x, y */
                 (char_sliding.width * charSlidingH)/char_sliding.height, charSlidingH) /* w, h */
+
+            char_position.x = charX;
+            char_position.y = charSlidingY;
+            char_position.w = (char_sliding.width * charSlidingH)/char_sliding.height;
+            char_position.h = charSlidingH;
         }
 
     /** when character is just running (default) */
@@ -188,6 +205,11 @@ export function game2_draw() {
                 charX, charYDefault, /* x, y */
                 (char_running_L.width * charH)/char_running_L.height, charH) /* w, h */
         }
+
+        char_position.x = charX;
+        char_position.y = charYDefault;
+        char_position.w = (char_running_M.width * charH)/char_running_M.height;
+        char_position.h = charH;
     }
 
     //************ OBSTACLES */
@@ -199,6 +221,9 @@ export function game2_draw() {
     for (let i = obstacles.length - 1; i >= 0; i--) {
         obstacles[i].update();
         obstacles[i].display();
+        if (obstacles[i].collides(char_position)) {
+            console.log("BATEU PRINCESA");
+        };
 
         /** if obstacle is offscreen, delete it and add a new one */
         if (obstacles[i].offscreen()) {
@@ -377,28 +402,12 @@ class Obstacle {
     }
   
     collides(element) {
-        // if (!this.toRemove) {
-        //     let d = dist(this.pos.x, this.pos.y, element.x, element.y);
-    
-        //     if (this.pos.x + this.radius > element.x && this.pos.x - this.radius < element.x + element.w &&
-        //         this.pos.y + this.radius > element.y && this.pos.y - this.radius < element.y + element.h && !element.hasBeenHit) {
-    
-        //         element.hasBeenHit = true;
-        //         this.toRemove = true;
-        //         return true;
-        //     } else {
-        //         return false;
-        //     }
-            
-        // } else {
-        //     let d = dist(this.pos.x, this.pos.y, element.randomX, element.randomY);
-        //     if (d <= this.radius + element.randomSize / 2 && !element.hasBeenHit) {
-        //         element.hasBeenHit = true;
-        //         this.moving = false;
-        //         return true;
-        //     } else {
-        //         return false;
-        //     }
-        // }
+        if (this.obsX + this.obsW > element.x && this.obsX - this.obsW < element.x + element.w &&
+            this.obsY + this.obsW > element.y && this.obsY - this.obsW < element.y + element.h) {
+
+            return true;
+        } else {
+            return false;
+        }
     }
 }

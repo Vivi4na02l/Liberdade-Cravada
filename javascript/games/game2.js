@@ -1,4 +1,5 @@
 /** game rules and scenery variables */
+let gameOver = false;
 let points = 0;
 let gameSpeed = 1;
 let scenery = "subway", newScenery = "default";
@@ -30,6 +31,7 @@ let floorX, floorY, floorW, floorH, floorYPlacement;
 /** obstacles variables */
 let obsX, obsY, obsW, obsH;
 let obstacles = [];
+let typeOfObstacle = 1;
 
 /** movement keyboard variables */
 let startJumpCounter, endJumpCounter, howLongJump, jump = false, isHovering = false, isHoveringStart, isHoveringShouldEndShort = 15, isHoveringShouldEndLong = 35, isJumpingDown = false;
@@ -96,8 +98,10 @@ export function game2_draw() {
     background('#aaffff');
 
     //************ MOVEMENT and SCENERY */
-    gameSpeed += 0.0001;
-    backgroundX -= 0.25 * gameSpeed;
+    if (!gameOver) {
+        gameSpeed += 0.0001;
+        backgroundX -= 0.25 * gameSpeed;
+    }
 
     /** BACKGROUND */
     image(bg_subway, /* img */
@@ -118,7 +122,9 @@ export function game2_draw() {
     }
     
     for (let i = floors.length - 1; i >= 0; i--) {
-        floors[i].update();
+        if (!gameOver) {
+            floors[i].update();
+        }
         floors[i].display();
 
         /** if floor is offscreen, delete it and add a new one */
@@ -150,11 +156,10 @@ export function game2_draw() {
             charX, charY, /* x, y */
             (char_jumping.width * (charH*0.666))/char_jumping.height, charH*0.666) /* w, h */
 
-        char_position.x = charX;
-        char_position.y = charY;
         char_position.w = (char_jumping.width * (charH*0.666))/char_jumping.height;
         char_position.h = charH*0.666;
-
+        char_position.x = charX + char_position.w/2;
+        char_position.y = charY + char_position.h/2;
 
     /** when character is sliding */
     } else if (slide && !jump) {
@@ -167,10 +172,10 @@ export function game2_draw() {
                 charX, charSlidingY, /* x, y */
                 (char_sliding.width * charSlidingH)/char_sliding.height, charSlidingH) /* w, h */
 
-            char_position.x = charX;
-            char_position.y = charSlidingY;
             char_position.w = (char_sliding.width * charSlidingH)/char_sliding.height;
             char_position.h = charSlidingH;
+            char_position.x = charX + char_position.w/2;
+            char_position.y = charSlidingY + char_position.h/2;
         }
 
     /** when character is just running (default) */
@@ -206,29 +211,34 @@ export function game2_draw() {
                 (char_running_L.width * charH)/char_running_L.height, charH) /* w, h */
         }
 
-        char_position.x = charX;
-        char_position.y = charYDefault;
         char_position.w = (char_running_M.width * charH)/char_running_M.height;
         char_position.h = charH;
+        char_position.x = charX + char_position.w/2;
+        char_position.y = charYDefault + char_position.h/2;
     }
 
     //************ OBSTACLES */
     /** spawns the first obstacle */
     if (frameCount == 10) {
-        obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH));
+        typeOfObstacle = Math.ceil(Math.random() * 1) /** 1,2,3 */ //* MUDAR PARA 33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333 */
+        obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
     }
 
     for (let i = obstacles.length - 1; i >= 0; i--) {
-        obstacles[i].update();
-        obstacles[i].display();
+        if (!gameOver) {
+            obstacles[i].update();
+        }
+        obstacles[i].display(char_position);
         if (obstacles[i].collides(char_position)) {
-            console.log("BATEU PRINCESA");
+            gameOver = true;
         };
 
         /** if obstacle is offscreen, delete it and add a new one */
         if (obstacles[i].offscreen()) {
             obstacles.splice(i, 1);
-            obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH));
+
+            typeOfObstacle = Math.ceil(Math.random() * 1) /** 1,2,3 */ //* MUDAR PARA 33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333 */
+            obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
         }
     }
 
@@ -253,7 +263,9 @@ export function game2_draw() {
     }
 
     //************ POINTS */
-    points = frameCount;
+    if (!gameOver) {
+        points = frameCount;
+    }
     textSize(32);
     fill(255);
     stroke(0);
@@ -375,11 +387,12 @@ class Floor {
 }
 
 class Obstacle {
-    constructor(speed, width, obsY, obsW, obsH) {
+    constructor(speed, width, obsY, obsW, obsH, typeOfObstacle) {
         this.speed = speed;
         this.obsY = obsY;
         this.obsW = obsW;
         this.obsH = obsH;
+        this.typeOfObstacle = typeOfObstacle;
 
         this.obsX = width + (obsW/2);
     }
@@ -392,8 +405,14 @@ class Obstacle {
          */
     }
     
-    display() { /** makes the obstacle appear on the canvas */
+    display(element) { /** makes the obstacle appear on the canvas */
         rect(this.obsX, this.obsY, this.obsW, this.obsH)
+
+        /* OBSTACLE AND CHARACTER DEBUG HELP */
+        // fill("#FF0000")
+        // rect(this.obsX-this.obsW/2, this.obsY-this.obsH/2, 10, 10)
+        // rect(element.x, element.y, 10, 10)
+
     }
     
     offscreen() {
@@ -402,8 +421,12 @@ class Obstacle {
     }
   
     collides(element) {
-        if (this.obsX + this.obsW > element.x && this.obsX - this.obsW < element.x + element.w &&
-            this.obsY + this.obsW > element.y && this.obsY - this.obsW < element.y + element.h) {
+        /* "0.9" is the "tolerance of hit" */
+        if (typeOfObstacle == 1
+            && this.obsX - this.obsW/2 < element.x*0.9 /** if farthest point on the left of obstacle is "more to the left" than the farthest point to the right of the character */
+            && this.obsX + this.obsW/2 > element.x - element.w*0.9 /** if farthest point on the right of obstacle is "more to the right" than the farthest point to the left of the character */
+            && this.obsY - this.obsH/2 < element.y) { /** if highest point of obstacle is ABOVE(<) the lowest point of the character */
+            //this.obsY - this.obsH < element.y + element.h) {
 
             return true;
         } else {

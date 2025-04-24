@@ -1,4 +1,5 @@
 /** game rules and scenery variables */
+let points = 0;
 let gameSpeed = 1;
 let scenery = "subway", newScenery = "default";
 let fade = 0, fadeIn = true;
@@ -9,6 +10,8 @@ let subwayX, subwayY, subwayW, subwayH;
 
 let floor_subway, floor_subway_bg, bg_front_subway, bg_subway;
 let floors = [];
+
+let floor_lisbon;
 
 /** character variables */
 let charX, charY, charW, charH, charYDefault;
@@ -39,6 +42,8 @@ export function game2_preload() {
     floor_subway_bg = loadImage('../images/games/scenery/floor_subway_bg.png');
     bg_front_subway = loadImage('../images/games/scenery/bg_front_subway.png');
     bg_subway = loadImage('../images/games/scenery/bg_subway_blurred.png');
+
+    floor_lisbon = loadImage('../images/games/scenery/floor_lisbon.png');
 }
 
 export function game2_setup() {
@@ -211,7 +216,25 @@ export function game2_draw() {
         if (newScenery != undefined) {
             scenery = newScenery;    
         }
+
+        if (scenery == "subway") {
+            /** subway appears to cover most elements on the screen */
+            image(bg_front_subway, /* img */
+                subwayX, subwayY, /* x, y */
+                subwayW, subwayH) /* w, h */   
+
+            subwayX -= 20 * gameSpeed;
+        }
     }
+
+    //************ POINTS */
+    points = frameCount;
+    textSize(32);
+    fill(255);
+    stroke(0);
+    strokeWeight(4);
+    textAlign(CENTER, CENTER)
+    text(points, width/2, height*0.05);
 }
 
 export function game2_keyPressed() {
@@ -283,13 +306,6 @@ function sceneryTransition(scenery) {
                 }
             }
         }
-
-        /** subway appears to cover most elements on the screen */
-        image(bg_front_subway, /* img */
-            subwayX, subwayY, /* x, y */
-            subwayW, subwayH) /* w, h */   
-
-        subwayX -= 20 * gameSpeed;
     }
 }
 
@@ -320,6 +336,10 @@ class Floor {
             image(floor_subway_bg, /* img */
                 this.floorX, floorY/2+floorH/2-((floor_subway_bg.height*floorW)/floor_subway_bg.width)/2, /* x, y */
                 floorW, (floor_subway_bg.height*floorW)/floor_subway_bg.width) /* w, h */
+        } else if (this.whichScenery == "Lisboa") {
+            image(floor_lisbon, /* img */
+                this.floorX, floorY, /* x, y */
+                floorW, floorH) /* w, h */
         }
     }
     

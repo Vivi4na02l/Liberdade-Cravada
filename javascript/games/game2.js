@@ -29,7 +29,9 @@ let char_position = {
 let floorX, floorY, floorW, floorH, floorYPlacement;
 
 /** obstacles variables */
-let obsX, obsY, obsW, obsH;
+let obsX, obsY, obsW, obsH; /* short obstacle on the floor */
+let tallObsX, tallObsY, tallObsW, tallObsH; /* obstacle too tall (player needs to roll) */
+let flyingObsX, flyingObsY, flyingObsW, flyingObsH; /* obstacle too tall (player needs to roll) */
 let obstacles = [];
 let typeOfObstacle = 1;
 
@@ -83,6 +85,11 @@ export function game2_setup() {
     obsH = width*0.03;
     obsX = width*0.7;
     obsY = floorYPlacement - obsH/2;
+
+    tallObsW = width*0.08;
+    tallObsH = width*0.03;
+    tallObsX = width*0.7;
+    tallObsY = floorYPlacement - charH;
 
     subwayH = height/1.7;
     subwayW = (bg_front_subway.width*(subwayH))/bg_front_subway.height;
@@ -220,8 +227,13 @@ export function game2_draw() {
     //************ OBSTACLES */
     /** spawns the first obstacle */
     if (frameCount == 10) {
-        typeOfObstacle = Math.ceil(Math.random() * 1) /** 1,2,3 */ //* MUDAR PARA 33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333 */
-        obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
+        typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2,3 */ //* MUDAR PARA 33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333 */
+
+        if (typeOfObstacle == 1) {
+            obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
+        } else if (typeOfObstacle == 2) {
+            obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
+        }
     }
 
     for (let i = obstacles.length - 1; i >= 0; i--) {
@@ -237,8 +249,13 @@ export function game2_draw() {
         if (obstacles[i].offscreen()) {
             obstacles.splice(i, 1);
 
-            typeOfObstacle = Math.ceil(Math.random() * 1) /** 1,2,3 */ //* MUDAR PARA 33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333 */
-            obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
+            typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2,3 */ //* MUDAR PARA 33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333 */
+            
+            if (typeOfObstacle == 1) {
+                obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
+            } else if (typeOfObstacle == 2) {
+                obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
+            }
         }
     }
 
@@ -422,15 +439,21 @@ class Obstacle {
   
     collides(element) {
         /* "0.9" is the "tolerance of hit" */
-        if (typeOfObstacle == 1
+        if (typeOfObstacle == 1 /** obstacle that player has to jump over */
             && this.obsX - this.obsW/2 < element.x*0.9 /** if farthest point on the left of obstacle is "more to the left" than the farthest point to the right of the character */
             && this.obsX + this.obsW/2 > element.x - element.w*0.9 /** if farthest point on the right of obstacle is "more to the right" than the farthest point to the left of the character */
-            && this.obsY - this.obsH/2 < element.y) { /** if highest point of obstacle is ABOVE(<) the lowest point of the character */
+            && this.obsY - this.obsH/2 < element.y) { /** if the highest point of the obstacle is ABOVE(<) the lowest point of the character */
             //this.obsY - this.obsH < element.y + element.h) {
 
             return true;
+        } else if (typeOfObstacle == 2 /** obstacle that player has to roll under */
+            && this.obsX - this.obsW/2 < element.x*0.9 /** if farthest point on the left of obstacle is "more to the left" than the farthest point to the right of the character */
+            && this.obsX + this.obsW/2 > element.x - element.w*0.9 /** if farthest point on the right of obstacle is "more to the right" than the farthest point to the left of the character */
+            && this.obsY + this.obsH/2 >= element.y - element.h) { /** if the lowest point of the obstacle is BELOW(>) the highest point of the character */
+
+            return true;
         } else {
-            return false;
+            return false
         }
     }
 }

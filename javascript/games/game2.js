@@ -38,7 +38,7 @@ let typeOfObstacle = 1;
 /** movement keyboard variables */
 let startJumpCounter, endJumpCounter, howLongJump, jump = false, isHovering = false, isHoveringStart, isHoveringShouldEndShort = 15, isHoveringShouldEndLong = 35, isJumpingDown = false;
 let slide = false, startSlide, endSlide, timeOfSlide = 50;
-let runSwitch = true, runWhenSwitch = 15, runWhenSwitchStart, runWhenSwitchEnd, runningImages = 0;
+let runSwitch = true, runWhenSwitch = 20, runWhenSwitchStart, runWhenSwitchEnd, runningImages = 0;
 
 export function game2_preload() {
     char_running_R = loadImage('../images/games/characters/char_running_R.png');
@@ -191,7 +191,7 @@ export function game2_draw() {
             runSwitch = false;
             runWhenSwitchStart = frameCount;    
         } else {
-            runWhenSwitchEnd = frameCount
+            runWhenSwitchEnd = frameCount + 5*gameSpeed;
             
             if (runWhenSwitchEnd - runWhenSwitchStart >= runWhenSwitch) {
                 if (runningImages >= 3) {
@@ -445,13 +445,13 @@ class Obstacle {
             && this.obsY - this.obsH/2 < element.y) { /** if the highest point of the obstacle is ABOVE(<) the lowest point of the character */
             //this.obsY - this.obsH < element.y + element.h) {
 
-            return true;
+            return false;
         } else if (typeOfObstacle == 2 /** obstacle that player has to roll under */
             && this.obsX - this.obsW/2 < element.x*0.9 /** if farthest point on the left of obstacle is "more to the left" than the farthest point to the right of the character */
             && this.obsX + this.obsW/2 > element.x - element.w*0.9 /** if farthest point on the right of obstacle is "more to the right" than the farthest point to the left of the character */
             && this.obsY + this.obsH/2 >= element.y - element.h) { /** if the lowest point of the obstacle is BELOW(>) the highest point of the character */
 
-            return true;
+            return false;
         } else {
             return false
         }

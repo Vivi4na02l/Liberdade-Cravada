@@ -155,141 +155,15 @@ export function game2_draw() {
 
 
     //************ CHARACTER */
-
     /** when character is jumping */
-    if (jump && !slide) { 
-        if (jumpingImages >= 5 && !jumpEachAnimation) {
-            jumpingImages = 0;
-            jump = false;
-        } else {
-            if (!jumpEachAnimation) {
-                jumpingImages++;
-            }
-        }
-
-        
-        if (jumpingImages == 1) { /** prepares to jump */
-            charIsJumping(10, false, 0, false); //whenSwitch, yChanges, yHowMuch, backToDefault
-
-            image(char_jumping_1, /* img */
-                charX, charY, /* x, y */
-                (char_jumping_1.width * charH)/char_jumping_1.height, charH) /* w, h */
-        }
-
-        else if (jumpingImages == 2) { /** jumps */
-            charIsJumping(20, true, -5, false); //whenSwitch, yChanges, yHowMuch, backToDefault
-            
-            image(char_jumping_2, /* img */
-                charX, charY, /* x, y */
-                (char_jumping_2.width * charH)/char_jumping_2.height, charH) /* w, h */
-        }
-
-        else if (jumpingImages == 3) { /** is at the highest point of jump */
-            charIsJumping(20, true, -1, false); //whenSwitch, yChanges, yHowMuch, backToDefault
-        
-            image(char_jumping_3, /* img */
-                charX, charY, /* x, y */
-                (char_jumping_3.width * charH)/char_jumping_3.height, charH) /* w, h */
-        }
-
-        else if (jumpingImages == 4) { /** goes down */
-            charIsJumping(30, true, 0, true); //whenSwitch, yChanges, yHowMuch, backToDefault
-
-            image(char_jumping_1, /* img */
-                charX, charY, /* x, y */
-                (char_jumping_1.width * charH)/char_jumping_1.height, charH) /* w, h */
-        }
-        
-        else { /** feet back on the floor, re-adjusts */
-            charIsJumping(15, false, 0, false); //whenSwitch, yChanges, yHowMuch, backToDefault
-
-            image(char_jumping_4, /* img */
-                charX, charY, /* x, y */
-                (char_jumping_4.width * charH)/char_jumping_4.height, charH) /* w, h */
-        }
-
-        char_position.w = (char_jumping_1.width * charH)/char_jumping_1.height;
-        char_position.h = charH;
-        char_position.x = charX + char_position.w/2;
-        char_position.y = charY + char_position.h/2;
-
+    charJump();
+    
     /** when character is sliding */
-    } else if (slide && !jump) {
-        if (slidingImages >= 3 && !slideEachAnimation) {
-            slidingImages = 0;
-            slide = false;
-        } else {
-            if (!slideEachAnimation) {
-                slidingImages++;
-            }
-
-            if (slidingImages == 1) {
-                charIsSliding(10); //whenSwitch
+    charSlide();
     
-                image(char_jumping_4, /* img */
-                    charX, charYDefault, /* x, y */
-                    (char_jumping_4.width * charH)/char_jumping_4.height, charH) /* w, h */
-            }
-    
-            else if (slidingImages == 2) {
-                charIsSliding(30); //whenSwitch
-    
-                image(char_sliding_2, /* img */
-                    charX, floorYPlacement-((char_sliding_2.height * charSlidingW)/char_sliding_2.width)/2, /* x, y */
-                    charSlidingW, (char_sliding_2.height * charSlidingW)/char_sliding_2.width) /* w, h */
-            }
-    
-            else {
-                charIsSliding(10); //whenSwitch
-    
-                image(char_sliding_3, /* img */
-                    charX, floorYPlacement-((char_sliding_3.height * charSlidingW)/char_sliding_3.width)/2, /* x, y */
-                    charSlidingW, (char_sliding_3.height * charSlidingW)/char_sliding_3.width) /* w, h */
-            }
-        }
-
-        char_position.w = charSlidingW;
-        char_position.h = (char_sliding_3.height * charSlidingW)/char_sliding_3.width;
-        char_position.x = charX + char_position.w/2;
-        char_position.y = charSlidingY + char_position.h/2;
-
     /** when character is just running (default) */
-    } else {
-        if (runSwitch) {
-            runSwitch = false;
-            runWhenSwitchStart = frameCount;    
-        } else {
-            runWhenSwitchEnd = frameCount + 5*gameSpeed;
-            
-            if (runWhenSwitchEnd - runWhenSwitchStart >= runWhenSwitch) {
-                if (runningImages >= 3) {
-                    runningImages = 0;
-                } else {
-                    runningImages++;
-                }
-
-                runSwitch = true;
-            }
-        }
-
-        if (runningImages == 0) {
-            image(char_running_R, /* img */
-                charX, charYDefault, /* x, y */
-                (char_running_R.width * charH)/char_running_R.height, charH) /* w, h */
-        } else if (runningImages == 1 || runningImages == 3) {
-            image(char_running_M, /* img */
-                charX, charYDefault, /* x, y */
-                (char_running_M.width * charH)/char_running_M.height, charH) /* w, h */
-        } else {
-            image(char_running_L, /* img */
-                charX, charYDefault, /* x, y */
-                (char_running_L.width * charH)/char_running_L.height, charH) /* w, h */
-        }
-
-        char_position.w = (char_running_M.width * charH)/char_running_M.height;
-        char_position.h = charH;
-        char_position.x = charX + char_position.w/2;
-        char_position.y = charYDefault + char_position.h/2;
+    if (!jump && !slide) {
+        charRun();
     }
 
     //************ OBSTACLES */
@@ -371,13 +245,179 @@ export function game2_keyReleased() {
         howLongJump = endJumpCounter - startJumpCounter; /** calculates how long the user was pressing the spacebar */
 
         jump = true;
+
+        charJump();
     }
 
     if (keyCode === DOWN_ARROW) {
         startSlide = frameCount;
 
         slide = true;
+
+        charSlide();
     }
+}
+
+/**
+ * function that makes the character jump
+ */
+function charJump() {
+    /** when character is jumping */
+    if (jump) {
+        slidingImages = 0;
+        slide = false;
+        slideEachAnimation = false;
+
+        if (jumpingImages >= 5 && !jumpEachAnimation) {
+            jumpingImages = 0;
+            jump = false;
+        } else {
+            if (!jumpEachAnimation) {
+                jumpingImages++;
+            }
+        }
+
+        
+        if (jumpingImages == 1) { /** prepares to jump */
+            charIsJumping(10, false, 0, false); //whenSwitch, yChanges, yHowMuch, backToDefault
+
+            image(char_jumping_1, /* img */
+                charX, charY, /* x, y */
+                (char_jumping_1.width * charH)/char_jumping_1.height, charH) /* w, h */
+        }
+
+        else if (jumpingImages == 2) { /** jumps */
+            charIsJumping(20, true, -5, false); //whenSwitch, yChanges, yHowMuch, backToDefault
+            
+            image(char_jumping_2, /* img */
+                charX, charY, /* x, y */
+                (char_jumping_2.width * charH)/char_jumping_2.height, charH) /* w, h */
+        }
+
+        else if (jumpingImages == 3) { /** is at the highest point of jump */
+            charIsJumping(20, true, -1, false); //whenSwitch, yChanges, yHowMuch, backToDefault
+        
+            image(char_jumping_3, /* img */
+                charX, charY, /* x, y */
+                (char_jumping_3.width * charH)/char_jumping_3.height, charH) /* w, h */
+        }
+
+        else if (jumpingImages == 4) { /** goes down */
+            charIsJumping(30, true, 0, true); //whenSwitch, yChanges, yHowMuch, backToDefault
+
+            image(char_jumping_1, /* img */
+                charX, charY, /* x, y */
+                (char_jumping_1.width * charH)/char_jumping_1.height, charH) /* w, h */
+        }
+        
+        else { /** feet back on the floor, re-adjusts */
+            charIsJumping(15, false, 0, false); //whenSwitch, yChanges, yHowMuch, backToDefault
+
+            image(char_jumping_4, /* img */
+                charX, charY, /* x, y */
+                (char_jumping_4.width * charH)/char_jumping_4.height, charH) /* w, h */
+        }
+
+        char_position.w = (char_jumping_1.width * charH)/char_jumping_1.height;
+        char_position.h = charH;
+        char_position.x = charX + char_position.w/2;
+        char_position.y = charY + char_position.h/2;
+
+    }
+}
+
+/**
+ * function that makes the character slide
+ */
+function charSlide() {
+    if (slide) {
+        charY = charYDefault;
+        jumpingImages = 0;
+        jump = false;
+        jumpEachAnimation = false;
+
+        console.log('ai');
+        
+
+        if (slidingImages >= 3 && !slideEachAnimation) {
+            slidingImages = 0;
+            slide = false;
+        } else {
+            if (!slideEachAnimation) {
+                slidingImages++;
+            }
+
+            if (slidingImages == 1) {
+                charIsSliding(10); //whenSwitch
+    
+                image(char_jumping_4, /* img */
+                    charX, charYDefault, /* x, y */
+                    (char_jumping_4.width * charH)/char_jumping_4.height, charH) /* w, h */
+            }
+    
+            else if (slidingImages == 2) {
+                charIsSliding(30); //whenSwitch
+    
+                image(char_sliding_2, /* img */
+                    charX, floorYPlacement-((char_sliding_2.height * charSlidingW)/char_sliding_2.width)/2, /* x, y */
+                    charSlidingW, (char_sliding_2.height * charSlidingW)/char_sliding_2.width) /* w, h */
+            }
+    
+            else {
+                charIsSliding(10); //whenSwitch
+    
+                image(char_sliding_3, /* img */
+                    charX, floorYPlacement-((char_sliding_3.height * charSlidingW)/char_sliding_3.width)/2, /* x, y */
+                    charSlidingW, (char_sliding_3.height * charSlidingW)/char_sliding_3.width) /* w, h */
+            }
+        }
+
+        char_position.w = charSlidingW;
+        char_position.h = (char_sliding_3.height * charSlidingW)/char_sliding_3.width;
+        char_position.x = charX + char_position.w/2;
+        char_position.y = charSlidingY + char_position.h/2;
+    }
+}
+
+/**
+ * function that makes the character run
+ */
+function charRun() {
+    if (runSwitch) {
+        runSwitch = false;
+        runWhenSwitchStart = frameCount;    
+    } else {
+        runWhenSwitchEnd = frameCount + 5*gameSpeed;
+        
+        if (runWhenSwitchEnd - runWhenSwitchStart >= runWhenSwitch) {
+            if (runningImages >= 3) {
+                runningImages = 0;
+            } else {
+                runningImages++;
+            }
+
+            runSwitch = true;
+        }
+    }
+
+    if (runningImages == 0) {
+        image(char_running_R, /* img */
+            charX, charYDefault, /* x, y */
+            (char_running_R.width * charH)/char_running_R.height, charH) /* w, h */
+    } else if (runningImages == 1 || runningImages == 3) {
+        image(char_running_M, /* img */
+            charX, charYDefault, /* x, y */
+            (char_running_M.width * charH)/char_running_M.height, charH) /* w, h */
+    } else {
+        image(char_running_L, /* img */
+            charX, charYDefault, /* x, y */
+            (char_running_L.width * charH)/char_running_L.height, charH) /* w, h */
+    }
+
+    char_position.w = (char_running_M.width * charH)/char_running_M.height;
+    char_position.h = charH;
+    char_position.x = charX + char_position.w/2;
+    char_position.y = charYDefault + char_position.h/2;
 }
 
 function charIsJumping(whenSwitch, yChanges, yHowMuch, backToDefault) {

@@ -158,7 +158,7 @@ export function game2_draw() {
 
     /** when character is jumping */
     if (jump && !slide) { 
-        if (jumpingImages > 5) {
+        if (jumpingImages >= 5 && !jumpEachAnimation) {
             jumpingImages = 0;
             jump = false;
         } else {
@@ -248,16 +248,8 @@ export function game2_draw() {
             }
         }
 
-
-        // endSlide = frameCount;
-
-        // if (endSlide - startSlide >= timeOfSlide) {
-        //     slide = false;
-        // } else {
-        // }
-
-        char_position.w = (char_sliding_1.width * charSlidingH)/char_sliding_1.height;
-        char_position.h = charSlidingH;
+        char_position.w = charSlidingW;
+        char_position.h = (char_sliding_3.height * charSlidingW)/char_sliding_3.width;
         char_position.x = charX + char_position.w/2;
         char_position.y = charSlidingY + char_position.h/2;
 
@@ -400,7 +392,6 @@ function charIsJumping(whenSwitch, yChanges, yHowMuch, backToDefault) {
         jumpWhenSwitchStart = frameCount;
     } else {
         jumpWhenSwitchEnd = frameCount;
-
         
         if (jumpWhenSwitchEnd - jumpWhenSwitchStart >= jumpWhenSwitch) {
             jumpEachAnimation = false;

@@ -15,9 +15,11 @@ let floors = [];
 let floor_lisbon;
 
 /** character variables */
-let charX, charY, charW, charH, charYDefault;
+let charX, charY, charW, charH, charYDefault, charYBackToDefault;
 let charSlidingH, charSlidingY;
-let char_running_R, char_running_M, char_running_L, char_sliding, char_mid_sliding, char_jumping; //images
+let char_running_R, char_running_M, char_running_L;
+let char_sliding_1, char_sliding_2, char_sliding_3;
+let char_jumping_1, char_jumping_2, char_jumping_3, char_jumping_4, char_jumping_5;
 let char_position = {
     x: 0,
     y: 0,
@@ -39,14 +41,22 @@ let typeOfObstacle = 1;
 let startJumpCounter, endJumpCounter, howLongJump, jump = false, isHovering = false, isHoveringStart, isHoveringShouldEndShort = 15, isHoveringShouldEndLong = 35, isJumpingDown = false;
 let slide = false, startSlide, endSlide, timeOfSlide = 50;
 let runSwitch = true, runWhenSwitch = 20, runWhenSwitchStart, runWhenSwitchEnd, runningImages = 0;
+let jumpSwitch = true, jumpWhenSwitch = 10, jumpWhenSwitchStart, jumpWhenSwitchEnd, jumpingImages = 0, jumpEachAnimation = false;
 
 export function game2_preload() {
     char_running_R = loadImage('../images/games/characters/char_running_R.png');
     char_running_M = loadImage('../images/games/characters/char_running_M.png');
     char_running_L = loadImage('../images/games/characters/char_running_L.png');
-    char_sliding = loadImage('../images/games/characters/char_sliding.png');
-    char_mid_sliding = loadImage('../images/games/characters/char_mid_sliding.png');
-    char_jumping = loadImage('../images/games/characters/char_jumping.png');
+
+    char_sliding_1 = loadImage('../images/games/characters/char_sliding_1.png');
+    char_sliding_2 = loadImage('../images/games/characters/char_sliding_2.png');
+    char_sliding_3 = loadImage('../images/games/characters/char_sliding_3.png');
+    
+    char_jumping_1 = loadImage('../images/games/characters/char_jumping_1.png');
+    char_jumping_2 = loadImage('../images/games/characters/char_jumping_2.png');
+    char_jumping_3 = loadImage('../images/games/characters/char_jumping_3.png');
+    char_jumping_4 = loadImage('../images/games/characters/char_jumping_4.png');
+    char_jumping_5 = loadImage('../images/games/characters/char_jumping_5.png');
 
     floor_subway = loadImage('../images/games/scenery/floor_subway.png');
     floor_subway_bg = loadImage('../images/games/scenery/floor_subway_bg.png');
@@ -145,26 +155,59 @@ export function game2_draw() {
     //************ CHARACTER */
 
     /** when character is jumping */
-
-//if para variavel jump ter imagem de mid jump, if variavel is hovering ter a imagem do actual jumping
-
-
     if (jump && !slide) { 
-        /** longest jump (activated by user pressing the spacebar long enough) */
-        if (howLongJump >= 29) {
-            charIsJumping(0.1, isHoveringShouldEndLong)
-        } else if (howLongJump >= 15 && howLongJump < 29) {
-            charIsJumping(0.1, isHoveringShouldEndShort)
+        if (jumpingImages > 5) {
+            jumpingImages = 0;
+            jump = false;
         } else {
-            charIsJumping(0.05, isHoveringShouldEndShort)
+            if (!jumpEachAnimation) {
+                jumpingImages++;
+            }
         }
 
-        image(char_jumping, /* img */
-            charX, charY, /* x, y */
-            (char_jumping.width * (charH*0.666))/char_jumping.height, charH*0.666) /* w, h */
+        
+        if (jumpingImages == 1) { /** prepares to jump */
+            charIsJumping(10, false, 0, false); //whenSwitch, yChanges, yHowMuch, backToDefault
 
-        char_position.w = (char_jumping.width * (charH*0.666))/char_jumping.height;
-        char_position.h = charH*0.666;
+            image(char_jumping_1, /* img */
+                charX, charY, /* x, y */
+                (char_jumping_1.width * charH)/char_jumping_1.height, charH) /* w, h */
+        }
+
+        else if (jumpingImages == 2) { /** jumps */
+            charIsJumping(20, true, -5, false); //whenSwitch, yChanges, yHowMuch, backToDefault
+            
+            image(char_jumping_2, /* img */
+                charX, charY, /* x, y */
+                (char_jumping_2.width * charH)/char_jumping_2.height, charH) /* w, h */
+        }
+
+        else if (jumpingImages == 3) { /** is at the highest point of jump */
+            charIsJumping(20, true, -1, false); //whenSwitch, yChanges, yHowMuch, backToDefault
+        
+            image(char_jumping_3, /* img */
+                charX, charY, /* x, y */
+                (char_jumping_3.width * charH)/char_jumping_3.height, charH) /* w, h */
+        }
+
+        else if (jumpingImages == 4) { /** goes down */
+            charIsJumping(30, true, 0, true); //whenSwitch, yChanges, yHowMuch, backToDefault
+
+            image(char_jumping_1, /* img */
+                charX, charY, /* x, y */
+                (char_jumping_1.width * charH)/char_jumping_1.height, charH) /* w, h */
+        }
+        
+        else { /** feet back on the floor, re-adjusts */
+            charIsJumping(15, false, 0, false); //whenSwitch, yChanges, yHowMuch, backToDefault
+
+            image(char_jumping_4, /* img */
+                charX, charY, /* x, y */
+                (char_jumping_4.width * charH)/char_jumping_4.height, charH) /* w, h */
+        }
+
+        char_position.w = (char_jumping_1.width * charH)/char_jumping_1.height;
+        char_position.h = charH;
         char_position.x = charX + char_position.w/2;
         char_position.y = charY + char_position.h/2;
 
@@ -175,11 +218,11 @@ export function game2_draw() {
         if (endSlide - startSlide >= timeOfSlide) {
             slide = false;
         } else {
-            image(char_sliding, /* img */
+            image(char_sliding_1, /* img */
                 charX, charSlidingY, /* x, y */
-                (char_sliding.width * charSlidingH)/char_sliding.height, charSlidingH) /* w, h */
+                (char_sliding_1.width * charSlidingH)/char_sliding_1.height, charSlidingH) /* w, h */
 
-            char_position.w = (char_sliding.width * charSlidingH)/char_sliding.height;
+            char_position.w = (char_sliding_1.width * charSlidingH)/char_sliding_1.height;
             char_position.h = charSlidingH;
             char_position.x = charX + char_position.w/2;
             char_position.y = charSlidingY + char_position.h/2;
@@ -312,28 +355,30 @@ export function game2_keyReleased() {
     }
 }
 
-function charIsJumping(heightOfJump, hoveringEnd) {
-    if (!isJumpingDown) {
-        charY -= 2;
+function charIsJumping(whenSwitch, yChanges, yHowMuch, backToDefault) {
+    if (!jumpEachAnimation) {
+        if (backToDefault) {
+            charYBackToDefault = (charYDefault - charY)/whenSwitch;
+        }
+
+        jumpEachAnimation = true;
         
-        if (charY <= charYDefault-height*heightOfJump) {
-            isHoveringStart = frameCount;
-
-            isHovering = true;
-            isJumpingDown = true;
-        }  
+        jumpWhenSwitch = whenSwitch; /** determines how long, in frames, one of the pics of the jump animation is on for */
+        jumpWhenSwitchStart = frameCount;
     } else {
-        if (isHovering) {
-            if (frameCount - isHoveringStart >= hoveringEnd) {
-                isHovering = false;
-            }
-        } else {
-            charY += 2;
+        jumpWhenSwitchEnd = frameCount;
 
-            if (charY >= charYDefault) {
-                isJumpingDown = false;
-                jump = false;
-            }
+        
+        if (jumpWhenSwitchEnd - jumpWhenSwitchStart >= jumpWhenSwitch) {
+            jumpEachAnimation = false;
+        }
+    }
+    
+    if (yChanges) {
+        if (backToDefault) {
+            charY = charY + (charYBackToDefault);
+        } else {
+            charY = charY + (yHowMuch);
         }
     }
 }
@@ -364,7 +409,7 @@ function sceneryTransition(scenery) {
 }
 
 class Floor {
-    constructor(floorX, whichScenery) { //gameSpeed, width, floorY, floorW, floorH, i, scenery
+    constructor(floorX, whichScenery) {
         this.floorX = floorX; //width + (floorW/2) totalmente gone -------- width - (floorW/2) aparece a imagem toda encostada à direita
         this.whichScenery = whichScenery;
     }
@@ -445,15 +490,15 @@ class Obstacle {
             && this.obsY - this.obsH/2 < element.y) { /** if the highest point of the obstacle is ABOVE(<) the lowest point of the character */
             //this.obsY - this.obsH < element.y + element.h) {
 
-            return false;
+            return true;
         } else if (typeOfObstacle == 2 /** obstacle that player has to roll under */
             && this.obsX - this.obsW/2 < element.x*0.9 /** if farthest point on the left of obstacle is "more to the left" than the farthest point to the right of the character */
             && this.obsX + this.obsW/2 > element.x - element.w*0.9 /** if farthest point on the right of obstacle is "more to the right" than the farthest point to the left of the character */
             && this.obsY + this.obsH/2 >= element.y - element.h) { /** if the lowest point of the obstacle is BELOW(>) the highest point of the character */
 
-            return false;
+            return true;
         } else {
-            return false
+            return false;
         }
     }
 }

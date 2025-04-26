@@ -33,16 +33,17 @@ let floorX, floorY, floorW, floorH, floorYPlacement;
 /** obstacles variables */
 let obsX, obsY, obsW, obsH; /* short obstacle on the floor */
 let tallObsX, tallObsY, tallObsW, tallObsH; /* obstacle too tall (player needs to roll) */
-let flyingObsX, flyingObsY, flyingObsW, flyingObsH; /* obstacle too tall (player needs to roll) */
 let obstacles = [];
 let typeOfObstacle = 1;
 
 /** movement keyboard variables */
-let startJumpCounter, endJumpCounter, howLongJump, jump = false, isHovering = false, isHoveringStart, isHoveringShouldEndShort = 15, isHoveringShouldEndLong = 35, isJumpingDown = false;
-let slide = false, startSlide, endSlide, timeOfSlide = 50;
-let runSwitch = true, runWhenSwitch = 20, runWhenSwitchStart, runWhenSwitchEnd, runningImages = 0;
+let jump = false;
 let jumpWhenSwitch = 10, jumpWhenSwitchStart, jumpWhenSwitchEnd, jumpingImages = 0, jumpEachAnimation = false;
-let slideSwitch = true, slideWhenSwitch = 20, slideWhenSwitchStart, slideWhenSwitchEnd, slidingImages = 0, slideEachAnimation = false;
+
+let slide = false
+let slideWhenSwitch = 20, slideWhenSwitchStart, slideWhenSwitchEnd, slidingImages = 0, slideEachAnimation = false;
+
+let runSwitch = true, runWhenSwitch = 20, runWhenSwitchStart, runWhenSwitchEnd, runningImages = 0;
 
 export function game2_preload() {
     char_running_R = loadImage('../images/games/characters/char_running_R.png');
@@ -234,24 +235,17 @@ export function game2_draw() {
 }
 
 export function game2_keyPressed() {
-    if (key === ' ') {
-        startJumpCounter = frameCount; /** keeps in mind when user first pressed the spacebar down */
-    }
+    
 }
 
 export function game2_keyReleased() {
     if (key === ' ') {
-        endJumpCounter = frameCount;
-        howLongJump = endJumpCounter - startJumpCounter; /** calculates how long the user was pressing the spacebar */
-
         jump = true;
 
         charJump();
     }
 
     if (keyCode === DOWN_ARROW) {
-        startSlide = frameCount;
-
         slide = true;
 
         charSlide();
@@ -335,9 +329,6 @@ function charSlide() {
         jumpingImages = 0;
         jump = false;
         jumpEachAnimation = false;
-
-        console.log('ai');
-        
 
         if (slidingImages >= 3 && !slideEachAnimation) {
             slidingImages = 0;

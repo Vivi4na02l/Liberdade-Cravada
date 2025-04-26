@@ -16,7 +16,7 @@ let floor_lisbon;
 
 /** character variables */
 let charX, charY, charW, charH, charYDefault, charYBackToDefault;
-let charSlidingH, charSlidingY;
+let charSlidingW, charSlidingH, charSlidingY;
 let char_running_R, char_running_M, char_running_L;
 let char_sliding_1, char_sliding_2, char_sliding_3;
 let char_jumping_1, char_jumping_2, char_jumping_3, char_jumping_4, char_jumping_5;
@@ -41,7 +41,8 @@ let typeOfObstacle = 1;
 let startJumpCounter, endJumpCounter, howLongJump, jump = false, isHovering = false, isHoveringStart, isHoveringShouldEndShort = 15, isHoveringShouldEndLong = 35, isJumpingDown = false;
 let slide = false, startSlide, endSlide, timeOfSlide = 50;
 let runSwitch = true, runWhenSwitch = 20, runWhenSwitchStart, runWhenSwitchEnd, runningImages = 0;
-let jumpSwitch = true, jumpWhenSwitch = 10, jumpWhenSwitchStart, jumpWhenSwitchEnd, jumpingImages = 0, jumpEachAnimation = false;
+let jumpWhenSwitch = 10, jumpWhenSwitchStart, jumpWhenSwitchEnd, jumpingImages = 0, jumpEachAnimation = false;
+let slideSwitch = true, slideWhenSwitch = 20, slideWhenSwitchStart, slideWhenSwitchEnd, slidingImages = 0, slideEachAnimation = false;
 
 export function game2_preload() {
     char_running_R = loadImage('../images/games/characters/char_running_R.png');
@@ -87,6 +88,7 @@ export function game2_setup() {
     charY = floorYPlacement - charH/2;
     charYDefault = charY;
 
+    charSlidingW = charW * 1.2;
     charSlidingH = charH * 0.55;
     charSlidingY = floorYPlacement - charSlidingH/2;
 
@@ -213,20 +215,51 @@ export function game2_draw() {
 
     /** when character is sliding */
     } else if (slide && !jump) {
-        endSlide = frameCount;
-
-        if (endSlide - startSlide >= timeOfSlide) {
+        if (slidingImages >= 3 && !slideEachAnimation) {
+            slidingImages = 0;
             slide = false;
         } else {
-            image(char_sliding_1, /* img */
-                charX, charSlidingY, /* x, y */
-                (char_sliding_1.width * charSlidingH)/char_sliding_1.height, charSlidingH) /* w, h */
+            if (!slideEachAnimation) {
+                slidingImages++;
+            }
 
-            char_position.w = (char_sliding_1.width * charSlidingH)/char_sliding_1.height;
-            char_position.h = charSlidingH;
-            char_position.x = charX + char_position.w/2;
-            char_position.y = charSlidingY + char_position.h/2;
+            if (slidingImages == 1) {
+                charIsSliding(10); //whenSwitch
+    
+                image(char_jumping_4, /* img */
+                    charX, charYDefault, /* x, y */
+                    (char_jumping_4.width * charH)/char_jumping_4.height, charH) /* w, h */
+            }
+    
+            else if (slidingImages == 2) {
+                charIsSliding(30); //whenSwitch
+    
+                image(char_sliding_2, /* img */
+                    charX, floorYPlacement-((char_sliding_2.height * charSlidingW)/char_sliding_2.width)/2, /* x, y */
+                    charSlidingW, (char_sliding_2.height * charSlidingW)/char_sliding_2.width) /* w, h */
+            }
+    
+            else {
+                charIsSliding(10); //whenSwitch
+    
+                image(char_sliding_3, /* img */
+                    charX, floorYPlacement-((char_sliding_3.height * charSlidingW)/char_sliding_3.width)/2, /* x, y */
+                    charSlidingW, (char_sliding_3.height * charSlidingW)/char_sliding_3.width) /* w, h */
+            }
         }
+
+
+        // endSlide = frameCount;
+
+        // if (endSlide - startSlide >= timeOfSlide) {
+        //     slide = false;
+        // } else {
+        // }
+
+        char_position.w = (char_sliding_1.width * charSlidingH)/char_sliding_1.height;
+        char_position.h = charSlidingH;
+        char_position.x = charX + char_position.w/2;
+        char_position.y = charSlidingY + char_position.h/2;
 
     /** when character is just running (default) */
     } else {
@@ -379,6 +412,21 @@ function charIsJumping(whenSwitch, yChanges, yHowMuch, backToDefault) {
             charY = charY + (charYBackToDefault);
         } else {
             charY = charY + (yHowMuch);
+        }
+    }
+}
+
+function charIsSliding(whenSwitch) {
+    if (!slideEachAnimation) {
+        slideEachAnimation = true;
+        
+        slideWhenSwitch = whenSwitch; /** determines how long, in frames, one of the pics of the slide animation is on for */
+        slideWhenSwitchStart = frameCount;
+    } else {
+        slideWhenSwitchEnd = frameCount;
+
+        if (slideWhenSwitchEnd - slideWhenSwitchStart >= slideWhenSwitch) {
+            slideEachAnimation = false;
         }
     }
 }

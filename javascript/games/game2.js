@@ -20,6 +20,9 @@ let charSlidingW, charSlidingH, charSlidingY;
 let char_running_R, char_running_M, char_running_L;
 let char_sliding_1, char_sliding_2, char_sliding_3;
 let char_jumping_1, char_jumping_2, char_jumping_3, char_jumping_4, char_jumping_5;
+let char_tripping_forward_1, char_tripping_forward_2, char_tripping_forward_3;
+let char_tripping_backwards_1, char_tripping_backwards_2, char_tripping_backwards_3;
+
 let char_position = {
     x: 0,
     y: 0,
@@ -34,7 +37,12 @@ let floorX, floorY, floorW, floorH, floorYPlacement;
 let obsX, obsY, obsW, obsH; /* short obstacle on the floor */
 let tallObsX, tallObsY, tallObsW, tallObsH; /* obstacle too tall (player needs to roll) */
 let obstacles = [];
-let typeOfObstacle = 1;
+let typeOfObstacle = 1, typeOfObstacleHit;
+
+let fail = false
+let obstacleHit, hitWhenSwitch, hitObstacleStart, hitObstacleEnd, hitObstacleSwitch;
+let failingImages = 0, failEachAnimation = false, anglePerFrame, totalAngle = 0, translateXPerFrame, translateYPerFrame;
+let char_fail //* ARRAY WITH IMAGES OF THE CHARACTER FALLING */
 
 /** movement keyboard variables */
 let jump = false;
@@ -59,6 +67,13 @@ export function game2_preload() {
     char_jumping_3 = loadImage('../images/games/characters/char_jumping_3.png');
     char_jumping_4 = loadImage('../images/games/characters/char_jumping_4.png');
     char_jumping_5 = loadImage('../images/games/characters/char_jumping_5.png');
+
+    char_tripping_forward_1 = loadImage('../images/games/characters/char_tripping_forward_1.png');
+    char_tripping_forward_2 = loadImage('../images/games/characters/char_tripping_forward_2.png');
+    char_tripping_forward_3 = loadImage('../images/games/characters/char_tripping_forward_3.png');
+    char_tripping_backwards_1 = loadImage('../images/games/characters/char_tripping_backwards_1.png');
+    char_tripping_backwards_2 = loadImage('../images/games/characters/char_tripping_backwards_2.png');
+    char_tripping_backwards_3 = loadImage('../images/games/characters/char_tripping_backwards_3.png');
 
     floor_subway = loadImage('../images/games/scenery/floor_subway.png');
     floor_subway_bg = loadImage('../images/games/scenery/floor_subway_bg.png');
@@ -109,6 +124,12 @@ export function game2_setup() {
     subwayX = width+subwayW/2;
     subwayY = height-(subwayH)/2;
 
+    //* GAME OVER
+    char_fail = {
+        "forward": [char_tripping_forward_1, char_tripping_forward_2, char_tripping_forward_3],
+        "backwards": [char_tripping_backwards_1, char_tripping_backwards_2, char_tripping_backwards_3]
+    }
+
     imageMode(CENTER);
     rectMode(CENTER);
 }
@@ -156,15 +177,24 @@ export function game2_draw() {
 
 
     //************ CHARACTER */
-    /** when character is jumping */
-    charJump();
-    
-    /** when character is sliding */
-    charSlide();
-    
-    /** when character is just running (default) */
-    if (!jump && !slide) {
-        charRun();
+    if (!gameOver) {
+        /** when character is jumping */
+        charJump();
+        /** when character is sliding */
+        charSlide();
+        
+        /** when character is just running (default) */
+        if (!jump && !slide) {
+            charRun();
+        }
+
+    /** character falling/tripping down */
+    } else {
+        if (obstacleHit == 1) { /* obstacle to jump over (character trips if failed to jump) */
+            charFails(1);
+        } else { /* obstacle to roll under (character falls backwards if failed to roll) */
+            charFails(-1);
+        }
     }
 
     //************ OBSTACLES */
@@ -453,6 +483,94 @@ function charIsSliding(whenSwitch) {
     }
 }
 
+/**
+ * function that makes the character fall/trip depending on the object hit
+ */
+function charFails(typeOfFall) {
+    if (failingImages < 3) {
+        if (!failEachAnimation) {
+            failingImages++;
+        }
+    }
+
+    let arrayFallingImage;
+    if (typeOfFall == 1) {
+        arrayFallingImage = char_fail.forward;
+    } else {
+        arrayFallingImage = char_fail.backwards;
+    }
+    
+    if (failingImages == 1) { /** initial tripping/bumping head */
+        let finalY = charY+charH/2-((char_tripping_forward_1.width * charH)/char_tripping_forward_1.height)/2
+        charIsFailing(arrayFallingImage[0], 20, true, 30, 2, typeOfFall, finalY);
+
+    } else if (failingImages == 2) { /** mid fall */
+        let finalY = charY+charH/2-((char_tripping_forward_2.width * charH)/char_tripping_forward_2.height)/2
+        charIsFailing(arrayFallingImage[1], 15, true, 60, 4, typeOfFall, finalY);
+
+    } else { /** laying on the floor */
+        let finalY = charY+charH/2-((char_tripping_forward_3.width * charH)/char_tripping_forward_3.height)/2
+        charIsFailing(arrayFallingImage[2], 10, false, 0, 0, typeOfFall, finalY);
+    }
+}
+
+/**
+ * Function responsible for making the character actually visibly fall
+ * @param {*} failImage the image of the animation that's going to be displayed
+ * @param {*} whenSwitch how many frames the image "failImage" is on screen for
+ * @param {*} angleChanges either TRUE or FALSE. If true, it means that the image "failImage" must rotate
+ * @param {*} angleHowMuch how many degrees is the image rotating to simulate a fall
+ * @param {*} speedX how far ahead, in X, each image moves (since the scenery stops moving, the character as to be the one moving instead to give the feeling of movement)
+ * @param {*} directionFall either "1" or "-1". If "1", the character rotates moves, in X, to the right
+ * @param {*} finalY calculated through the height and width of the image, this variable is where the final Y of the character must be on the final frame 
+ */
+function charIsFailing(failImage, whenSwitch, angleChanges, angleHowMuch, speedX, directionFall, finalY) {
+    if (!failEachAnimation) {
+        failEachAnimation = true;
+        
+        hitWhenSwitch = whenSwitch; /** determines how long, in frames, one of the pics of the jump animation is on for */
+        hitObstacleStart = frameCount;
+
+        if (angleChanges) {
+            anglePerFrame = angleHowMuch / whenSwitch; /** having in mind the total amount of degrees chosen for the image to rotate, "anglePerFrame" determines how many degrees per frame are needed to achieve such total amount of degrees */
+
+        }
+    } else {
+        hitObstacleEnd = frameCount;
+        
+        if (hitObstacleEnd - hitObstacleStart >= hitWhenSwitch) {
+            failEachAnimation = false;
+        }
+    }
+
+    if (angleChanges) {
+        totalAngle += anglePerFrame * directionFall;
+
+        if (directionFall == 1) {
+            charX += (5+speedX) * gameSpeed * directionFall; /** since environment stops moving, gives the movement that scenery had to the character instead, with extra speed (speedX) to make it dramatic */
+        }
+        
+        push();
+        angleMode(DEGREES);
+        translate(charX, charY);
+        rotate(totalAngle);
+        image(failImage, /* img */
+            0, 0, /* x, y */
+            (failImage.width * charH)/failImage.height, charH) /* w, h */ 
+        pop();
+
+    } else {
+        push();
+        angleMode(DEGREES);
+        translate(charX, finalY);
+        rotate(90 * directionFall);
+        image(failImage, /* img */
+            0, 0, /* x, y */
+            (failImage.width * charH)/failImage.height, charH) /* w, h */ 
+        pop();
+    }
+}
+
 function sceneryTransition(scenery) {
     if (scenery == "subway") {
         if (subwayX <= width*0.4) { /** when the middle of the subway reaches 60% of the screen */
@@ -543,7 +661,7 @@ class Obstacle {
         /* OBSTACLE AND CHARACTER DEBUG HELP */
         // fill("#FF0000")
         // rect(this.obsX-this.obsW/2, this.obsY-this.obsH/2, 10, 10)
-        // rect(element.x, element.y, 10, 10)
+        // rect(element.x-element.w/2, element.y, 10, 10)
 
     }
     
@@ -560,11 +678,15 @@ class Obstacle {
             && this.obsY - this.obsH/2 < element.y) { /** if the highest point of the obstacle is ABOVE(<) the lowest point of the character */
             //this.obsY - this.obsH < element.y + element.h) {
 
+            obstacleHit = 1;
+
             return true;
         } else if (typeOfObstacle == 2 /** obstacle that player has to roll under */
             && this.obsX - this.obsW/2 < element.x*0.9 /** if farthest point on the left of obstacle is "more to the left" than the farthest point to the right of the character */
             && this.obsX + this.obsW/2 > element.x - element.w*0.9 /** if farthest point on the right of obstacle is "more to the right" than the farthest point to the left of the character */
             && this.obsY + this.obsH/2 >= element.y - element.h) { /** if the lowest point of the obstacle is BELOW(>) the highest point of the character */
+
+            obstacleHit = 2;
 
             return true;
         } else {

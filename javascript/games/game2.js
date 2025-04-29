@@ -7,9 +7,14 @@ let fade = 0, fadeIn = true;
 let backgroundW, backgroundH, backgroundX, backgroundY;
 
 /** cutscene */
+let fadeTxtStartSwitch = false, fadeTxtStart = 255, gameStarted = false;
 let cutscene = true, switchIdle = true;
 let npc1, npc1_idle_1, npc1_idle_2, npc2, npc2_idle_back_1, npc2_idle_back_2, npc3, npc3_idle_back_1, npc3_idle_back_2;
+let npcsFade = 255, npcsFadePerFrame;
 let charIdle, char_idle_1, char_idle_2;
+let pide_running_L, pide_running_M, pide_running_R;
+let pideRun, pideX, charCutsceneX;
+let cutsceneStart, cutsceneEnd, cutsceneDuration = 100, endInitialCutscene = false;
 
 /** transitions between scenarios */
 let subwayX, subwayY, subwayW, subwayH;
@@ -23,6 +28,7 @@ let floor_lisbon;
 let charX, charY, charW, charH, charYDefault, charYBackToDefault;
 let charSlidingW, charSlidingH, charSlidingY;
 let char_running_R, char_running_M, char_running_L;
+let charRun;
 let char_sliding_1, char_sliding_2, char_sliding_3;
 let char_jumping_1, char_jumping_2, char_jumping_3, char_jumping_4, char_jumping_5;
 let char_tripping_forward_1, char_tripping_forward_2, char_tripping_forward_3;
@@ -59,6 +65,7 @@ let slideWhenSwitch = 20, slideWhenSwitchStart, slideWhenSwitchEnd, slidingImage
 let runSwitch = true, runWhenSwitch = 20, runWhenSwitchStart, runWhenSwitchEnd, runningImages = 0;
 
 export function game2_preload() {
+    /** CUTSCENE */
     npc1_idle_1 = loadImage('../images/games/characters/npc1_idle_1.png');
     npc1_idle_2 = loadImage('../images/games/characters/npc1_idle_2.png');
     npc2_idle_back_1 = loadImage('../images/games/characters/npc2_idle_back_1.png');
@@ -74,9 +81,17 @@ export function game2_preload() {
     npc3 = [npc3_idle_back_1, npc3_idle_back_2, true];
     charIdle = [char_idle_1, char_idle_2, true];
 
+    pide_running_R = loadImage('../images/games/characters/pide_running_R.png');
+    pide_running_M = loadImage('../images/games/characters/pide_running_M.png');
+    pide_running_L = loadImage('../images/games/characters/pide_running_L.png');
+
+    pideRun = [pide_running_L, pide_running_M, pide_running_R]
+
     char_running_R = loadImage('../images/games/characters/char_running_R.png');
     char_running_M = loadImage('../images/games/characters/char_running_M.png');
     char_running_L = loadImage('../images/games/characters/char_running_L.png');
+
+    charRun = [char_running_L, char_running_M, char_running_R];
 
     char_sliding_1 = loadImage('../images/games/characters/char_sliding_1.png');
     char_sliding_2 = loadImage('../images/games/characters/char_sliding_2.png');
@@ -127,6 +142,10 @@ export function game2_setup() {
     charSlidingW = charW * 1.2;
     charSlidingH = charH * 0.55;
     charSlidingY = floorYPlacement - charSlidingH/2;
+
+    //* pide
+    pideX = -(pide_running_R.width * charH)/pide_running_R.height;
+    charCutsceneX = charX + (width/3);
 
     //* obstacle
     obsW = width*0.08;
@@ -206,7 +225,7 @@ export function game2_draw() {
             
             /** when character is just running (default) */
             if (!jump && !slide) {
-                charRun();
+                animationRun(charRun, true, charX);
             }
     
         /** character falling/tripping down */
@@ -221,22 +240,77 @@ export function game2_draw() {
 
     //************ INITIAL CUTSCENE */
     if (cutscene) {
-        /** character */
-        openingCutscene(charIdle, charX, charYDefault, 1, 40); //charImage, posX, posY, facingDirection, frameCycle
+        if (!gameStarted) {
+            /** character */
+            openingCutscene(charIdle, charCutsceneX, charYDefault, 1, 40, 255); //charImage, posX, posY, facingDirection, frameCycle
 
-        /** npc 1 */
-        openingCutscene(npc1, charX+charW, charYDefault, -1, 45); //charImage, posX, posY, facingDirection, frameCycle
+            /** npc 1 */
+            openingCutscene(npc1, charX+charW+width/3, charYDefault, -1, 45, 255); //charImage, posX, posY, facingDirection, frameCycle
 
-        /** npc 2 */
-        openingCutscene(npc2, charX, charYDefault + charH/2, 1, 42); //charImage, posX, posY, facingDirection, frameCycle
+            /** npc 2 */
+            openingCutscene(npc2, charX+width/3, charYDefault + charH/2, 1, 42, 255); //charImage, posX, posY, facingDirection, frameCycle
 
-        /** npc 3 */
-        openingCutscene(npc3, charX + 3*(charW/4), charYDefault + charH/2, -1, 47); //charImage, posX, posY, facingDirection, frameCycle
+            /** npc 3 */
+            openingCutscene(npc3, charX + 3*(charW/4)+width/3, charYDefault + charH/2, -1, 47, 255); //charImage, posX, posY, facingDirection, frameCycle
+
+            /** TEXTO */
+            if (frameCount % 100 == 0) {
+                fadeTxtStartSwitch = !fadeTxtStartSwitch;
+            }
+
+            if (fadeTxtStartSwitch) {
+                fadeTxtStart += 1.5;
+            } else {
+                fadeTxtStart -= 1.5;
+            }
+
+            textSize(32);
+            fill(255, 255, 255, fadeTxtStart)
+            stroke(0, 0, 0, fadeTxtStart);
+            strokeWeight(3);
+            textAlign(CENTER, CENTER)
+            text("Clique para começar", width/2, height*0.7);
+        }
+
+        else {
+            if (!endInitialCutscene) {
+                cutsceneRun(width/3, 1, cutsceneStart, true); /** responsible for the movement of the character/pide */ //finalX, directionMovement, cutsceneStart, isPide
+                animationRun(pideRun, false, pideX); /** responsible for the run animation of the character/pide */
+
+                /** character */
+                openingCutscene(charIdle, charCutsceneX, charYDefault, -1, 40, 255); //charImage, posX, posY, facingDirection, frameCycle
+            } else {
+                //* pide */
+                cutsceneRun(width/3, -1, cutsceneStart, true); /** responsible for the movement of the character/pide */
+                animationRun(pideRun, false, pideX); /** responsible for the run animation of the character/pide */
+                
+                //* char */
+                cutsceneRun(width/3, -1, cutsceneStart, false); /** responsible for the movement of the character/pide */
+                animationRun(charRun, false, charCutsceneX); /** responsible for the run animation of the character/pide */
+
+                /*************+ MAKE THE GAME STARST FOR THE LOVE OF GOD POELA+PDZPLEASE */
+            }
+
+            npcsFadePerFrame = 255/25;
+
+            if (frameCount - cutsceneStart > 25) {
+                npcsFade -= npcsFadePerFrame;
+            }
+
+            /** npc 1 */
+            openingCutscene(npc1, charX+charW+width/3, charYDefault, -1, 45, npcsFade); //charImage, posX, posY, facingDirection, frameCycle
+
+            /** npc 2 */
+            openingCutscene(npc2, charX+width/3, charYDefault + charH/2, 1, 42, npcsFade); //charImage, posX, posY, facingDirection, frameCycle
+
+            /** npc 3 */
+            openingCutscene(npc3, charX + 3*(charW/4)+width/3, charYDefault + charH/2, -1, 47, npcsFade); //charImage, posX, posY, facingDirection, frameCycle
+        }
     }
 
     //************ OBSTACLES */
     /** spawns the first obstacle */
-    if (!cutscene && frameCount == 10) {
+    if (!cutscene && points == 10) {
         typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2,3 */ //* MUDAR PARA 33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333 */
 
         if (typeOfObstacle == 1) {
@@ -271,7 +345,6 @@ export function game2_draw() {
 
 
     //************ TRANSITIONS */
-    
     if (((backgroundX + backgroundW)-width*0.8) <= width) {
         newScenery = sceneryTransition(scenery);
 
@@ -291,7 +364,7 @@ export function game2_draw() {
 
     //************ POINTS */
     if (!cutscene && !gameOver) {
-        points = frameCount;
+        points++;
     }
 
     if (!cutscene) {
@@ -301,6 +374,16 @@ export function game2_draw() {
         strokeWeight(4);
         textAlign(CENTER, CENTER)
         text(points, width/2, height*0.05);
+    }
+}
+
+export function game2_mouseClicked() {
+    if (mouseX > 0 && mouseX < width 
+        && mouseY > 0 && mouseY < height
+        && cutscene && !gameStarted) {
+
+        gameStarted = true;
+        cutsceneStart = frameCount;
     }
 }
 
@@ -322,7 +405,7 @@ export function game2_keyReleased() {
     }
 }
 
-function openingCutscene(charImage, posX, posY, facingDirection, frameCycle) {
+function openingCutscene(charImage, posX, posY, facingDirection, frameCycle, alpha) {
     if (frameCount % frameCycle == 0) {
         charImage[2] = !charImage[2];
     }
@@ -331,6 +414,7 @@ function openingCutscene(charImage, posX, posY, facingDirection, frameCycle) {
         push();
         translate(posX, posY)
         scale(facingDirection,1);
+        tint(255, alpha);
         image(charImage[0], /* img */
             0, 0, /* x, y */
             (charImage[0].width * charH)/charImage[0].height, charH) /* w, h */
@@ -339,10 +423,32 @@ function openingCutscene(charImage, posX, posY, facingDirection, frameCycle) {
         push();
         translate(posX, posY)
         scale(facingDirection,1);
+        tint(255, alpha);
         image(charImage[1], /* img */
             0, 0, /* x, y */
             (charImage[1].width * charH)/charImage[1].height, charH) /* w, h */
         pop();
+    }
+}
+
+function cutsceneRun(finalX, directionMovement, start, isPide) {
+    let xPerFrame = finalX / cutsceneDuration;
+    cutsceneEnd = frameCount;
+
+    if (cutsceneEnd - start < cutsceneDuration) {
+        if (isPide) {            
+            pideX += xPerFrame * directionMovement;
+        } else {
+            charCutsceneX += xPerFrame * directionMovement;
+        }
+    } else {
+        if (!endInitialCutscene) {
+            cutsceneStart = frameCount;
+        } else {
+            cutscene = false;
+        }
+
+        endInitialCutscene = true;
     }
 }
 
@@ -467,7 +573,7 @@ function charSlide() {
 /**
  * function that makes the character run
  */
-function charRun() {
+function animationRun(charImage, isChar, posX) {
     if (runSwitch) {
         runSwitch = false;
         runWhenSwitchStart = frameCount;    
@@ -486,23 +592,25 @@ function charRun() {
     }
 
     if (runningImages == 0) {
-        image(char_running_R, /* img */
-            charX, charYDefault, /* x, y */
-            (char_running_R.width * charH)/char_running_R.height, charH) /* w, h */
+        image(charImage[0], /* img */
+            posX, charYDefault, /* x, y */
+            (charImage[0].width * charH)/charImage[0].height, charH) /* w, h */
     } else if (runningImages == 1 || runningImages == 3) {
-        image(char_running_M, /* img */
-            charX, charYDefault, /* x, y */
-            (char_running_M.width * charH)/char_running_M.height, charH) /* w, h */
+        image(charImage[1], /* img */
+            posX, charYDefault, /* x, y */
+            (charImage[1].width * charH)/charImage[1].height, charH) /* w, h */
     } else {
-        image(char_running_L, /* img */
-            charX, charYDefault, /* x, y */
-            (char_running_L.width * charH)/char_running_L.height, charH) /* w, h */
+        image(charImage[2], /* img */
+            posX, charYDefault, /* x, y */
+            (charImage[2].width * charH)/charImage[2].height, charH) /* w, h */
     }
 
-    char_position.w = (char_running_M.width * charH)/char_running_M.height;
-    char_position.h = charH;
-    char_position.x = charX + char_position.w/2;
-    char_position.y = charYDefault + char_position.h/2;
+    if (isChar) {
+        char_position.w = (char_running_M.width * charH)/char_running_M.height;
+        char_position.h = charH;
+        char_position.x = charX + char_position.w/2;
+        char_position.y = charYDefault + char_position.h/2;
+    }
 }
 
 function charIsJumping(whenSwitch, yChanges, yHowMuch, backToDefault) {

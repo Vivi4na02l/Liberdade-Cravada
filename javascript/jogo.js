@@ -14,6 +14,7 @@ import {
     game2_draw,
     game2_keyPressed,
     game2_keyReleased,
+    game2_mouseClicked,
 } from './games/game2.js';
 
 //* PREVENTS PAGE SCROLLING WHEN SPACEBAR OR ANY ARROW KEY IS PRESSED */
@@ -80,8 +81,15 @@ function keyReleased() {
     }
 }
 
+function mouseClicked() {
+    if (game == "game2") {
+        game2_mouseClicked();
+    }
+}
+
 window.preload = preload
 window.setup = setup;
 window.draw = draw;
 window.keyPressed = keyPressed;
 window.keyReleased = keyReleased;
+window.mouseClicked = mouseClicked;

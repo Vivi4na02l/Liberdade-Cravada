@@ -1,10 +1,11 @@
 /** game rules and scenery variables */
-let gameOver = false;
+let gameOver = false, restart = false;
 let points = 0;
 let gameSpeed = 1;
 let scenery = "subway", newScenery = "default";
 let fade = 0, fadeIn = true;
 let backgroundW, backgroundH, backgroundX, backgroundY;
+let gameOverStart;
 
 /** cutscene */
 let fadeTxtStartSwitch = false, fadeTxtStart = 255, gameStarted = false;
@@ -12,8 +13,8 @@ let cutscene = true, switchIdle = true;
 let npc1, npc1_idle_1, npc1_idle_2, npc2, npc2_idle_back_1, npc2_idle_back_2, npc3, npc3_idle_back_1, npc3_idle_back_2;
 let npcsFade = 255, npcsFadePerFrame;
 let charIdle, char_idle_1, char_idle_2;
-let pide_running_L, pide_running_M, pide_running_R;
-let pideRun, pideX, charCutsceneX;
+let pide_running_L, pide_running_M, pide_running_R, pide_idle_1, pide_idle_2;
+let pideIdle, pideRun, pideX, charCutsceneX;
 let cutsceneStart, cutsceneEnd, cutsceneDuration = 100, endInitialCutscene = false;
 
 /** transitions between scenarios */
@@ -84,8 +85,10 @@ export function game2_preload() {
     pide_running_R = loadImage('../images/games/characters/pide_running_R.png');
     pide_running_M = loadImage('../images/games/characters/pide_running_M.png');
     pide_running_L = loadImage('../images/games/characters/pide_running_L.png');
-
-    pideRun = [pide_running_L, pide_running_M, pide_running_R]
+    pide_idle_1 = loadImage('../images/games/characters/pide_idle_1.png');
+    pide_idle_2 = loadImage('../images/games/characters/pide_idle_2.png');
+    pideRun = [pide_running_L, pide_running_M, pide_running_R];
+    pideIdle = [pide_idle_1, pide_idle_2];
 
     char_running_R = loadImage('../images/games/characters/char_running_R.png');
     char_running_M = loadImage('../images/games/characters/char_running_M.png');
@@ -228,13 +231,33 @@ export function game2_draw() {
                 animationRun(charRun, true, charX);
             }
     
+            gameOverStart = frameCount;
+        //************ GAMEOVER */
         /** character falling/tripping down */
         } else {
+            if (frameCount - gameOverStart <= 100) {
+                cutsceneRun(width/3, 1, gameOverStart, true);
+                animationRun(pideRun, false, pideX);
+            } else {
+                
+                /** npc 1 */
+                if (obstacleHit == 1) {
+                    openingCutscene(pideIdle, pideX, charYDefault, 1, 45, 255); //charImage, posX, posY, facingDirection, frameCycle
+                } else {
+                    openingCutscene(pideIdle, pideX, charYDefault, -1, 45, 255); //charImage, posX, posY, facingDirection, frameCycle
+                }
+            }
+            
             if (obstacleHit == 1) { /* obstacle to jump over (character trips if failed to jump) */
                 charFails(1);
             } else { /* obstacle to roll under (character falls backwards if failed to roll) */
                 charFails(-1);
             }
+
+            if (frameCount - gameOverStart > 200) {
+                txtBtnClick("Clique para recomeçar");
+            }
+            restart = true;
         }
     }
 
@@ -254,22 +277,7 @@ export function game2_draw() {
             openingCutscene(npc3, charX + 3*(charW/4)+width/3, charYDefault + charH/2, -1, 47, 255); //charImage, posX, posY, facingDirection, frameCycle
 
             /** TEXTO */
-            if (frameCount % 100 == 0) {
-                fadeTxtStartSwitch = !fadeTxtStartSwitch;
-            }
-
-            if (fadeTxtStartSwitch) {
-                fadeTxtStart += 1.5;
-            } else {
-                fadeTxtStart -= 1.5;
-            }
-
-            textSize(32);
-            fill(255, 255, 255, fadeTxtStart)
-            stroke(0, 0, 0, fadeTxtStart);
-            strokeWeight(3);
-            textAlign(CENTER, CENTER)
-            text("Clique para começar", width/2, height*0.7);
+            txtBtnClick("Clique para começar");
         }
 
         else {
@@ -287,8 +295,6 @@ export function game2_draw() {
                 //* char */
                 cutsceneRun(width/3, -1, cutsceneStart, false); /** responsible for the movement of the character/pide */
                 animationRun(charRun, false, charCutsceneX); /** responsible for the run animation of the character/pide */
-
-                /*************+ MAKE THE GAME STARST FOR THE LOVE OF GOD POELA+PDZPLEASE */
             }
 
             npcsFadePerFrame = 255/25;
@@ -385,6 +391,27 @@ export function game2_mouseClicked() {
         gameStarted = true;
         cutsceneStart = frameCount;
     }
+    
+    if (mouseX > 0 && mouseX < width 
+        && mouseY > 0 && mouseY < height
+        && restart) {
+
+        restart = false;
+        cutscene = true;
+        gameStarted = false;
+        endInitialCutscene = false;
+
+        failingImages = 0;
+        failEachAnimation = false;
+
+        points = 0;
+        gameOver = false;
+
+        charX = width*0.2;
+        pideX = -(pide_running_R.width * charH)/pide_running_R.height;
+        charCutsceneX = charX + (width/3);
+        obstacles = [];
+    }
 }
 
 export function game2_keyPressed() {
@@ -403,6 +430,26 @@ export function game2_keyReleased() {
 
         charSlide();
     }
+}
+
+function txtBtnClick(sentence) {
+    /** TEXTO */
+    if (frameCount % 100 == 0) {
+        fadeTxtStartSwitch = !fadeTxtStartSwitch;
+    }
+
+    if (fadeTxtStartSwitch) {
+        fadeTxtStart += 1.5;
+    } else {
+        fadeTxtStart -= 1.5;
+    }
+
+    textSize(32);
+    fill(255, 255, 255, fadeTxtStart)
+    stroke(0, 0, 0, fadeTxtStart);
+    strokeWeight(3);
+    textAlign(CENTER, CENTER)
+    text(sentence, width/2, height*0.7);
 }
 
 function openingCutscene(charImage, posX, posY, facingDirection, frameCycle, alpha) {
@@ -431,6 +478,13 @@ function openingCutscene(charImage, posX, posY, facingDirection, frameCycle, alp
     }
 }
 
+/**
+ * responsible for the movement of the character/pide in the cutscenes
+ * @param {*} finalX where you want the image to go to by the end of the timer
+ * @param {*} directionMovement if it's moving to the right or left
+ * @param {*} start the first value of frameCount registered for the timer
+ * @param {*} isPide if the image is the image associated to PIDE
+ */
 function cutsceneRun(finalX, directionMovement, start, isPide) {
     let xPerFrame = finalX / cutsceneDuration;
     cutsceneEnd = frameCount;
@@ -571,7 +625,10 @@ function charSlide() {
 }
 
 /**
- * function that makes the character run
+ * responsible for the run animation of the character (in the initial cutscene it is ALSO responsible for the pide's run animation)
+ * @param {*} charImage image that's receiving the run animation (either character or pide)
+ * @param {*} isChar either TRUE or FALSE. True if the image is of the character
+ * @param {*} posX which coordinate of X is the image positioned at
  */
 function animationRun(charImage, isChar, posX) {
     if (runSwitch) {

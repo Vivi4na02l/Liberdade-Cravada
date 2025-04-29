@@ -6,6 +6,11 @@ let scenery = "subway", newScenery = "default";
 let fade = 0, fadeIn = true;
 let backgroundW, backgroundH, backgroundX, backgroundY;
 
+/** cutscene */
+let cutscene = true, switchIdle = true;
+let npc1, npc1_idle_1, npc1_idle_2, npc2, npc2_idle_back_1, npc2_idle_back_2, npc3, npc3_idle_back_1, npc3_idle_back_2;
+let charIdle, char_idle_1, char_idle_2;
+
 /** transitions between scenarios */
 let subwayX, subwayY, subwayW, subwayH;
 
@@ -54,6 +59,21 @@ let slideWhenSwitch = 20, slideWhenSwitchStart, slideWhenSwitchEnd, slidingImage
 let runSwitch = true, runWhenSwitch = 20, runWhenSwitchStart, runWhenSwitchEnd, runningImages = 0;
 
 export function game2_preload() {
+    npc1_idle_1 = loadImage('../images/games/characters/npc1_idle_1.png');
+    npc1_idle_2 = loadImage('../images/games/characters/npc1_idle_2.png');
+    npc2_idle_back_1 = loadImage('../images/games/characters/npc2_idle_back_1.png');
+    npc2_idle_back_2 = loadImage('../images/games/characters/npc2_idle_back_2.png');
+    npc3_idle_back_1 = loadImage('../images/games/characters/npc3_idle_back_1.png');
+    npc3_idle_back_2 = loadImage('../images/games/characters/npc3_idle_back_2.png');
+
+    char_idle_1 = loadImage('../images/games/characters/char_idle_1.png');
+    char_idle_2 = loadImage('../images/games/characters/char_idle_2.png');
+
+    npc1 = [npc1_idle_1, npc1_idle_2, true];
+    npc2 = [npc2_idle_back_1, npc2_idle_back_2, true];
+    npc3 = [npc3_idle_back_1, npc3_idle_back_2, true];
+    charIdle = [char_idle_1, char_idle_2, true];
+
     char_running_R = loadImage('../images/games/characters/char_running_R.png');
     char_running_M = loadImage('../images/games/characters/char_running_M.png');
     char_running_L = loadImage('../images/games/characters/char_running_L.png');
@@ -136,10 +156,10 @@ export function game2_setup() {
 
 export function game2_draw() {
     noStroke();
-    background('#aaffff');
+    background('#aaffff');    
 
     //************ MOVEMENT and SCENERY */
-    if (!gameOver) {
+    if (!cutscene && !gameOver) {
         gameSpeed += 0.0001;
         backgroundX -= 0.25 * gameSpeed;
     }
@@ -163,7 +183,7 @@ export function game2_draw() {
     }
     
     for (let i = floors.length - 1; i >= 0; i--) {
-        if (!gameOver) {
+        if (!cutscene && !gameOver) {
             floors[i].update();
         }
         floors[i].display();
@@ -177,29 +197,46 @@ export function game2_draw() {
 
 
     //************ CHARACTER */
-    if (!gameOver) {
-        /** when character is jumping */
-        charJump();
-        /** when character is sliding */
-        charSlide();
-        
-        /** when character is just running (default) */
-        if (!jump && !slide) {
-            charRun();
+    if (!cutscene) {
+        if (!gameOver) {
+            /** when character is jumping */
+            charJump();
+            /** when character is sliding */
+            charSlide();
+            
+            /** when character is just running (default) */
+            if (!jump && !slide) {
+                charRun();
+            }
+    
+        /** character falling/tripping down */
+        } else {
+            if (obstacleHit == 1) { /* obstacle to jump over (character trips if failed to jump) */
+                charFails(1);
+            } else { /* obstacle to roll under (character falls backwards if failed to roll) */
+                charFails(-1);
+            }
         }
+    }
 
-    /** character falling/tripping down */
-    } else {
-        if (obstacleHit == 1) { /* obstacle to jump over (character trips if failed to jump) */
-            charFails(1);
-        } else { /* obstacle to roll under (character falls backwards if failed to roll) */
-            charFails(-1);
-        }
+    //************ INITIAL CUTSCENE */
+    if (cutscene) {
+        /** character */
+        openingCutscene(charIdle, charX, charYDefault, 1, 40); //charImage, posX, posY, facingDirection, frameCycle
+
+        /** npc 1 */
+        openingCutscene(npc1, charX+charW, charYDefault, -1, 45); //charImage, posX, posY, facingDirection, frameCycle
+
+        /** npc 2 */
+        openingCutscene(npc2, charX, charYDefault + charH/2, 1, 42); //charImage, posX, posY, facingDirection, frameCycle
+
+        /** npc 3 */
+        openingCutscene(npc3, charX + 3*(charW/4), charYDefault + charH/2, -1, 47); //charImage, posX, posY, facingDirection, frameCycle
     }
 
     //************ OBSTACLES */
     /** spawns the first obstacle */
-    if (frameCount == 10) {
+    if (!cutscene && frameCount == 10) {
         typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2,3 */ //* MUDAR PARA 33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333 */
 
         if (typeOfObstacle == 1) {
@@ -253,15 +290,18 @@ export function game2_draw() {
     }
 
     //************ POINTS */
-    if (!gameOver) {
+    if (!cutscene && !gameOver) {
         points = frameCount;
     }
-    textSize(32);
-    fill(255);
-    stroke(0);
-    strokeWeight(4);
-    textAlign(CENTER, CENTER)
-    text(points, width/2, height*0.05);
+
+    if (!cutscene) {
+        textSize(32);
+        fill(255);
+        stroke(0);
+        strokeWeight(4);
+        textAlign(CENTER, CENTER)
+        text(points, width/2, height*0.05);
+    }
 }
 
 export function game2_keyPressed() {
@@ -279,6 +319,30 @@ export function game2_keyReleased() {
         slide = true;
 
         charSlide();
+    }
+}
+
+function openingCutscene(charImage, posX, posY, facingDirection, frameCycle) {
+    if (frameCount % frameCycle == 0) {
+        charImage[2] = !charImage[2];
+    }
+
+    if (charImage[2]) {
+        push();
+        translate(posX, posY)
+        scale(facingDirection,1);
+        image(charImage[0], /* img */
+            0, 0, /* x, y */
+            (charImage[0].width * charH)/charImage[0].height, charH) /* w, h */
+        pop();
+    } else {
+        push();
+        translate(posX, posY)
+        scale(facingDirection,1);
+        image(charImage[1], /* img */
+            0, 0, /* x, y */
+            (charImage[1].width * charH)/charImage[1].height, charH) /* w, h */
+        pop();
     }
 }
 

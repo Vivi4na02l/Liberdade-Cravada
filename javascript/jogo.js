@@ -17,6 +17,15 @@ import {
     game2_mouseClicked,
 } from './games/game2.js';
 
+import {
+    basketFood_preload,
+    basketFood_setup,
+    basketFood_draw,
+    basketFood_keyPressed,
+    basketFood_keyReleased,
+    basketFood_mouseClicked,
+} from './games/basketFood.js';
+
 //* PREVENTS PAGE SCROLLING WHEN SPACEBAR OR ANY ARROW KEY IS PRESSED */
 window.addEventListener("keydown", function(e) {
     if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
@@ -31,6 +40,8 @@ function preload() {
         game1_preload();
     } else if (game == "game2") {
         game2_preload();
+    } else if (game == "basketFood") {
+        basketFood_preload();
     }
 }
 
@@ -51,6 +62,8 @@ function setup() {
         game1_setup();
     } else if (game == "game2") {
         game2_setup();
+    } else if (game == "basketFood") {
+        basketFood_setup();
     }
 }
 
@@ -62,6 +75,8 @@ function draw() {
         game1_draw();
     } else if (game == "game2") {
         game2_draw();
+    } else if (game == "basketFood") {
+        basketFood_draw();
     }
 }
 
@@ -70,6 +85,8 @@ function keyPressed() {
         game1_keyPressed();
     } else if (game == "game2") {
         game2_keyPressed();
+    } else if (game == "basketFood") {
+        basketFood_keyPressed();
     }
 }
 
@@ -78,12 +95,16 @@ function keyReleased() {
         game1_keyReleased();
     } else if (game == "game2") {
         game2_keyReleased();
+    } else if (game == "basketFood") {
+        basketFood_keyReleased();
     }
 }
 
 function mouseClicked() {
     if (game == "game2") {
         game2_mouseClicked();
+    } else if (game == "basketFood") {
+        basketFood_mouseClicked();
     }
 }
 

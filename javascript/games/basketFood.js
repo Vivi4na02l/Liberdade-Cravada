@@ -11,7 +11,7 @@ let typeOfFood = [];
 /** BASKET */
 let basketX, basketY, basketW, basketH, basketPos;
 let goingRight = false, goingLeft = false;
-let basketSpeed = 5;
+let basketSpeed = 7;
 
 let foods = [];
 
@@ -136,10 +136,10 @@ export function basketFood_draw() {
 function basketMovement() {
     if (goingRight
         && (basketPos.x + basketPos.w/2 <= width)) {
-        basketPos.x += basketSpeed;
+        basketPos.x += basketSpeed * gameSpeed;
     } else if (goingLeft
         && (basketPos.x - basketPos.w/2 >= 0)) {
-        basketPos.x -= basketSpeed;
+        basketPos.x -= basketSpeed * gameSpeed;
     }
 
     image(basket, /* img */
@@ -235,8 +235,8 @@ class Food {
 
         /* FOOD AND BASKET DEBUG HELP */
         // fill("#FF0000")
-        // rect(this.foodX, this.foodY+this.foodH/2, 10, 10)
-        // rect(element.x, element.y-1, 10, 10)
+        // rect(this.foodX + this.foodW/2, this.foodY, 10, 10)
+        // rect(element.x- element.w/2, element.y-5, 20, 20)
 
     }
     
@@ -247,15 +247,15 @@ class Food {
   
     collides(element) {
         if (!this.isBad /** food is "good" food */
-            && this.foodX - this.foodW/2 < element.x /** if farthest point on the left of the food is "more to the left" than the farthest point to the right of the basket */
-            && this.foodX + this.foodW/2 > element.x - element.w /** if farthest point on the right of the food is "more to the right" than the farthest point to the left of the basket */
+            && this.foodX - this.foodW/2 < element.x + element.w/2 /** if farthest point on the left of the food is "more to the left" than the farthest point to the right of the basket */
+            && this.foodX + this.foodW/2 > element.x - element.w/2 /** if farthest point on the right of the food is "more to the right" than the farthest point to the left of the basket */
             && this.foodY - this.foodH/2 < element.y /** if the highest point of the food is ABOVE(<) the lowest point of the basket */
             && this.foodY + this.foodH/2 > element.y) { /** if the lowest point of the food is BELOW(>) the highest point of the basket */
             
             return true;
         } else if (!this.isBad /** food is "good" food */
-            && this.foodX - this.foodW/2 < element.x /** if farthest point on the left of the food is "more to the left" than the farthest point to the right of the basket */
-            && this.foodX + this.foodW/2 > element.x - element.w /** if farthest point on the right of the food is "more to the right" than the farthest point to the left of the basket */
+            && this.foodX - this.foodW/2 < element.x + element.w/2/** if farthest point on the left of the food is "more to the left" than the farthest point to the right of the basket */
+            && this.foodX + this.foodW/2 > element.x - element.w/2 /** if farthest point on the right of the food is "more to the right" than the farthest point to the left of the basket */
             && this.foodY - this.foodH/2 < element.y /** if the highest point of the food is ABOVE(<) the lowest point of the basket */
             && this.foodY + this.foodH/2 > element.y) { /** if the lowest point of the food is BELOW(>) the highest point of the basket */
 

@@ -9,7 +9,9 @@ let bananaW, bananaH, breadW, breadH, fishW, fishH, milkW, milkH, potatoW, potat
 let typeOfFood = [];
 
 /** BASKET */
-let basketX, basketY, basketW, basketH;
+let basketX, basketY, basketW, basketH, basketPos;
+let goingRight = false, goingLeft = false;
+let basketSpeed = 5;
 
 let foods = [];
 
@@ -27,6 +29,12 @@ export function basketFood_setup() {
     basketH = (basket.height*basketW)/basket.width;
     basketX = width/2;
     basketY = height*0.8;
+    basketPos = {
+        x: basketX,
+        y: basketY,
+        w: basketW,
+        h: basketH,
+    }
 
     //********************************* FOOD */
     bananaW = basketW*0.3;
@@ -100,9 +108,9 @@ export function basketFood_draw() {
         for (let i = foods.length - 1; i >= 0; i--) {
             foods[i].update();
             foods[i].display();
-
+            
             /** if food collides with basket */
-            if (foods[i].collides(char_position)) {
+            if (foods[i].collides(basketPos)) {
                 foods.splice(i, 1); //deletes the food
             };
     
@@ -112,19 +120,62 @@ export function basketFood_draw() {
                 foods.splice(i, 1); //deletes the food that got off bounds
             }
         }
+
+        /** BASKET MOVEMENT */
+        basketMovement();
+    }
+
+    else {
+        image(basket, /* img */
+            basketPos.x, basketPos.y, /* x, y */
+            basketPos.w, basketPos.h) /* w, h */  
+    }
+
+}
+
+function basketMovement() {
+    if (goingRight
+        && (basketPos.x + basketPos.w/2 <= width)) {
+        basketPos.x += basketSpeed;
+    } else if (goingLeft
+        && (basketPos.x - basketPos.w/2 >= 0)) {
+        basketPos.x -= basketSpeed;
     }
 
     image(basket, /* img */
-        basketX, basketY, /* x, y */
-        basketW, basketH) /* w, h */  
+        basketPos.x, basketPos.y, /* x, y */
+        basketPos.w, basketPos.h) /* w, h */
 }
 
 export function basketFood_keyPressed() {
+    if (keyCode === RIGHT_ARROW) {
+        goingRight = true;
+    }
 
+    if (keyCode === LEFT_ARROW) {
+        goingLeft = true;
+    }
+
+    /* if the player is holding both arrows down, then it will prioritaze the last one */
+    if (keyCode === LEFT_ARROW && goingRight == true) {
+        goingRight = false;
+        goingLeft = true;
+    }
+
+    if (keyCode === RIGHT_ARROW && goingLeft == true) {
+        goingLeft = false;
+        goingRight = true;
+    }
 }
 
 export function basketFood_keyReleased() {
+    if (keyCode === RIGHT_ARROW) {
+        goingRight = false;
+    }
 
+    if (keyCode === LEFT_ARROW) {
+        goingLeft = false;
+    }
 }
 
 export function basketFood_mouseClicked() {
@@ -202,6 +253,8 @@ class Food {
             && this.foodY - this.foodH/2 < element.y) { /** if the highest point of the obstacle is ABOVE(<) the lowest point of the character */
             //this.foodY - this.foodH < element.y + element.h) {
 
+            console.log('ai');
+            
             return true;
         } else if (this.isBad /** food is "bad" food */
             && this.foodX - this.foodW/2 < element.x*0.9 /** if farthest point on the left of obstacle is "more to the left" than the farthest point to the right of the character */
@@ -209,6 +262,7 @@ class Food {
             && this.foodY - this.foodH/2 < element.y) { /** if the highest point of the obstacle is ABOVE(<) the lowest point of the character */
             //this.foodY - this.foodH < element.y + element.h) {
 
+            console.log('au');
             lives -= 1;
 
             return true;

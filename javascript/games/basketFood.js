@@ -97,8 +97,10 @@ export function basketFood_draw() {
         gameStarted = false;
         sentence = "Clica para recomeçar."
 
+        gameSpeed = 1;
         lives = 3;
         points = 0;
+        basketPos.x = width/2;
     }
 
     if (gameStarted) {
@@ -222,27 +224,6 @@ export function basketFood_mouseClicked() {
 
         gameStarted = true;
     }
-    
-    // if (mouseX > 0 && mouseX < width 
-    //     && mouseY > 0 && mouseY < height
-    //     && restart) {
-
-    //     restart = false;
-    //     cutscene = true;
-    //     gameStarted = false;
-    //     endInitialCutscene = false;
-
-    //     failingImages = 0;
-    //     failEachAnimation = false;
-
-    //     points = 0;
-    //     gameOver = false;
-
-    //     charX = width*0.2;
-    //     pideX = -(pide_running_R.width * charH)/pide_running_R.height;
-    //     charCutsceneX = charX + (width/3);
-    //     obstacles = [];
-    // }
 }
 
 class Food {
@@ -254,6 +235,12 @@ class Food {
         this.isBad = isBad
 
         this.foodX = Math.floor(Math.random() * (width*0.95));
+        if (this.foodX+this.foodW/2 < width) {
+            this.foodX += this.foodW/2;
+        } else {
+            this.foodX -= this.foodW/2;
+        }
+
         this.foodY = 0 - foodH/2;
     }
     

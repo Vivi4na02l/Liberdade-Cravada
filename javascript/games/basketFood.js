@@ -2,6 +2,8 @@
 let gameStarted = false;
 let gameSpeed = 1;
 let lives = 3;
+let points = 0;
+let sentence = "Clica para começar.", fadeTxtStart = 255, fadeTxtStartSwitch = false;
 
 /** IMAGES */
 let basket, banana, bread, fish, milk, potato;
@@ -11,7 +13,7 @@ let typeOfFood = [];
 /** BASKET */
 let basketX, basketY, basketW, basketH, basketPos;
 let goingRight = false, goingLeft = false;
-let basketSpeed = 7;
+let basketSpeed = 7.5;
 
 let foods = [];
 
@@ -92,6 +94,11 @@ export function basketFood_draw() {
 
     if (lives <= 0) {
         //* GAME OVER */
+        gameStarted = false;
+        sentence = "Clica para recomeçar."
+
+        lives = 3;
+        points = 0;
     }
 
     if (gameStarted) {
@@ -123,16 +130,22 @@ export function basketFood_draw() {
 
         /** BASKET MOVEMENT */
         basketMovement();
+        txtDisplay(points, width*0.5, height*0.05, 40, false);
     }
 
     else {
         image(basket, /* img */
             basketPos.x, basketPos.y, /* x, y */
-            basketPos.w, basketPos.h) /* w, h */  
+            basketPos.w, basketPos.h) /* w, h */
+
+        txtDisplay(sentence, width*0.5, height*0.5, 32, true);
     }
 
 }
 
+/**
+ * makes the basket move left and right, depending on the arrow that the player is pressing down
+ */
 function basketMovement() {
     if (goingRight
         && (basketPos.x + basketPos.w/2 <= width)) {
@@ -145,6 +158,30 @@ function basketMovement() {
     image(basket, /* img */
         basketPos.x, basketPos.y, /* x, y */
         basketPos.w, basketPos.h) /* w, h */
+}
+
+function txtDisplay(sentence, posX, posY, size, isFade) {
+    /** TEXTO */
+    if (isFade) {
+        if (frameCount % 100 == 0) {
+            fadeTxtStartSwitch = !fadeTxtStartSwitch;
+        }
+    
+        if (fadeTxtStartSwitch) {
+            fadeTxtStart += 1.5;
+        } else {
+            fadeTxtStart -= 1.5;
+        }
+    } else {
+        fadeTxtStart = 255;
+    }
+
+    textSize(size);
+    fill(255, 255, 255, fadeTxtStart)
+    stroke(0, 0, 0, fadeTxtStart);
+    strokeWeight(3);
+    textAlign(CENTER, CENTER)
+    text(sentence, posX, posY);
 }
 
 export function basketFood_keyPressed() {
@@ -252,6 +289,8 @@ class Food {
             && this.foodY - this.foodH/2 < element.y /** if the highest point of the food is ABOVE(<) the lowest point of the basket */
             && this.foodY + this.foodH/2 > element.y) { /** if the lowest point of the food is BELOW(>) the highest point of the basket */
             
+            points += 5;
+
             return true;
         } else if (!this.isBad /** food is "good" food */
             && this.foodX - this.foodW/2 < element.x + element.w/2/** if farthest point on the left of the food is "more to the left" than the farthest point to the right of the basket */

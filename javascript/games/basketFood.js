@@ -107,7 +107,7 @@ export function basketFood_draw() {
         /** MAKES THE FOOD APPEAR ON SCREEN */
         for (let i = foods.length - 1; i >= 0; i--) {
             foods[i].update();
-            foods[i].display();
+            foods[i].display(basketPos);
             
             /** if food collides with basket */
             if (foods[i].collides(basketPos)) {
@@ -115,7 +115,7 @@ export function basketFood_draw() {
             };
     
             /** if floor is offscreen, delete it */
-            if (foods[i].offscreen()) {
+            if (foods.length != 0 && foods[i].offscreen()) {
                 lives -= 1;
                 foods.splice(i, 1); //deletes the food that got off bounds
             }
@@ -235,8 +235,8 @@ class Food {
 
         /* FOOD AND BASKET DEBUG HELP */
         // fill("#FF0000")
-        // rect(this.foodX-this.foodW/2, this.foodY-this.foodH/2, 10, 10)
-        // rect(element.x-element.w/2, element.y, 10, 10)
+        // rect(this.foodX, this.foodY+this.foodH/2, 10, 10)
+        // rect(element.x, element.y-1, 10, 10)
 
     }
     
@@ -246,23 +246,19 @@ class Food {
     }
   
     collides(element) {
-        /* "0.9" is the "tolerance of hit" */
         if (!this.isBad /** food is "good" food */
-            && this.foodX - this.foodW/2 < element.x*0.9 /** if farthest point on the left of obstacle is "more to the left" than the farthest point to the right of the character */
-            && this.foodX + this.foodW/2 > element.x - element.w*0.9 /** if farthest point on the right of obstacle is "more to the right" than the farthest point to the left of the character */
-            && this.foodY - this.foodH/2 < element.y) { /** if the highest point of the obstacle is ABOVE(<) the lowest point of the character */
-            //this.foodY - this.foodH < element.y + element.h) {
-
-            console.log('ai');
+            && this.foodX - this.foodW/2 < element.x /** if farthest point on the left of the food is "more to the left" than the farthest point to the right of the basket */
+            && this.foodX + this.foodW/2 > element.x - element.w /** if farthest point on the right of the food is "more to the right" than the farthest point to the left of the basket */
+            && this.foodY - this.foodH/2 < element.y /** if the highest point of the food is ABOVE(<) the lowest point of the basket */
+            && this.foodY + this.foodH/2 > element.y) { /** if the lowest point of the food is BELOW(>) the highest point of the basket */
             
             return true;
-        } else if (this.isBad /** food is "bad" food */
-            && this.foodX - this.foodW/2 < element.x*0.9 /** if farthest point on the left of obstacle is "more to the left" than the farthest point to the right of the character */
-            && this.foodX + this.foodW/2 > element.x - element.w*0.9 /** if farthest point on the right of obstacle is "more to the right" than the farthest point to the left of the character */
-            && this.foodY - this.foodH/2 < element.y) { /** if the highest point of the obstacle is ABOVE(<) the lowest point of the character */
-            //this.foodY - this.foodH < element.y + element.h) {
+        } else if (!this.isBad /** food is "good" food */
+            && this.foodX - this.foodW/2 < element.x /** if farthest point on the left of the food is "more to the left" than the farthest point to the right of the basket */
+            && this.foodX + this.foodW/2 > element.x - element.w /** if farthest point on the right of the food is "more to the right" than the farthest point to the left of the basket */
+            && this.foodY - this.foodH/2 < element.y /** if the highest point of the food is ABOVE(<) the lowest point of the basket */
+            && this.foodY + this.foodH/2 > element.y) { /** if the lowest point of the food is BELOW(>) the highest point of the basket */
 
-            console.log('au');
             lives -= 1;
 
             return true;

@@ -5,17 +5,26 @@ let lives = 3;
 let points = 0;
 let sentence = "Clica para começar.", fadeTxtStart = 255, fadeTxtStartSwitch = false;
 
-/** IMAGES */
-let basket, banana, bread, fish, milk, potato;
+/** FOOD */
+let banana, bread, fish, milk, potato;
 let bananaW, bananaH, breadW, breadH, fishW, fishH, milkW, milkH, potatoW, potatoH;
+let firstFoodAdded = false;
 let typeOfFood = [];
+let foods = [];
+let numberOfFood = 0;
+let foodSpawn = {
+        isCounting: false,
+        timerStart: 0,
+        timerShouldEnd: 200,
+        timerEnded: false,
+    };
 
 /** BASKET */
+let basket;
 let basketX, basketY, basketW, basketH, basketPos;
 let goingRight = false, goingLeft = false;
-let basketSpeed = 7.5;
+let basketSpeed = 9;
 
-let foods = [];
 
 export function basketFood_preload() {
     basket = loadImage('../images/games/elements/basket.png');
@@ -97,6 +106,7 @@ export function basketFood_draw() {
         gameStarted = false;
         sentence = "Clica para recomeçar."
 
+        firstFoodAdded = false;
         gameSpeed = 1;
         lives = 3;
         points = 0;
@@ -107,7 +117,8 @@ export function basketFood_draw() {
         gameSpeed += 0.0001;
 
         /** ADDS THE FIRST FOOD */
-        if (foods.length == 0) {   
+        if (!firstFoodAdded) {   
+            firstFoodAdded = true;
             let whichFood = Math.floor(Math.random() * typeOfFood.length);
 
             foods.push(new Food(gameSpeed, typeOfFood[whichFood].foodW, typeOfFood[whichFood].foodH, typeOfFood[whichFood].image, typeOfFood[whichFood].isBad)); //gameSpeed, foodW, foodH, imageFood, isBad
@@ -129,6 +140,29 @@ export function basketFood_draw() {
                 foods.splice(i, 1); //deletes the food that got off bounds
             }
         }
+        
+        /* starts the timer responsible for adding a new food on screen */
+        foodSpawn = timer(foodSpawn.isCounting, foodSpawn.timerStart, foodSpawn.timerShouldEnd);
+        if (foodSpawn.timerEnded) { //if the timer ended
+            foodSpawn.timerEnded = false;
+
+            if (foodSpawn.timerShouldEnd >= 125) { //doesn't let the food spawn any faster than every X frames                
+                foodSpawn.timerShouldEnd -= 5 * gameSpeed; //reduces the amount of timer needed to spawn the next food
+            } else if (foodSpawn.timerShouldEnd >= 100) {
+                foodSpawn.timerShouldEnd -= 2 * gameSpeed;
+                basketSpeed += 0.05;
+            } else if (foodSpawn.timerShouldEnd >= 50) {
+                foodSpawn.timerShouldEnd -= 1 * gameSpeed;
+                basketSpeed += 0.1;
+            } else {
+                foodSpawn.timerShouldEnd -= 0.1 * gameSpeed;
+            }
+
+            /* adds new food on screen */
+            let whichFood = Math.floor(Math.random() * typeOfFood.length);
+            foods.push(new Food(gameSpeed, typeOfFood[whichFood].foodW, typeOfFood[whichFood].foodH, typeOfFood[whichFood].image, typeOfFood[whichFood].isBad)); //gameSpeed, foodW, foodH, imageFood, isBad
+        }
+        
 
         /** BASKET MOVEMENT */
         basketMovement();
@@ -162,6 +196,14 @@ function basketMovement() {
         basketPos.w, basketPos.h) /* w, h */
 }
 
+/**
+ * diplays sentence on screen
+ * @param {string} sentence the sentence that is displayed on screen
+ * @param {int} posX it's position in X
+ * @param {int} posY it's position in Y
+ * @param {int} size the text size
+ * @param {boolean} isFade either TRUE or FALSE. If "TRUE" it has a constant fading animtion
+ */
 function txtDisplay(sentence, posX, posY, size, isFade) {
     /** TEXTO */
     if (isFade) {
@@ -184,6 +226,40 @@ function txtDisplay(sentence, posX, posY, size, isFade) {
     strokeWeight(3);
     textAlign(CENTER, CENTER)
     text(sentence, posX, posY);
+}
+
+/**
+ * waits the amount of frames wanted before returning TRUE
+ * @param {boolean} isCounting keeps track of the fact: if timer has start or not
+ * @param {int} timerStart when the timer started counting
+ * @param {boolean} timerShouldEnd how long the wait must be for
+ * @returns 
+ */
+function timer(isCounting, timerStart, timerShouldEnd) {
+    if (!isCounting) {
+        isCounting = true;
+        timerStart = frameCount;
+        let timerEnded = false;
+        
+        return {isCounting, timerStart, timerShouldEnd, timerEnded};
+    }
+
+    else {
+        let timerNow = frameCount;
+        
+
+        if (timerNow - timerStart >= timerShouldEnd) {
+            isCounting = false;
+            let timerEnded = true;
+            
+            return {isCounting, timerStart, timerShouldEnd, timerEnded};
+        }
+
+        else {
+            let timerEnded = false;
+            return {isCounting, timerStart, timerShouldEnd, timerEnded};
+        }
+    }
 }
 
 export function basketFood_keyPressed() {

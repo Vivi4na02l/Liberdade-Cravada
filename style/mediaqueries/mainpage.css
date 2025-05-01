@@ -3,7 +3,7 @@
     /** SECTION 1 */
     #section1 {
         height: 620px; /* 700 */
-        background-image: url("../../images/pgPrincipal1_Vertical_blurred.jpg");
+        background-image: url("../../images/website/images/pgPrincipal1_Vertical_blurred.jpg");
         background-position: 0% 20%;
         background-color: rgba(0,0,0,0.25);
         background-blend-mode: darken;
@@ -102,7 +102,7 @@
     /** SECTION 1 */
     #section1 {
         height: 850px; /* 700 */
-        background-image: url("../../images/pgPrincipal1_Vertical_blurred.jpg");
+        background-image: url("../../images/website/images/pgPrincipal1_Vertical_blurred.jpg");
         background-position: 0% 20%;
         background-color: rgba(0,0,0,0.25);
         background-blend-mode: darken;
@@ -210,7 +210,7 @@
     /** SECTION 1 */
     #section1 {
         height: 550px; /* 700 */
-        background-image: url("../../images/pgPrincipal1_blurred.jpg");
+        background-image: url("../../images/website/images/pgPrincipal1_blurred.jpg");
         background-color: rgba(0,0,0,0.25);
         background-blend-mode: darken;
         background-size: cover;
@@ -302,7 +302,7 @@
     /** SECTION 1 */
     #section1 {
         height: 700px;
-        background-image: url("../../images/pgPrincipal1_blurred.jpg");
+        background-image: url("../../images/website/images/pgPrincipal1_blurred.jpg");
         background-color: rgba(0,0,0,0.25);
         background-blend-mode: darken;
         background-size: cover;

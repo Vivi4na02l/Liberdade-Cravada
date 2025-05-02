@@ -1,6 +1,6 @@
 /** game variables */
 let font;
-let gameStarted = false;
+let gameStarted = false, gamePaused = false;
 let gameSpeed = 1;
 let lives = 3;
 let points = 0;
@@ -180,6 +180,8 @@ export function basketFood_draw() {
         txtDisplay(sentence, width*0.5, height*0.5, 32, true);
     }
 
+    //* PAUSES GAME */
+    pauseGame();
 }
 
 /**
@@ -265,7 +267,23 @@ function timer(isCounting, timerStart, timerShouldEnd) {
     }
 }
 
+function pauseGame() {
+    if (gamePaused) {
+        txtDisplay("Jogo em pausa", width/2, height/2, 32, false);
+        noLoop();
+    }
+}
+
 export function basketFood_keyPressed() {
+    //* PAUSES THE GAME */
+    if (keyCode === 27) {
+        gamePaused = !gamePaused;
+        
+        if (!gamePaused) {
+            loop();
+        }
+    }
+
     if (keyCode === RIGHT_ARROW) {
         goingRight = true;
     }

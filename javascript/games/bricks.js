@@ -2,7 +2,7 @@
 let font;
 let points = 0, resetPoints = false;
 let sentence = "Pressiona espaço para começar.", fadeTxtStart = 255, fadeTxtStartSwitch = false;
-let gameStarted = false;
+let gameStarted = false, gamePaused = false;
 let isScenario2Created = false;
 let counter = 0;
 let randomNbr = 0;
@@ -95,8 +95,7 @@ export function bricks_draw() {
     if (!bricksImgs.every(brickDestroyed)) {
         bricks();
     } else {
-        //* ADICIONAR ALGO PARA CONCLUIR O JOGO BEM SUCEDIDO */
-        console.log(balls);
+        //* GAMEOVER (succeeded) */
         
         balls[0].bPos = createVector(width/2, height*0.8); // restarts positioning of the rock
         balls[0].bAngle = createVector(0, -10); // restarts vector direction of the rock
@@ -183,6 +182,9 @@ export function bricks_draw() {
     if (!gameStarted) { /** text saying to click space to start/restart */
         txtDisplay(sentence, width*0.5, height*0.5, 32, true);
     }
+
+    //* PAUSES GAME */
+    pauseGame();
 }
 
 function movingSlingshot() {
@@ -225,6 +227,13 @@ function ballCollidesElement(elements) {
     }
 }
 
+function pauseGame() {
+    if (gamePaused) {
+        txtDisplay("Jogo em pausa", width/2, height/2, 32, false);
+        noLoop();
+    }
+}
+
 export function bricks_keyPressed() {
     if (key === ' ') {
         gameStarted = true;
@@ -232,6 +241,15 @@ export function bricks_keyPressed() {
 
         if (resetPoints) {
             points = 0;
+        }
+    }
+
+    //* PAUSES THE GAME */
+    if (keyCode === 27) {
+        gamePaused = !gamePaused;
+        
+        if (!gamePaused) {
+            loop();
         }
     }
     
@@ -425,6 +443,7 @@ class Ball {
         }
         
         if (this.bPos.y + this.bR/2 > height*0.95) {
+            //* GAMEOVER (failed) */
             this.bPos = createVector(width/2, height*0.8); // restarts positioning of the rock
             this.bAngle = createVector(0, -this.bSpeed); // restarts vector direction of the rock
             slingshotX = width/2 // restarts positiniong of the slingshot
@@ -479,8 +498,6 @@ class Ball {
             resetPoints = true;
             sentence = "Pressione espaço para recomeçar!"
             txtDisplay(sentence, width*0.5, height*0.5, 32, true);
-            // noLoop();
-            //* ADICIONAR gameover ecrã */
         }
     }
 }

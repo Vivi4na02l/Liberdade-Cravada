@@ -1,6 +1,6 @@
 /** game rules and scenery variables */
 let font;
-let gameOver = false, restart = false;
+let sentence = "Clique para começar", gameOver = false, restart = false, gamePaused = false;
 let points = 0;
 let gameSpeed = 1;
 let scenery = "subway", newScenery = "default";
@@ -258,7 +258,8 @@ export function game2_draw() {
             }
 
             if (frameCount - gameOverStart > 200) {
-                txtBtnClick("Clique para recomeçar");
+                sentence = "Clique para recomeçar!"
+                txtDisplay(sentence, width/2, height*0.7, 32, true);
             }
             restart = true;
         }
@@ -280,7 +281,7 @@ export function game2_draw() {
             openingCutscene(npc3, charX + 3*(charW/4)+width/3, charYDefault + charH/2, -1, 47, 255); //charImage, posX, posY, facingDirection, frameCycle
 
             /** TEXTO */
-            txtBtnClick("Clique para começar");
+            txtDisplay(sentence, width/2, height*0.7, 32, true);
         }
 
         else {
@@ -384,6 +385,9 @@ export function game2_draw() {
         textAlign(CENTER, CENTER)
         text(points, width/2, height*0.05);
     }
+
+    //* PAUSES GAME */
+    pauseGame();
 }
 
 export function game2_mouseClicked() {
@@ -417,8 +421,22 @@ export function game2_mouseClicked() {
     }
 }
 
+function pauseGame() {
+    if (gamePaused) {
+        txtDisplay("Jogo em pausa", width/2, height/2, 32, false);
+        noLoop();
+    }
+}
+
 export function game2_keyPressed() {
-    
+    //* PAUSES THE GAME */
+    if (keyCode === 27) {
+        gamePaused = !gamePaused;
+        
+        if (!gamePaused) {
+            loop();
+        }
+    }
 }
 
 export function game2_keyReleased() {
@@ -435,24 +453,36 @@ export function game2_keyReleased() {
     }
 }
 
-function txtBtnClick(sentence) {
+/**
+ * diplays sentence on screen
+ * @param {string} sentence the sentence that is displayed on screen
+ * @param {int} posX it's position in X
+ * @param {int} posY it's position in Y
+ * @param {int} size the text size
+ * @param {boolean} isFade either TRUE or FALSE. If "TRUE" it has a constant fading animtion
+ */
+function txtDisplay(sentence, posX, posY, size, isFade) {
     /** TEXTO */
-    if (frameCount % 100 == 0) {
-        fadeTxtStartSwitch = !fadeTxtStartSwitch;
-    }
-
-    if (fadeTxtStartSwitch) {
-        fadeTxtStart += 1.5;
+    if (isFade) {
+        if (frameCount % 100 == 0) {
+            fadeTxtStartSwitch = !fadeTxtStartSwitch;
+        }
+    
+        if (fadeTxtStartSwitch) {
+            fadeTxtStart += 1.5;
+        } else {
+            fadeTxtStart -= 1.5;
+        }
     } else {
-        fadeTxtStart -= 1.5;
+        fadeTxtStart = 255;
     }
 
-    textFont(font, 32);
+    textFont(font, size);
     fill(255, 255, 255, fadeTxtStart)
     stroke(0, 0, 0, fadeTxtStart);
     strokeWeight(3);
     textAlign(CENTER, CENTER)
-    text(sentence, width/2, height*0.7);
+    text(sentence, posX, posY);
 }
 
 function openingCutscene(charImage, posX, posY, facingDirection, frameCycle, alpha) {

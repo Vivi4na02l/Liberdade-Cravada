@@ -18,6 +18,15 @@ let pide_running_L, pide_running_M, pide_running_R, pide_idle_1, pide_idle_2;
 let pideIdle, pideRun, pideX, charCutsceneX;
 let cutsceneStart, cutsceneEnd, cutsceneDuration = 100, endInitialCutscene = false;
 
+let persecution_gameover;
+let endingCutsceneTimer = {
+    isCounting: false,
+    timerStart: 0,
+    timerShouldEnd: 50,
+    timerEnded: false,
+};
+let endingCutsceneVars = {alpha: 0, gameoverImage: false, slideStarts: false, slide: 0, alphaGameOver: 0};
+
 /** transitions between scenarios */
 let subwayX, subwayY, subwayW, subwayH;
 
@@ -69,7 +78,7 @@ let runSwitch = true, runWhenSwitch = 20, runWhenSwitchStart, runWhenSwitchEnd, 
 export function persecution_preload() {
     font = loadFont('.././fonts/Jersey_10/Jersey10-Regular.ttf');
     
-    /** CUTSCENE */
+    /** ENTRY CUTSCENE */
     npc1_idle_1 = loadImage('../images/games/characters/npc1_idle_1.png');
     npc1_idle_2 = loadImage('../images/games/characters/npc1_idle_2.png');
     npc2_idle_back_1 = loadImage('../images/games/characters/npc2_idle_back_1.png');
@@ -93,6 +102,7 @@ export function persecution_preload() {
     pideRun = [pide_running_L, pide_running_M, pide_running_R];
     pideIdle = [pide_idle_1, pide_idle_2];
 
+    /** CHARACTER DURING GAMEPLAY */
     char_running_R = loadImage('../images/games/characters/char_running_R.png');
     char_running_M = loadImage('../images/games/characters/char_running_M.png');
     char_running_L = loadImage('../images/games/characters/char_running_L.png');
@@ -116,6 +126,10 @@ export function persecution_preload() {
     char_tripping_backwards_2 = loadImage('../images/games/characters/char_tripping_backwards_2.png');
     char_tripping_backwards_3 = loadImage('../images/games/characters/char_tripping_backwards_3.png');
 
+    /** ENDING CUTSCENE */
+    persecution_gameover = loadImage('../images/games/gameover/persecution_gameover.png');
+    
+    /** SCENERY */
     floor_subway = loadImage('../images/games/scenery/floor_subway.png');
     floor_subway_bg = loadImage('../images/games/scenery/floor_subway_bg.png');
     bg_front_subway = loadImage('../images/games/scenery/bg_front_subway.png');
@@ -258,10 +272,8 @@ export function persecution_draw() {
             }
 
             if (frameCount - gameOverStart > 200) {
-                sentence = "Clique para recomeçar!"
-                txtDisplay(sentence, width/2, height*0.7, 32, true);
+                endingCutscene();
             }
-            restart = true;
         }
     }
 
@@ -331,9 +343,9 @@ export function persecution_draw() {
     }
 
     for (let i = obstacles.length - 1; i >= 0; i--) {
-        if (!gameOver) {
+        // if (!gameOver) {
             obstacles[i].update();
-        }
+        // }
         obstacles[i].display(char_position);
         if (obstacles[i].collides(char_position)) {
             gameOver = true;
@@ -343,12 +355,14 @@ export function persecution_draw() {
         if (obstacles[i].offscreen()) {
             obstacles.splice(i, 1);
 
-            typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2,3 */ //* MUDAR PARA 33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333 */
-            
-            if (typeOfObstacle == 1) {
-                obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
-            } else if (typeOfObstacle == 2) {
-                obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
+            if (!gameOver) {
+                typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2,3 */ //* MUDAR PARA 33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333 */
+                
+                if (typeOfObstacle == 1) {
+                    obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
+                } else if (typeOfObstacle == 2) {
+                    obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
+                }
             }
         }
     }
@@ -377,7 +391,7 @@ export function persecution_draw() {
         points++;
     }
 
-    if (!cutscene) {
+    if (!cutscene && !gameOver) {
         textSize(32);
         fill(255);
         stroke(0);
@@ -388,6 +402,113 @@ export function persecution_draw() {
 
     //* PAUSES GAME */
     pauseGame();
+}
+
+/**
+ * waits the amount of frames wanted before returning TRUE
+ * @param {boolean} isCounting keeps track of the fact: if timer has start or not
+ * @param {int} timerStart when the timer started counting
+ * @param {boolean} timerShouldEnd how long the wait must be for
+ * @returns 
+ */
+function timer(isCounting, timerStart, timerShouldEnd) {
+    if (!isCounting) {
+        isCounting = true;
+        timerStart = frameCount;
+        let timerEnded = false;
+        
+        return {isCounting, timerStart, timerShouldEnd, timerEnded};
+    }
+
+    else {
+        let timerNow = frameCount;
+        
+
+        if (timerNow - timerStart >= timerShouldEnd) {
+            isCounting = false;
+            let timerEnded = true;
+            
+            return {isCounting, timerStart, timerShouldEnd, timerEnded};
+        }
+
+        else {
+            let timerEnded = false;
+            return {isCounting, timerStart, timerShouldEnd, timerEnded};
+        }
+    }
+}
+
+function endingCutscene() {
+    if (endingCutsceneVars.gameoverImage || endingCutsceneTimer.timerEnded) {
+        endingCutsceneVars.gameoverImage = true;
+
+        image(persecution_gameover,
+            width/2, height/2,
+            width, height)
+
+        endingCutsceneTimer = timer(endingCutsceneTimer.isCounting, endingCutsceneTimer.timerStart, endingCutsceneTimer.timerShouldEnd);
+        if (endingCutsceneTimer.timerEnded) {
+            endingCutsceneVars.slideStarts = true;
+        }
+
+        if (endingCutsceneVars.slideStarts) {
+            if (endingCutsceneVars.slide == 0) {
+                let rectH = height*0.3
+                let rectY = height*0.7+rectH/2
+                let c = color(0, 0, 0);
+                push();
+                c.setAlpha(170);
+                fill(c);
+                rect(width/2, rectY, width, rectH);
+                pop();
+
+                txtDisplay("Na altura da ditadura, até uma simples conversa entre quatro amigos podia ser vista como perigosa.", width/2, rectY-rectH*0.1, 25, false);
+                txtDisplay("Clique para continuar", width/2, rectY+rectH*0.15, 20, true);
+            } else if (endingCutsceneVars.slide == 1) {
+                let rectH = height*0.3
+                let rectY = height*0.7+rectH/2
+                let c = color(0, 0, 0);
+                push();
+                c.setAlpha(170);
+                fill(c);
+                rect(width/2, rectY, width, rectH);
+                pop();
+
+                txtDisplay("A polícia podia intervir e levar as pessoas presas, mesmo sem razão aparente.", width/2, rectY-rectH*0.1, 25, false);
+                txtDisplay("Clique para continuar", width/2, rectY+rectH*0.15, 20, true);
+            } else {
+                if (frameCount % 5 == 0) {
+                    endingCutsceneVars.alphaGameOver += 20;
+                }
+
+                txtDisplay("Pontos feitos: "+points, width/2, height*0.45, 25, false);
+                textFont(font, 100);
+                fill(192, 57, 43, endingCutsceneVars.alphaGameOver);
+                stroke(0, 0, 0, endingCutsceneVars.alphaGameOver);
+                strokeWeight(3);
+                textAlign(CENTER, CENTER)
+                text("GAME OVER", width/2, height/2);
+                txtDisplay("Clique para tentar novamente.", width/2, height*0.6, 20, true);
+
+                restart = true;
+            }
+        }
+    } else {
+        /** fades the image in */
+        endingCutsceneVars.slide = 0;
+        endingCutsceneTimer = timer(endingCutsceneTimer.isCounting, endingCutsceneTimer.timerStart, endingCutsceneTimer.timerShouldEnd);
+        let alphaPerFrame = 255/endingCutsceneTimer.timerShouldEnd;
+        
+        endingCutsceneVars.alpha += alphaPerFrame;
+
+        push();
+        tint(255, endingCutsceneVars.alpha);
+        image(persecution_gameover,
+            width/2, height/2,
+            width, height)
+        pop();
+    }
+
 }
 
 export function persecution_mouseClicked() {
@@ -401,6 +522,13 @@ export function persecution_mouseClicked() {
     
     if (mouseX > 0 && mouseX < width 
         && mouseY > 0 && mouseY < height
+        && endingCutsceneVars.slideStarts) {
+
+        endingCutsceneVars.slide++
+    }
+
+    if (mouseX > 0 && mouseX < width 
+        && mouseY > 0 && mouseY < height
         && restart) {
 
         restart = false;
@@ -410,9 +538,18 @@ export function persecution_mouseClicked() {
 
         failingImages = 0;
         failEachAnimation = false;
+        totalAngle = 0
 
         points = 0;
         gameOver = false;
+
+        endingCutsceneTimer.timerEnded = false;
+        endingCutsceneVars.gameoverImage = false;
+        endingCutsceneVars.slideStarts = false;
+        endingCutsceneVars.slide = -1;
+        endingCutsceneVars.alpha = 0;
+        endingCutsceneVars.alphaGameOver = 0;
+        endingCutsceneTimer.isCounting = false;
 
         charX = width*0.2;
         pideX = -(pide_running_R.width * charH)/pide_running_R.height;
@@ -473,16 +610,22 @@ function txtDisplay(sentence, posX, posY, size, isFade) {
         } else {
             fadeTxtStart -= 1.5;
         }
+
+        textFont(font, size);
+        fill(255, 255, 255, fadeTxtStart)
+        stroke(0, 0, 0, fadeTxtStart);
+        strokeWeight(3);
+        textAlign(CENTER, CENTER)
+        text(sentence, posX, posY);
     } else {
-        fadeTxtStart = 255;
+        textFont(font, size);
+        fill(255, 255, 255, 255)
+        stroke(0, 0, 0, fadeTxtStart);
+        strokeWeight(3);
+        textAlign(CENTER, CENTER)
+        text(sentence, posX, posY);
     }
 
-    textFont(font, size);
-    fill(255, 255, 255, fadeTxtStart)
-    stroke(0, 0, 0, fadeTxtStart);
-    strokeWeight(3);
-    textAlign(CENTER, CENTER)
-    text(sentence, posX, posY);
 }
 
 function openingCutscene(charImage, posX, posY, facingDirection, frameCycle, alpha) {

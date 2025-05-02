@@ -1,5 +1,7 @@
 /** GAME VARIABLES */
 // let restartLvl2 = false;
+let sentence = "Pressiona espaço para começar.", fadeTxtStart = 0, fadeTxtStartSwitch = 255;
+let gameStarted = false;
 let isScenario2Created = false;
 let counter = 0;
 let randomNbr = 0;
@@ -80,7 +82,6 @@ export function bricks_setup() {
 }
 
 export function bricks_draw() {
-
     image(imgBgLvl2, 
         width/2, height/2,
         width, height
@@ -116,6 +117,10 @@ export function bricks_draw() {
     }
 
     movingSlingshot();
+
+    if (!gameStarted) {
+        txtDisplay(sentence, width*0.5, height*0.5, 32, true);
+    }
 }
 
 function movingSlingshot() {
@@ -160,6 +165,7 @@ function ballCollidesElement(elements) {
 
 export function bricks_keyPressed() {
     if (key === ' ') {
+        gameStarted = true;
         isBallOut = true;
     }
     
@@ -262,6 +268,38 @@ function bricks() {
     }
 }
 
+/**
+ * diplays sentence on screen
+ * @param {string} sentence the sentence that is displayed on screen
+ * @param {int} posX it's position in X
+ * @param {int} posY it's position in Y
+ * @param {int} size the text size
+ * @param {boolean} isFade either TRUE or FALSE. If "TRUE" it has a constant fading animtion
+ */
+function txtDisplay(sentence, posX, posY, size, isFade) {
+    /** TEXTO */
+    if (isFade) {
+        if (frameCount % 100 == 0) {
+            fadeTxtStartSwitch = !fadeTxtStartSwitch;
+        }
+    
+        if (fadeTxtStartSwitch) {
+            fadeTxtStart += 1.5;
+        } else {
+            fadeTxtStart -= 1.5;
+        }
+    } else {
+        fadeTxtStart = 255;
+    }
+
+    textSize(size);
+    fill(255, 255, 255, fadeTxtStart)
+    stroke(0, 0, 0, fadeTxtStart);
+    strokeWeight(3);
+    textAlign(CENTER, CENTER)
+    text(sentence, posX, posY);
+}
+
 class Ball {
     constructor(x, y, w) {
         this.bPos = createVector(x, y);
@@ -319,8 +357,16 @@ class Ball {
         }
         
         if (this.bPos.y + this.bR/2 > height*0.95) {
-            // this.bAngle.y *= -1;
-            noLoop();
+            this.bPos = createVector(width/2, height*0.8); // restarts positioning of the rock
+            this.bAngle = createVector(0, -this.bSpeed); // restarts vector direction of the rock
+            slingshotX = width/2 // restarts positiniong of the slingshot
+            
+            gameStarted = false;
+            isBallOut = false;
+
+            sentence = "Pressione espaço para recomeçar!"
+            txtDisplay(sentence, width*0.5, height*0.5, 32, true);
+            // noLoop();
             //* ADICIONAR gameover ecrã */
         }
     }

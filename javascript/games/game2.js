@@ -1,4 +1,5 @@
 /** game rules and scenery variables */
+let font;
 let gameOver = false, restart = false;
 let points = 0;
 let gameSpeed = 1;
@@ -66,6 +67,8 @@ let slideWhenSwitch = 20, slideWhenSwitchStart, slideWhenSwitchEnd, slidingImage
 let runSwitch = true, runWhenSwitch = 20, runWhenSwitchStart, runWhenSwitchEnd, runningImages = 0;
 
 export function game2_preload() {
+    font = loadFont('.././fonts/Jersey_10/Jersey10-Regular.ttf');
+    
     /** CUTSCENE */
     npc1_idle_1 = loadImage('../images/games/characters/npc1_idle_1.png');
     npc1_idle_2 = loadImage('../images/games/characters/npc1_idle_2.png');
@@ -444,7 +447,7 @@ function txtBtnClick(sentence) {
         fadeTxtStart -= 1.5;
     }
 
-    textSize(32);
+    textFont(font, 32);
     fill(255, 255, 255, fadeTxtStart)
     stroke(0, 0, 0, fadeTxtStart);
     strokeWeight(3);

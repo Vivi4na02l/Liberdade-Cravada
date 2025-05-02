@@ -1,4 +1,5 @@
 /** game variables */
+let font;
 let gameStarted = false;
 let gameSpeed = 1;
 let lives = 3;
@@ -27,6 +28,8 @@ let basketSpeed = 9;
 
 
 export function basketFood_preload() {
+    font = loadFont('.././fonts/Jersey_10/Jersey10-Regular.ttf');
+
     basket = loadImage('../images/games/elements/basket.png');
     banana = loadImage('../images/games/elements/banana.png');
     bread = loadImage('../images/games/elements/bread.png');
@@ -220,7 +223,7 @@ function txtDisplay(sentence, posX, posY, size, isFade) {
         fadeTxtStart = 255;
     }
 
-    textSize(size);
+    textFont(font, size);
     fill(255, 255, 255, fadeTxtStart)
     stroke(0, 0, 0, fadeTxtStart);
     strokeWeight(3);

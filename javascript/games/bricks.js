@@ -1,5 +1,5 @@
 /** GAME VARIABLES */
-// let restartLvl2 = false;
+let font;
 let sentence = "Pressiona espaço para começar.", fadeTxtStart = 255, fadeTxtStartSwitch = false;
 let gameStarted = false;
 let isScenario2Created = false;
@@ -19,6 +19,8 @@ let balls = [];
 let isBallOut = false;
 
 export function bricks_preload() {
+    font = loadFont('.././fonts/Jersey_10/Jersey10-Regular.ttf');
+
     imgBrickEmpty = loadImage('../images/games/elements/brick.png');
     imgBrickComunismo = loadImage('../images/games/elements/brick_comunismo.png');
     imgBrickDitadura = loadImage('../images/games/elements/brick_ditadura.png');
@@ -292,7 +294,7 @@ function txtDisplay(sentence, posX, posY, size, isFade) {
         fadeTxtStart = 255;
     }
 
-    textSize(size);
+    textFont(font, size);
     fill(255, 255, 255, fadeTxtStart)
     stroke(0, 0, 0, fadeTxtStart);
     strokeWeight(3);

@@ -2,6 +2,7 @@
 let font;
 let gameStarted = false, gamePaused = false;
 let gameSpeed = 1;
+let bg_basketFood;
 let heart, heartW, lives = 3;
 let points = 0;
 let sentence = "Clica para começar.", fadeTxtStart = 255, fadeTxtStartSwitch = false;
@@ -31,6 +32,7 @@ export function basketFood_preload() {
     font = loadFont('.././fonts/Jersey_10/Jersey10-Regular.ttf');
 
     heart = loadImage('../images/games/elements/heart.png');
+    bg_basketFood = loadImage('../images/games/scenery/bg_basketFood_blurred.png');
 
     basket = loadImage('../images/games/elements/basket.png');
     banana = loadImage('../images/games/elements/banana.png');
@@ -107,6 +109,9 @@ export function basketFood_setup() {
 export function basketFood_draw() {
     noStroke();
     background('#aaffff');
+    image(bg_basketFood,
+        width/2, height/2,
+        width, height);
 
     if (lives <= 0) {
         //* GAME OVER */

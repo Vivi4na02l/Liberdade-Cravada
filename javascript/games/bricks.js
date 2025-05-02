@@ -1,6 +1,6 @@
 /** GAME VARIABLES */
 // let restartLvl2 = false;
-let sentence = "Pressiona espaço para começar.", fadeTxtStart = 0, fadeTxtStartSwitch = 255;
+let sentence = "Pressiona espaço para começar.", fadeTxtStart = 255, fadeTxtStartSwitch = false;
 let gameStarted = false;
 let isScenario2Created = false;
 let counter = 0;
@@ -363,6 +363,51 @@ class Ball {
             
             gameStarted = false;
             isBallOut = false;
+
+            isScenario2Created = false;
+            randomNbrs = [];
+            bricksImgs = [{
+                    img: imgBrickComunismo,
+                    w: 0,
+                    h: 0,
+                    x: 0,
+                    y: 0,
+                    hasBeenHit: false
+                },
+                {
+                    img: imgBrickDitadura,
+                    w: 0,
+                    h: 0,
+                    x: 0,
+                    y: 0,
+                    hasBeenHit: false
+                },
+                {
+                    img: imgBrickExilio,
+                    w: 0,
+                    h: 0,
+                    x: 0,
+                    y: 0,
+                    hasBeenHit: false
+                },
+                {
+                    img: imgBrickOpressao,
+                    w: 0,
+                    h: 0,
+                    x: 0,
+                    y: 0,
+                    hasBeenHit: false
+                },
+                {
+                    img: imgBrickPIDE,
+                    w: 0,
+                    h: 0,
+                    x: 0,
+                    y: 0,
+                    hasBeenHit: false
+                },
+            ];
+            
 
             sentence = "Pressione espaço para recomeçar!"
             txtDisplay(sentence, width*0.5, height*0.5, 32, true);

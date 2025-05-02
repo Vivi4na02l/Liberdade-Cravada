@@ -1,5 +1,6 @@
 /** GAME VARIABLES */
 let font;
+let points = 0;
 let sentence = "Pressiona espaço para começar.", fadeTxtStart = 255, fadeTxtStartSwitch = false;
 let gameStarted = false;
 let isScenario2Created = false;
@@ -120,7 +121,10 @@ export function bricks_draw() {
 
     movingSlingshot();
 
-    if (!gameStarted) {
+    /** text showing points */
+    txtDisplay(points, width*0.5, height*0.05, 32, false);
+    
+    if (!gameStarted) { /** text saying to click space to start/restart */
         txtDisplay(sentence, width*0.5, height*0.5, 32, true);
     }
 }
@@ -169,6 +173,7 @@ export function bricks_keyPressed() {
     if (key === ' ') {
         gameStarted = true;
         isBallOut = true;
+        points = 0;
     }
     
     if (keyCode === LEFT_ARROW) {
@@ -344,6 +349,8 @@ class Ball {
     }
   
     afterRectangle() {
+        points += 5;
+
         this.bAngle.x *= -1;
         this.bAngle.y *= -1;
         this.draw();

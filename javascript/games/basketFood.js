@@ -2,7 +2,7 @@
 let font;
 let gameStarted = false, gamePaused = false;
 let gameSpeed = 1;
-let lives = 3;
+let heart, heartW, lives = 3;
 let points = 0;
 let sentence = "Clica para começar.", fadeTxtStart = 255, fadeTxtStartSwitch = false;
 
@@ -30,6 +30,8 @@ let basketSpeed = 9;
 export function basketFood_preload() {
     font = loadFont('.././fonts/Jersey_10/Jersey10-Regular.ttf');
 
+    heart = loadImage('../images/games/elements/heart.png');
+
     basket = loadImage('../images/games/elements/basket.png');
     banana = loadImage('../images/games/elements/banana.png');
     bread = loadImage('../images/games/elements/bread.png');
@@ -39,6 +41,8 @@ export function basketFood_preload() {
 };
 
 export function basketFood_setup() {
+    heartW = width*0.05;
+
     basketW = width*0.1;
     basketH = (basket.height*basketW)/basket.width;
     basketX = width/2;
@@ -180,6 +184,9 @@ export function basketFood_draw() {
         txtDisplay(sentence, width*0.5, height*0.5, 32, true);
     }
 
+    /** draws the hearts corresponding to how many lives the player still has available */
+    livesDisplay();
+
     //* PAUSES GAME */
     pauseGame();
 }
@@ -231,6 +238,26 @@ function txtDisplay(sentence, posX, posY, size, isFade) {
     strokeWeight(3);
     textAlign(CENTER, CENTER)
     text(sentence, posX, posY);
+}
+
+function livesDisplay() {
+    if (lives == 3) {
+        image(heart,
+            width-heartW*3 - heartW*0.2, heartW,
+            heartW, (heart.height*heartW)/heart.width)
+    }
+    
+    if (lives <= 3 && lives > 1) {
+        image(heart,
+            width-heartW*2 - heartW*0.1, heartW,
+            heartW, (heart.height*heartW)/heart.width)
+    }
+    
+    if (lives >= 1) {
+        image(heart,
+            width-heartW, heartW,
+            heartW, (heart.height*heartW)/heart.width)
+    }
 }
 
 /**

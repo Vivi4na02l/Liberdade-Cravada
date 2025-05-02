@@ -26,6 +26,15 @@ import {
     basketFood_mouseClicked,
 } from './games/basketFood.js';
 
+import {
+    bricks_preload,
+    bricks_setup,
+    bricks_draw,
+    bricks_keyPressed,
+    bricks_keyReleased,
+    bricks_mouseClicked,
+} from './games/bricks.js';
+
 //* PREVENTS PAGE SCROLLING WHEN SPACEBAR OR ANY ARROW KEY IS PRESSED */
 window.addEventListener("keydown", function(e) {
     if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
@@ -42,6 +51,8 @@ function preload() {
         game2_preload();
     } else if (game == "basketFood") {
         basketFood_preload();
+    } else if (game == "bricks") {
+        bricks_preload();
     }
 }
 
@@ -64,6 +75,8 @@ function setup() {
         game2_setup();
     } else if (game == "basketFood") {
         basketFood_setup();
+    } else if (game == "bricks") {
+        bricks_setup();
     }
 }
 
@@ -77,6 +90,8 @@ function draw() {
         game2_draw();
     } else if (game == "basketFood") {
         basketFood_draw();
+    } else if (game == "bricks") {
+        bricks_draw();
     }
 }
 
@@ -87,6 +102,8 @@ function keyPressed() {
         game2_keyPressed();
     } else if (game == "basketFood") {
         basketFood_keyPressed();
+    } else if (game == "bricks") {
+        bricks_keyPressed();
     }
 }
 
@@ -97,6 +114,8 @@ function keyReleased() {
         game2_keyReleased();
     } else if (game == "basketFood") {
         basketFood_keyReleased();
+    } else if (game == "bricks") {
+        bricks_keyReleased();
     }
 }
 

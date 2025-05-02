@@ -66,7 +66,7 @@ let slideWhenSwitch = 20, slideWhenSwitchStart, slideWhenSwitchEnd, slidingImage
 
 let runSwitch = true, runWhenSwitch = 20, runWhenSwitchStart, runWhenSwitchEnd, runningImages = 0;
 
-export function game2_preload() {
+export function persecution_preload() {
     font = loadFont('.././fonts/Jersey_10/Jersey10-Regular.ttf');
     
     /** CUTSCENE */
@@ -124,7 +124,7 @@ export function game2_preload() {
     floor_lisbon = loadImage('../images/games/scenery/floor_lisbon.png');
 }
 
-export function game2_setup() {
+export function persecution_setup() {
     //* background */
     backgroundW = width*1.5;
     backgroundH = height*1.5;
@@ -179,7 +179,7 @@ export function game2_setup() {
     rectMode(CENTER);
 }
 
-export function game2_draw() {
+export function persecution_draw() {
     noStroke();
     background('#aaffff');    
 
@@ -390,7 +390,7 @@ export function game2_draw() {
     pauseGame();
 }
 
-export function game2_mouseClicked() {
+export function persecution_mouseClicked() {
     if (mouseX > 0 && mouseX < width 
         && mouseY > 0 && mouseY < height
         && cutscene && !gameStarted) {
@@ -428,7 +428,7 @@ function pauseGame() {
     }
 }
 
-export function game2_keyPressed() {
+export function persecution_keyPressed() {
     //* PAUSES THE GAME */
     if (keyCode === 27) {
         gamePaused = !gamePaused;
@@ -439,7 +439,7 @@ export function game2_keyPressed() {
     }
 }
 
-export function game2_keyReleased() {
+export function persecution_keyReleased() {
     if (key === ' ') {
         jump = true;
 

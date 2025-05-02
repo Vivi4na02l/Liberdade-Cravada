@@ -9,13 +9,13 @@ import {
 } from './games/game1.js';
 
 import {
-    game2_preload,
-    game2_setup,
-    game2_draw,
-    game2_keyPressed,
-    game2_keyReleased,
-    game2_mouseClicked,
-} from './games/game2.js';
+    persecution_preload,
+    persecution_setup,
+    persecution_draw,
+    persecution_keyPressed,
+    persecution_keyReleased,
+    persecution_mouseClicked,
+} from './games/persecution.js';
 
 import {
     basketFood_preload,
@@ -47,8 +47,8 @@ let game = sessionStorage.getItem("game");
 function preload() {
     if (game == "game1") {
         game1_preload();
-    } else if (game == "game2") {
-        game2_preload();
+    } else if (game == "persecution") {
+        persecution_preload();
     } else if (game == "basketFood") {
         basketFood_preload();
     } else if (game == "bricks") {
@@ -71,8 +71,8 @@ function setup() {
 
     if (game == "game1") {
         game1_setup();
-    } else if (game == "game2") {
-        game2_setup();
+    } else if (game == "persecution") {
+        persecution_setup();
     } else if (game == "basketFood") {
         basketFood_setup();
     } else if (game == "bricks") {
@@ -86,8 +86,8 @@ function draw() {
 
     if (game == "game1") {
         game1_draw();
-    } else if (game == "game2") {
-        game2_draw();
+    } else if (game == "persecution") {
+        persecution_draw();
     } else if (game == "basketFood") {
         basketFood_draw();
     } else if (game == "bricks") {
@@ -98,8 +98,8 @@ function draw() {
 function keyPressed() {
     if (game == "game1") {
         game1_keyPressed();
-    } else if (game == "game2") {
-        game2_keyPressed();
+    } else if (game == "persecution") {
+        persecution_keyPressed();
     } else if (game == "basketFood") {
         basketFood_keyPressed();
     } else if (game == "bricks") {
@@ -110,8 +110,8 @@ function keyPressed() {
 function keyReleased() {
     if (game == "game1") {
         game1_keyReleased();
-    } else if (game == "game2") {
-        game2_keyReleased();
+    } else if (game == "persecution") {
+        persecution_keyReleased();
     } else if (game == "basketFood") {
         basketFood_keyReleased();
     } else if (game == "bricks") {
@@ -120,8 +120,8 @@ function keyReleased() {
 }
 
 function mouseClicked() {
-    if (game == "game2") {
-        game2_mouseClicked();
+    if (game == "persecution") {
+        persecution_mouseClicked();
     } else if (game == "basketFood") {
         basketFood_mouseClicked();
     }

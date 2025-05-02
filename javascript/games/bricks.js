@@ -1,6 +1,6 @@
 /** GAME VARIABLES */
 let font;
-let points = 0;
+let points = 0, resetPoints = false;
 let sentence = "Pressiona espaço para começar.", fadeTxtStart = 255, fadeTxtStartSwitch = false;
 let gameStarted = false;
 let isScenario2Created = false;
@@ -96,6 +96,62 @@ export function bricks_draw() {
         bricks();
     } else {
         //* ADICIONAR ALGO PARA CONCLUIR O JOGO BEM SUCEDIDO */
+        console.log(balls);
+        
+        balls[0].bPos = createVector(width/2, height*0.8); // restarts positioning of the rock
+        balls[0].bAngle = createVector(0, -10); // restarts vector direction of the rock
+        slingshotX = width/2 // restarts positiniong of the slingshot
+        
+        gameStarted = false;
+        isBallOut = false;
+
+        isScenario2Created = false;
+        randomNbrs = [];
+        bricksImgs = [{
+                img: imgBrickComunismo,
+                w: 0,
+                h: 0,
+                x: 0,
+                y: 0,
+                hasBeenHit: false
+            },
+            {
+                img: imgBrickDitadura,
+                w: 0,
+                h: 0,
+                x: 0,
+                y: 0,
+                hasBeenHit: false
+            },
+            {
+                img: imgBrickExilio,
+                w: 0,
+                h: 0,
+                x: 0,
+                y: 0,
+                hasBeenHit: false
+            },
+            {
+                img: imgBrickOpressao,
+                w: 0,
+                h: 0,
+                x: 0,
+                y: 0,
+                hasBeenHit: false
+            },
+            {
+                img: imgBrickPIDE,
+                w: 0,
+                h: 0,
+                x: 0,
+                y: 0,
+                hasBeenHit: false
+            },
+        ];
+        
+        resetPoints = false;
+        sentence = "Pressione espaço para continuar!"
+        txtDisplay(sentence, width*0.5, height*0.5, 32, true);
     }
 
     /** Draw ball */
@@ -173,7 +229,10 @@ export function bricks_keyPressed() {
     if (key === ' ') {
         gameStarted = true;
         isBallOut = true;
-        points = 0;
+
+        if (resetPoints) {
+            points = 0;
+        }
     }
     
     if (keyCode === LEFT_ARROW) {
@@ -417,7 +476,7 @@ class Ball {
                 },
             ];
             
-
+            resetPoints = true;
             sentence = "Pressione espaço para recomeçar!"
             txtDisplay(sentence, width*0.5, height*0.5, 32, true);
             // noLoop();

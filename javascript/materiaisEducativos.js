@@ -184,6 +184,7 @@ function changeContent(clickedYear, pos) {
     //* TEXT */
     document.querySelector("#timelineTxt").innerHTML = content[pos].allText[0].text;
 
+
     //* HOW MANY PAGES */
     /** checks how many "pages" the content of the year the user clicked on has and writes them in the HTML for the html buttons */
     changeContentPagesHTML(content[pos]);

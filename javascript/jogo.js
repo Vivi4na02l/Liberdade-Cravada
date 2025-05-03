@@ -1,12 +1,12 @@
 let canvasW, canvasH;
 
 import {
-    game1_preload,
-    game1_setup,
-    game1_draw,
-    game1_keyPressed,
-    game1_keyReleased,
-} from './games/game1.js';
+    censorship_preload,
+    censorship_setup,
+    censorship_draw,
+    censorship_keyPressed,
+    censorship_keyReleased,
+} from './games/censorship.js';
 
 import {
     persecution_preload,
@@ -45,8 +45,8 @@ window.addEventListener("keydown", function(e) {
 let game = sessionStorage.getItem("game");
 
 function preload() {
-    if (game == "game1") {
-        game1_preload();
+    if (game == "censorship") {
+        censorship_preload();
     } else if (game == "persecution") {
         persecution_preload();
     } else if (game == "basketFood") {
@@ -69,8 +69,8 @@ function setup() {
     imageMode(CENTER);
     angleMode(DEGREES);
 
-    if (game == "game1") {
-        game1_setup();
+    if (game == "censorship") {
+        censorship_setup();
     } else if (game == "persecution") {
         persecution_setup();
     } else if (game == "basketFood") {
@@ -84,8 +84,8 @@ function draw() {
     clear();
     background("#000");
 
-    if (game == "game1") {
-        game1_draw();
+    if (game == "censorship") {
+        censorship_draw();
     } else if (game == "persecution") {
         persecution_draw();
     } else if (game == "basketFood") {
@@ -96,8 +96,8 @@ function draw() {
 }
 
 function keyPressed() {
-    if (game == "game1") {
-        game1_keyPressed();
+    if (game == "censorship") {
+        censorship_keyPressed();
     } else if (game == "persecution") {
         persecution_keyPressed();
     } else if (game == "basketFood") {
@@ -108,8 +108,8 @@ function keyPressed() {
 }
 
 function keyReleased() {
-    if (game == "game1") {
-        game1_keyReleased();
+    if (game == "censorship") {
+        censorship_keyReleased();
     } else if (game == "persecution") {
         persecution_keyReleased();
     } else if (game == "basketFood") {

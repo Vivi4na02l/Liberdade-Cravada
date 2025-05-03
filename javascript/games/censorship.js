@@ -34,7 +34,7 @@ let wordsCensuredAll = [];
 let randomNbr1, randomNbr2;
 let marginLeftLeft, marginLeftTop, marginRightLeft, marginRightTop, maxWidth;
 
-export function game1_preload() {
+export function censorship_preload() {
     //* font */
     fontPX = loadFont('.././fonts/VT323/VT323-Regular.ttf');
 
@@ -43,11 +43,11 @@ export function game1_preload() {
     imgPencil = loadImage('.././images/games/elements/blue_pencil.png');
 };
 
-export function game1_setup() {
+export function censorship_setup() {
     rectMode(CENTER);
 }
 
-export function game1_draw() {
+export function censorship_draw() {
     clear();
 
     noStroke();
@@ -79,7 +79,7 @@ export function game1_draw() {
     movingPencil();
 }
 
-export function game1_keyPressed() {
+export function censorship_keyPressed() {
     if (keyCode === LEFT_ARROW) {
         goingLeft = true;
     }
@@ -100,7 +100,7 @@ export function game1_keyPressed() {
     }
 }
 
-export function game1_keyReleased() {
+export function censorship_keyReleased() {
     if (keyCode === LEFT_ARROW) {
         goingLeft = false;
     }

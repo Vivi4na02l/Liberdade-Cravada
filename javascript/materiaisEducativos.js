@@ -108,7 +108,7 @@ let content = [
 
 let contentActivated = content[0];
 
-changeContent("1928");
+changeContent("1928", 0);
 pagesClickListenner();
 
 /** RESPONSABLE FOR VISUALLY CHANGING THE COLORS OF THE BARS(divs) AND THE BALLS OF THE TIMELINE WHENEVER THE USER CLICKS IN A BALL */
@@ -117,8 +117,10 @@ for (const btnBall of document.querySelectorAll(".btnBall")) {
         let clickedYear = btnBall.id.slice(0, -1);
         let device = btnBall.id[btnBall.id.length-1]; /* finds out which html is being used since it changes depending on the device */
 
-        contentActivated = clickedYear;
-        changeContent(clickedYear);
+        let pos = content.findIndex(year => year.year == clickedYear); /** finds out which position is related to the year the user clicked in, in the array "content" */
+        changeContent(clickedYear, pos);
+
+        contentActivated = content[pos];
 
         btnBall.classList.remove("inactiveBall");
         btnBall.classList.add("activeBall");
@@ -168,9 +170,7 @@ function pagesClickListenner() {
     )}
 }
 
-function changeContent(clickedYear) {
-    let pos = content.findIndex(year => year.year == clickedYear); /** finds out which position is related to the year the user clicked in, in the array "content" */
-
+function changeContent(clickedYear, pos) {
     //* YEAR */
     document.querySelector("#timelineTxtYear").innerHTML = clickedYear;
 

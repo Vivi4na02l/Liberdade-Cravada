@@ -1,11 +1,15 @@
 /** game variables */
 let font;
-let gameStarted = false, gamePaused = false;
+let gameStarted = false, gamePaused = false, gameOver = false;
 let gameSpeed = 1;
 let bg_basketFood;
 let heart, heartW, lives = 3;
 let points = 0;
 let sentence = "Clica para começar.", fadeTxtStart = 255, fadeTxtStartSwitch = false;
+
+/** end cutscene */
+let gameEndedFrame, endCutsceneFadeIn = 0, endCutsceneSlides = false, endCutsceneSlide = 0, endCutsceneOver = false;
+let basketFood_gameover, alphaGameOver = 0;
 
 /** FOOD */
 let banana, bread, fish, milk, potato;
@@ -33,6 +37,7 @@ export function basketFood_preload() {
 
     heart = loadImage('../images/games/elements/heart.png');
     bg_basketFood = loadImage('../images/games/scenery/bg_basketFood_blurred.png');
+    basketFood_gameover = loadImage('../images/games/gameover/basketFood_gameover.png');
 
     basket = loadImage('../images/games/elements/basket.png');
     banana = loadImage('../images/games/elements/banana.png');
@@ -43,6 +48,8 @@ export function basketFood_preload() {
 };
 
 export function basketFood_setup() {
+    rectMode(CENTER);
+
     heartW = width*0.05;
 
     basketW = width*0.1;
@@ -108,7 +115,6 @@ export function basketFood_setup() {
 
 export function basketFood_draw() {
     noStroke();
-    background('#aaffff');
     image(bg_basketFood,
         width/2, height/2,
         width, height);
@@ -116,12 +122,8 @@ export function basketFood_draw() {
     if (lives <= 0) {
         //* GAME OVER */
         gameStarted = false;
+        gameOver = true;
         sentence = "Clica para recomeçar."
-
-        firstFoodAdded = false;
-        gameSpeed = 1;
-        lives = 3;
-        points = 0;
         basketPos.x = width/2;
     }
 
@@ -179,21 +181,98 @@ export function basketFood_draw() {
         /** BASKET MOVEMENT */
         basketMovement();
         txtDisplay(points, width*0.5, height*0.05, 40, false);
+
+        /** saves the last frame before player lost */
+        gameEndedFrame = frameCount
     }
 
     else {
-        image(basket, /* img */
-            basketPos.x, basketPos.y, /* x, y */
-            basketPos.w, basketPos.h) /* w, h */
+        if (gameOver) {
+            endCutsceneSlides = true;
+            if (frameCount - gameEndedFrame > 50) {
 
-        txtDisplay(sentence, width*0.5, height*0.5, 32, true);
+                image(basketFood_gameover, /* img */
+                    width/2, height/2, /* x, y */
+                    width, height) /* w, h */  
+
+                if (endCutsceneSlide == 0) {
+                    endCutsceneSlideSentences("Antes da Revolução dos Cravos, muitos trabalhadores recebiam salários muito baixos.");
+                } else if (endCutsceneSlide == 1) {
+                    endCutsceneSlideSentences("Mal conseguindo alimentar as suas famílias.");
+                } else if (endCutsceneSlide == 2) {
+                    let sentenceEndCutscene;
+
+                    if (points < 50) {
+                        sentenceEndCutscene = "pouquíssimos dias"
+                    } else if (points >= 50 && points < 100) {
+                        sentenceEndCutscene = "alguns dias"
+                    } else {
+                        sentenceEndCutscene = "semanas"
+                    }
+
+                    endCutsceneSlideSentences("Com a quantidade de comida que apanhaste, conseguirias alimentar uma família de 4 por "+sentenceEndCutscene+"!");
+                } else if (endCutsceneSlide == 3) {
+                    if (frameCount % 5 == 0) {
+                        alphaGameOver += 20;
+                    }
+
+                    fill("#000000");
+                    rect(width/2, height/2, width, height);
+
+                    txtDisplay("Pontos feitos: "+points, width/2, height*0.45, 25, false);
+                    textFont(font, 100);
+                    fill(192, 57, 43, alphaGameOver);
+                    stroke(0, 0, 0, alphaGameOver);
+                    strokeWeight(3);
+                    textAlign(CENTER, CENTER)
+                    text("GAME OVER", width/2, height/2);
+                    txtDisplay("Clique para tentar novamente.", width/2, height*0.6, 20, true);
+                } else {
+                    endCutsceneSlides = false;
+                    gameOver = false;
+
+                    image(bg_basketFood,
+                        width/2, height/2,
+                        width, height);
+
+                    image(basket, /* img */
+                        basketPos.x, basketPos.y, /* x, y */
+                        basketPos.w, basketPos.h) /* w, h */
+            
+                    txtDisplay(sentence, width*0.5, height*0.5, 32, true);
+                }
+            } else {
+                endCutsceneFadeIn += (255/50);
+
+                push();
+                tint(255, endCutsceneFadeIn);
+                image(basketFood_gameover, /* img */
+                    width/2, height/2, /* x, y */
+                    width, height) /* w, h */  
+                pop();  
+            }
+        } else {
+            image(bg_basketFood,
+                width/2, height/2,
+                width, height);
+
+            image(basket, /* img */
+                basketPos.x, basketPos.y, /* x, y */
+                basketPos.w, basketPos.h) /* w, h */
+    
+            txtDisplay(sentence, width*0.5, height*0.5, 32, true);
+        }
     }
 
     /** draws the hearts corresponding to how many lives the player still has available */
-    livesDisplay();
+    if (!gameOver) {
+        livesDisplay();
+    }
 
     //* PAUSES GAME */
-    pauseGame();
+    if (!gameOver) {
+        pauseGame();
+    }
 }
 
 /**
@@ -349,9 +428,35 @@ export function basketFood_keyReleased() {
 export function basketFood_mouseClicked() {
     if (mouseX > 0 && mouseX < width 
         && mouseY > 0 && mouseY < height
-        && !gameStarted) {
+        && !gameStarted && !endCutsceneSlides) {
 
+        foodSpawn = {
+            isCounting: false,
+            timerStart: 0,
+            timerShouldEnd: 200,
+            timerEnded: false,
+        };
+
+        firstFoodAdded = false;
+        foods = [];
+        gameSpeed = 1;
+        lives = 3;
+
+        endCutsceneOver = false;
+        endCutsceneFadeIn = 0;
+        endCutsceneSlides = false;
+        endCutsceneSlide = 0;
+        alphaGameOver = 0;
+        points = 0;
+        
         gameStarted = true;
+    }
+
+    if (mouseX > 0 && mouseX < width 
+        && mouseY > 0 && mouseY < height
+        && endCutsceneSlides) {
+        
+        endCutsceneSlide++;
     }
 }
 
@@ -421,4 +526,18 @@ class Food {
             return false;
         }
     }
+}
+
+function endCutsceneSlideSentences(sentence) {
+    let rectH = height*0.3
+    let rectY = height*0.7+rectH/2
+    let c = color(0, 0, 0);
+    push();
+    c.setAlpha(170);
+    fill(c);
+    rect(width/2, rectY, width, rectH);
+    pop();
+
+    txtDisplay(sentence, width/2, rectY-rectH*0.1, 25, false);
+    txtDisplay("Clique para continuar", width/2, rectY+rectH*0.15, 20, true);
 }

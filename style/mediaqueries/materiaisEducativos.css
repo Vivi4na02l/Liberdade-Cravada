@@ -1,5 +1,12 @@
 /** mobile */
 @media screen and (min-width: 320px) and (max-width: 767px) {
+    body {
+        background-image: url("../../images/website/images/grey_elements_bg.png");
+        background-size: contain;
+        background-position: 0% 50%;
+        background-repeat: repeat;
+    }
+    
     /** FIGURAS/GRUPOS IMPORTANTES */
     #figuresContent {
         padding-top: 30%;
@@ -110,6 +117,13 @@
 
 /** tablet vertical portrait */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
+    body {
+        background-image: url("../../images/website/images/grey_elements_bg.png");
+        background-size: contain;
+        background-position: 0% 50%;
+        background-repeat: repeat;
+    }
+
     /** FIGURAS/GRUPOS IMPORTANTES */
     #figuresContent {
         padding-top: 20%;
@@ -220,6 +234,13 @@
 
 /** desktop screen */
 @media screen and (min-width: 1024px) and (max-width: 1369px) {
+    body {
+        background-image: url("../../images/website/images/grey_elements_bg.png");
+        background-size: contain;
+        background-position: 0% 50%;
+        background-repeat: repeat;
+    }
+
     /** FIGURAS/GRUPOS IMPORTANTES */
     #figuresContent {
         padding-top: 14%;
@@ -324,6 +345,13 @@
 
 /** bigger desktop screen */
 @media screen and (min-width: 1370px) {
+    body {
+        background-image: url("../../images/website/images/grey_elements_bg.png");
+        background-size: contain;
+        background-position: 0% 50%;
+        background-repeat: repeat;
+    }
+
     /** FIGURAS/GRUPOS IMPORTANTES */
     #figuresContent {
         padding-top: 10%;

@@ -121,6 +121,13 @@ for (const btnBall of document.querySelectorAll(".btnBall")) {
 
         contentActivated = content[pos];
 
+        /** makes every page not to be the one clicked (just in case it wasn't the first one) */
+        for (const eachPage of content[pos].allText) {
+            eachPage.active = false;
+        }
+        content[pos].allText[0].active = true; /* makes the first page be the one that's going to be showing, whenever user changes between the different year's contents */
+        changeContentPagesHTML(content[pos]);
+
         btnBall.classList.remove("inactiveBall");
         btnBall.classList.add("activeBall");
         btnBall.parentElement.classList.add("bgRed");
@@ -209,10 +216,7 @@ function changeContentPages(pageClicked) {
             let posOldPage = contentActivated.allText.findIndex(page => page.active == true);
             
             if (contentActivated.allText[posOldPage].page != contentActivated.allText[contentActivated.allText.length-1].page) { /** if the page that it was already in wasn't the last one (cause there is no page preceding the first one) */
-                contentActivated.allText[posOldPage].active = false;
-
-                console.log(contentActivated.allText[posOldPage].page);
-                
+                contentActivated.allText[posOldPage].active = false;                
 
                 let newPage = contentActivated.allText[posOldPage].page + 1;
 
@@ -224,7 +228,7 @@ function changeContentPages(pageClicked) {
         }
 
         if (didPageChange) {
-            changeContentPagesHTML(contentActivated, contentActivated.allText[posNewPage].page);
+            changeContentPagesHTML(contentActivated);
             changeContentText(contentActivated, contentActivated.allText[posNewPage].page);
         }
                 
@@ -238,7 +242,7 @@ function changeContentPages(pageClicked) {
         let posNewPage = contentActivated.allText.findIndex(page => page.page == pageClicked.innerHTML);
         contentActivated.allText[posNewPage].active = true;
         
-        changeContentPagesHTML(contentActivated, pageClicked.innerHTML);
+        changeContentPagesHTML(contentActivated);
         changeContentText(contentActivated, pageClicked.innerHTML);
     }
 }

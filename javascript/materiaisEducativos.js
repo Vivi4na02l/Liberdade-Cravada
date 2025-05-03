@@ -14,7 +14,7 @@ let content = [
                 text: "texto3" },
         ]
     },
-    { /** pos // yearArray */
+    {
         year: 1933,
         title: "Aprovação do Estado Novo",
         allText: [ /** posPage */
@@ -29,7 +29,7 @@ let content = [
                 text: "texto3" },
         ]
     },
-    { /** pos // yearArray */
+    {
         year: 1945,
         title: "Fim da II Guerra Mundial",
         allText: [ /** posPage */
@@ -44,7 +44,7 @@ let content = [
                 text: "texto3" },
         ]
     },
-    { /** pos // yearArray */
+    {
         year: 1958,
         title: "Humberto Delgado Exilado",
         allText: [ /** posPage */
@@ -59,7 +59,7 @@ let content = [
                 text: "texto3" },
         ]
     },
-    { /** pos // yearArray */
+    {
         year: 1961,
         title: "Início das Guerras Coloniais",
         allText: [ /** posPage */
@@ -74,7 +74,7 @@ let content = [
                 text: "texto3" },
         ]
     },
-    { /** pos // yearArray */
+    {
         year: 1968,
         title: "Salazar Sai do Poder",
         allText: [ /** posPage */
@@ -89,7 +89,7 @@ let content = [
                 text: "texto3" },
         ]
     },
-    { /** pos // yearArray */
+    {
         year: 1974,
         title: "Dia da Liberdade",
         allText: [ /** posPage */
@@ -109,7 +109,6 @@ let content = [
 let contentActivated = content[0];
 
 changeContent("1928", 0);
-pagesClickListenner();
 
 /** RESPONSABLE FOR VISUALLY CHANGING THE COLORS OF THE BARS(divs) AND THE BALLS OF THE TIMELINE WHENEVER THE USER CLICKS IN A BALL */
 for (const btnBall of document.querySelectorAll(".btnBall")) {
@@ -162,9 +161,7 @@ for (const btnBall of document.querySelectorAll(".btnBall")) {
 
 function pagesClickListenner() {
     for (const pageBtn of document.querySelectorAll('.pages')) {
-        pageBtn.addEventListener('click', () => {
-            console.log(document.querySelectorAll('.pages'));
-            
+        pageBtn.addEventListener('click', () => {            
             changeContentPages(pageBtn);
         }
     )}
@@ -183,36 +180,53 @@ function changeContent(clickedYear, pos) {
     //* HOW MANY PAGES */
     /** checks how many "pages" the content of the year the user clicked on has and writes them in the HTML for the html buttons */
     changeContentPagesHTML(content[pos]);
-
-    // for (const pageBtn of document.querySelectorAll('.pages')) {
-    //     pageBtn.addEventListener('click', () => {
-            // if (isNaN(pageBtn.innerHTML)) { /** if button clicked in pages is one of the arrows ("<" nd ">") */
-                
-            // } else { /** if button clicked in pages is a number */
-
-            //     /* checks which page was last "activated" and deactivates it */
-            //     let posOldPage = content[pos].allText.findIndex(page => page.active == true);
-            //     content[pos].allText[posOldPage].active = false;
-
-            //     /* "activates" the page that the user clicked on */
-            //     let posNewPage = content[pos].allText.findIndex(page => page.page == pageBtn.innerHTML);
-            //     content[pos].allText[posNewPage].active = true;
-
-            //     console.log(content[pos]);
-                
-
-            //     changeContentPagesHTML(content[pos]);
-
-            //     changeContentText(content[pos], pageBtn.innerHTML);
-            // }
-    //     })
-    // }
 }
 
 function changeContentPages(pageClicked) {
     
     if (isNaN(pageClicked.innerHTML)) { /** if button clicked in pages is one of the arrows ("<" nd ">") */
-        console.log('aaaaa');
+        let posNewPage;
+        let didPageChange = false;
+
+        if (pageClicked.id == "arrowBack") { // "<"
+            
+            /* checks which page was last "activated" */
+            let posOldPage = contentActivated.allText.findIndex(page => page.active == true);
+
+            if (contentActivated.allText[posOldPage].page != 1) { /** if the page that it was already in wasn't the first one (cause there is no page preceding the first one) */
+                contentActivated.allText[posOldPage].active = false;
+
+                let newPage = contentActivated.allText[posOldPage].page - 1;
+
+                posNewPage = contentActivated.allText.findIndex(page => page.page == newPage);
+                contentActivated.allText[posNewPage].active = true;
+
+                didPageChange = true;
+            }
+        } else if (pageClicked.id == "arrowForward") { // ">"
+
+            /* checks which page was last "activated" */
+            let posOldPage = contentActivated.allText.findIndex(page => page.active == true);
+            
+            if (contentActivated.allText[posOldPage].page != contentActivated.allText[contentActivated.allText.length-1].page) { /** if the page that it was already in wasn't the last one (cause there is no page preceding the first one) */
+                contentActivated.allText[posOldPage].active = false;
+
+                console.log(contentActivated.allText[posOldPage].page);
+                
+
+                let newPage = contentActivated.allText[posOldPage].page + 1;
+
+                posNewPage = contentActivated.allText.findIndex(page => page.page == newPage);
+                contentActivated.allText[posNewPage].active = true;
+
+                didPageChange = true;
+            }
+        }
+
+        if (didPageChange) {
+            changeContentPagesHTML(contentActivated, contentActivated.allText[posNewPage].page);
+            changeContentText(contentActivated, contentActivated.allText[posNewPage].page);
+        }
                 
     } else { /** if button clicked in pages is a number */
 
@@ -223,12 +237,8 @@ function changeContentPages(pageClicked) {
         /* "activates" the page that the user clicked on */
         let posNewPage = contentActivated.allText.findIndex(page => page.page == pageClicked.innerHTML);
         contentActivated.allText[posNewPage].active = true;
-
-        console.log(contentActivated);
         
-
-        changeContentPagesHTML(contentActivated);
-
+        changeContentPagesHTML(contentActivated, pageClicked.innerHTML);
         changeContentText(contentActivated, pageClicked.innerHTML);
     }
 }
@@ -238,7 +248,7 @@ function changeContentPages(pageClicked) {
  * @param {*} yearArray [this variable is represented in the array at the top what it should be]
  */
 function changeContentPagesHTML(yearArray) {
-    let pagesHTML = '<p id="arrow" class="pages m0 p0 IBM fontNormalSize2 beige"><</p>';
+    let pagesHTML = '<p id="arrowBack" class="pages m0 p0 IBM fontNormalSize2 beige"><</p>';
 
     for (let i = 0; i < yearArray.allText.length; i++) {
         if (yearArray.allText[i].active) {            
@@ -247,9 +257,9 @@ function changeContentPagesHTML(yearArray) {
             pagesHTML += `<p id="${yearArray.allText[i].page}" class="pages m0 p0 IBM fontNormalSize2 beige">${yearArray.allText[i].page}</p>`
         }
     }
-    pagesHTML += '<p id="arrow" class="pages m0 p0 IBM fontNormalSize2 beige">></p>';
+    pagesHTML += '<p id="arrowForward" class="pages m0 p0 IBM fontNormalSize2 beige">></p>';
 
-    document.querySelector(".timelineDescriptionPagesP").innerHTML = pagesHTML;
+    document.querySelector("#timelineDescriptionPages").innerHTML = pagesHTML;
 
     /* the HTML is rewritten and the listenner was associated to it,
     since the code already ran once through the it, the code won't re-associate with the new HTML that was re-written through the javascript.

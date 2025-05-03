@@ -2,6 +2,8 @@
 @media screen and (min-width: 320px) and (max-width: 767px)  {
     #timelineContent {
         padding-top: 25%; /* 10 */
+    } #txtIntroJogos {
+        width: 80%;
     }
 
     /** TIME LINE BAR */
@@ -215,6 +217,19 @@
 @media screen and (min-width: 1370px) {
     #timelineContent {
         padding-top: 10%;
+    } #titleIntroJogos {
+        width: 80%;
+    } #titleIntroJogos p {
+        border-bottom: #FDEBD0 dashed 2px;
+    } #introJogos {
+        width: 80%;
+        margin-top: 50px;
+        margin-bottom: 80px;
+    } #txtIntroJogos {
+       display: inline;
+    } #aTxtIntroJogos {
+        /* border-bottom-style: dashed;
+        border-width: 1px; */
     }
 
     /** TIME LINE BAR */
@@ -254,7 +269,7 @@
         border-bottom: solid #C0392B;
         border-radius: 5px;
     } .yearGameTitle2 {
-        width: 70%;
+        width: 60%;
         border-bottom: solid #C0392B;
         border-radius: 5px;
     }
@@ -274,6 +289,7 @@
     } .divGame {
         width: 100%;
         height: 250px;
+        cursor: pointer;
     } #divGameTitle {
         width: 100%;
         height: 20%;
@@ -282,5 +298,23 @@
         height: 80%;
 
         border-radius: 20px;
+    }
+
+    /** EACH GAME */
+    #persecution div {
+        background-image: url("../../images/games/thumbnails/persecution_thumbnail.jpg");
+        background-size: cover;
+        background-position: 0% 50%;
+        background-repeat: no-repeat;
+    } #basketFood div {
+        background-image: url("../../images/games/thumbnails/basketFood_thumbnail.jpg");
+        background-size: cover;
+        background-position: 0% 50%;
+        background-repeat: no-repeat;
+    } #bricks div {
+        background-image: url("../../images/games/thumbnails/bricks_thumbnail.png");
+        background-size: cover;
+        background-position: 0% 50%;
+        background-repeat: no-repeat;
     }
 }

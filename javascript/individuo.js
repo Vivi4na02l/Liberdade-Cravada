@@ -17,8 +17,12 @@ let characters = [
         char: "woman",
         img: "../../images/website/images/char_woman.png",
         title: "Mulher",
-        info: ["1","2","3"],
-        text: ["oaosdkoekqwdoas"]
+        info: ['"Cuidadora e educadora, subordinada ao marido";',"O regime promovia a ideia de que o lugar da mulher era em casa;","Apenas mulheres chefes de família (sem marido presente) podiam votar."],
+        text: ['Dia 16 de março de 1933, num discurso, Salazar disse que "o trabalho da mulher fora do lar desagrega este, separa os membros da família, torna-os um pouco estranhos uns aos outros. Desaparece a vida comum, sofre a obra educativa das crianças, diminui o número delas. E com o mau ou impossível funcionamento da alimentação e do vestuário verifica-se uma perda importante, raro, materialmente compensado pelo salário recebido". Salazar acreditava que a <i>missão natural</i> de uma mulher era procriar e apresentar submissão à sua cara metade.',
+            "Apesar de a Constituição de 1933 proclamar igualdade, na práticas as mulheres enfrentavam muitas restrições: <li id='charInfo' class='m0 IBM fontNormalSize'>Necessitavam do marido para trabalhar, viajar ou abrir contas bancárias;</li><li id='charInfo' class='m0 IBM fontNormalSize'>Eram excluídas de profissões como juíza, diplomata ou militar;</li><li id='charInfo' class='m0 IBM fontNormalSize'>Ganhavam menos que os homens pelo mesmo trabalho;</li><li id='charInfo' class='m0 IBM fontNormalSize'>O Código Cívil de 1867, em vigor até 1967, estabelecia que a mulher devia obediência ao marido e não podia gerir os seus bens sem consentimento.</li>",
+            "Para moldar as mulheres segundos os ideais conservadores do Estado, em 1937, foi criada a Mocidade Portuguesa Feminina (MPF), uma organização obrigatória para jovens raparigas, que ensinava a importância do lar, da moral e da obediência.",
+            "O direito de voto era concedido a mulheres chefes de família, ou solteiras independentes com curso secundário ou superior (a educação naquela altura era cara, e, para mulheres, desencorajada).<br><br>A prostituição era considerada, em certas circunstâncias, um crime, tal como a questão ao aborto."
+        ]
     },
     {
         char: "poorMan",
@@ -138,7 +142,7 @@ function fillText(chosenChar, pageClicked, page) {
                         </p>`;
             }
         }
-        
+        document.querySelector('#pages').style.display = "none";
         document.querySelector('#charText').innerHTML = info;
     } else {
         if (pageClicked) {

@@ -60,8 +60,12 @@ let characters = [
         char: "PIDE",
         img: "../../images/website/images/char_agent_PIDE.png",
         title: "D.G.S. / P.I.D.E.",
-        info: ["1","2","3"],
-        text: ["oaosdkoekqwdoas"]
+        info: ["Fundada em 1933 com o nome de Polícia de Vigilância e Defesa do Estado Novo (PVDE);","Designada também de Polícia Internacional e de Defesa do Estado (PIDE) e Direção-Geral de Segurança (DGS);","Tinha muito poder, estando quase acima da lei."],
+        text: ["A PIDE foi criada em 1945, sucedendo à PVDE, que foi fundada em 1933, com o objetivo de proteger o regime do Estado Novo contra qualquer forma de oposição. A PIDE acumulava funções administrativas e repressivas, controlando fronteiras, emigração e a permanência de estrangeiros, além de investigar crimes políticos e de segurança do Estado. A sua atuação estendia-se também às colónias, especialmente durante a Guerra Colonial.",
+            "Tinha autoridade para deter cidadãos sem mandado judicial, conduzir interrogatórios sem a presença de advogados, manter detenções prolongadas sem julgamento e conduzir investigações de forma quase autónoma. Estas práticas permitiam-lhe agir com impunidade, instaurando um clima de medo e repressão. O seu envolvimento em assassinatos políticos, como os de <a id='humberto' class='redirect red'>Humberto Delgado</a>, exemplifica a sua brutalidade.",
+            "A repressão exercida pela PIDE incluía tortura física e psicológica, com métodos como espancamentos, privação de sono, choques elétricos e isolamento prolongado. As prisões políticas, como Caxias, Peniche e o Tarrafal, tornaram-se símbolos da opressão do regime. A colaboração de informadores civis, permitiu que a PIDE se infiltrasse em diversos setores da sociedade, desde locais de trabalho até instituições religiosas, ampliando o seu alcance repressivo.",
+            "Em 1969, no contexto das reformas de <a id='marcello' class='redirect red'>Marcello Caetano</a>, a PIDE foi reestruturada e passou a denominar-se DGS, mantendo, no entanto, as mesmas práticas repressivas. Após a revolução de 25 de abril de 1974, a DGS foi extinta, e muitos dos seus agentes foram detidos. O legado da PIDE permanece como um dos capítulos mais sombrios da história portuguesa, simbolizando a repressão e a ausência da liberdade durante o Estado Novo."
+        ]
     },
     {
         char: "marcello",
@@ -91,6 +95,11 @@ function redirectChar() {
     for (const redirect of document.querySelectorAll(".redirect")) {
         redirect.addEventListener('click', () => {
             sessionStorage.setItem("char", redirect.id);
+
+            document.querySelector("#page2").classList.remove("active");
+            document.querySelector("#page2").classList.add("inactive");
+            document.querySelector("#page1").classList.remove("inactive");
+            document.querySelector("#page1").classList.add("active");
 
             fillRightInfo(false, 0)
         });

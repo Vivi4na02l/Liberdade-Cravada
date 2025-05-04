@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogos Educativos</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="../style/style.css">
+    <link rel="stylesheet" type="text/css" href="../style/structuring.css">
+    <link rel="stylesheet" type="text/css" href="../style/mediaqueries/everyPage.css">
+    <link rel="stylesheet" type="text/css" href="../style/mediaqueries/individuo.css">
+
+    <!-- font JERSEY -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Jersey+10&display=swap" rel="stylesheet">
+</head>
+<body class="bgGrey">
+    <!-- NAVBAR -->
+    <nav id="navbar" class="pa00 w100 dflex jcc">
+        <div id="navbarContent" class="dflex jcsb aic">
+            <a id="logo" href="../index.html">
+                <img src="../images/website/iconography/cravo_logo.png" height="100%">
+            </a>
+    
+            <div id="links" class="dflex fdr jcsb">
+                <a href="JogosEducativos.html" class="btnNavbar">
+                    <p class="m0 jersey beige fontOutline navlinkActive">Jogos Educativos</p>
+                </a>
+                <a href="MateriaisEducativos.html" class="btnNavbar">
+                    <p class="m0 jersey beige fontOutline navlinkInactive">Materiais Educativos</p>
+                </a>
+                <a href="SobreProjeto.html" class="btnNavbar">
+                    <p class="m0 jersey beige fontOutline navlinkInactive">Sobre o Projeto</p>
+                </a>
+            </div>
+
+            <!-- menu hamburger -->
+            <div id="iconHamburger">
+                <img src="../images/website/iconography/hamburger_menu.png" height="100%">
+            </div>
+        </div>
+    </nav>
+
+    <!-- HAMBURGER MENU -->
+    <div id="menuHamburgerBg"></div>
+    <nav aria-label="secundary" id="menuHamburger" class="bgBeige">
+        <div class="dflex fdrr">
+            <button id="btnCloseHamburger">
+                <img src="../images/website/iconography/close.png" height="30vh" alt="button that closes side hamburger bar">
+            </button>
+        </div>
+
+        <ul class="hamburger-sidebar-navigation">
+            <li>
+                <a role="menuitem" href="JogosEducativos.html">
+                    <p class="m0 jersey red navlinkActive">Jogos Educativos</p>
+                </a>
+            </li>
+            <li>
+                <a role="menuitem" href="MateriaisEducativos.html">
+                    <p class="m0 jersey grey navlinkInactiveHamburger">Materiais Educativos</p>
+                </a>
+            </li>
+            <li>
+                <a role="menuitem" href="SobreProjeto.html">
+                    <p class="m0 jersey grey navlinkInactiveHamburger">Sobre o Projeto</p>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- BIBLIOGRAPHY -->
+    <div id="bibliography">
+        <div id="charImgAndInfo" class="bgBeige">
+            <div id="charImg" class="dflex jcc">
+                <!-- image -->
+                <img src="../../images/website/images/char_girl.png" height="100%">
+            </div>
+            <div id="charInfoDiv" class="dflex fdc jcsb">
+                <li id="charInfo" class="m0 IBM fontNormalSize">
+                    Lorem
+                </li>
+                <li id="charInfo" class="m0 IBM fontNormalSize">
+                    Lorem
+                </li>
+                <li id="charInfo" class="m0 IBM fontNormalSize">
+                    Lorem
+                </li>
+                <li id="charInfo" class="m0 IBM fontNormalSize">
+                    Lorem
+                </li>
+            </div>
+        </div>
+
+        <div id="charAbout" class="bgBeige">
+            <div id="charHeader" class="dflex jcsb">
+                <p id="charTitle" class="m0 p0 jersey red fontSubtitleSize2">Criança</p>
+                <img id="charGoBack" src="../images/website/iconography/close.png">
+            </div>
+
+            <p id="charText" class="m0 IBM fontNormalSize">
+                Lorem
+            </p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="dflex jcc bgRed">
+        <div id="footer">
+            <div id="footerLeft">
+                <a href="../index.html" id="footerImg" class="bgBeige dflex jcc aie">
+                    <img src="../images/website/iconography/cravo_cropped.png" height="90%" alt="">
+                </a><br>
+                <p class="m0 jersey beige fontSubtitleSize2">Liberty <br> Breakout</p>
+            </div>
+
+            <div id="footerMiddleRight">
+                <p class="m0 IBM beige fontNormalSize2">
+                    Preserva a memória, molda o presente e guia-nos para um futuro próspero.
+                </p>
+            </div>
+
+            <div id="footerRight" class="dflex fdc jcc aic">
+                <div>
+                    <p id="footerLinkTitle" class="m0 jersey beige fontSubtitleSize2">
+                        Páginas:
+                    </p>
+                    
+                    <div>
+                        <!-- Jogos Educativos -->
+                        <a href="JogosEducativos.html">
+                            <p class="m0 IBM beige fontNormalSize2">> Jogos Educativos</p>
+                        </a>
+                        <!-- Materiais Educativos -->
+                        <a href="MateriaisEducativos.html">
+                            <p id="footerLink" class="m0 IBM beige fontNormalSize2">> Materiais Educativos</p>
+                        </a>
+                        <!-- Sobre o Projeto -->
+                        <a href="SobreProjeto.html">
+                            <p class="m0 IBM beige fontNormalSize2">> Sobre o Projeto</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../javascript/everyPage.js"></script>
+</body>
+</html>

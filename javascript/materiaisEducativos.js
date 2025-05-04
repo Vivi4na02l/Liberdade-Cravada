@@ -275,3 +275,13 @@ function changeContentPagesHTML(yearArray) {
 function changeContentText(yearArray, page) {
     document.querySelector("#timelineTxt").innerHTML = yearArray.allText[page-1].text;
 }
+
+
+//* CHARACTERS BIOGRAPHY REDIRECTOR */
+for (const charBtn of document.querySelectorAll(".charBtn")) {
+    charBtn.addEventListener("click", () => {
+        let char = charBtn.id;
+        sessionStorage.setItem("char", char);
+        window.location.href = "./Individuo.html";
+    });
+};

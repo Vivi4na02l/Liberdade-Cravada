@@ -27,9 +27,12 @@ let characters = [
     {
         char: "poorMan",
         img: "../../images/website/images/char_man_poor.png",
-        title: "Homem pobre / camponês",
-        info: ["1","2","3"],
-        text: ["oaosdkoekqwdoas"]
+        title: "Povo português",
+        info: ["Possuíam salários extremamente baixos;","O acesso a serviços essenciais básicos era extremamente limitado;","Muitos foram obrigados a limitar para melhores chances de vida."],
+        text: ["O regime de Salazar promovia uma imagem de ordem e estabilidade, mas na realidade, grande parte da população vivia em pobreza extrema, com acesso limitado a serviços básicos como saúde, educação e habitação. A classe média em Portugal enfrentava dificuldades económicas significativas, muitas vezes vivendo em condições semelhantes às das classes mais pobres. Apenas uma pequena percentagem possuía riqueza e poder, não existindo um verdadeiro meio-termo entre os muito ricos e os muito pobres.",
+            "Para aceder aos serviços públicos de saúde, os mais pobres tinham de apresentar um atestado de pobreza para receberem atendimento. Este documento, emitido pelas Juntas de Freguesia, excluía-os de direitos políticos, como o voto. Assim, os cidadãos eram forçados a escolher entre o acesso à saúde e a cidadania plena.",
+            "No campo, a maioria dos trabalhadores agrícolas vivia em habitações degradadas, com rendimentos baixos e acesso limitado a serviços básicos. Nas cidades, muitos residiam em bairros de barracas sem saneamento ou eletricidade.",
+            "O regime atribuía a responsabilidade da pobreza a falhas individuais, como preguiça ou vícios, e não a fatores estruturais. À procura de melhores condições de vida, muitos portugueses emigraram para o estrangeiro. No entanto, tal saída em massa não foi o suficiente para resolver os problemas estruturais internos, perpetuando o ciclo de pobreza."]
     },
     {
         char: "humberto",

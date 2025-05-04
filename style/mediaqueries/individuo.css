@@ -12,13 +12,14 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        justify-content: center;
 
         margin-bottom: 5%;
 
         height: 200px;
         width: 100%;
     } #charAbout {
-        height: 400px;
+        min-height: 400px;
         width: 100%;
     } #charImg {
         margin-left: 40px;
@@ -29,22 +30,36 @@
 
         /* border-bottom: solid #000 2px; */
     } #charInfoDiv {
+        display: flex;
+        justify-content: center;
+        padding-right: 5%;
         width: 80%;
         height: 45%;
-    } #charInfo {
-        /* margin-bottom: 20px; */
     } #charHeader {
         margin-top: 40px;
         margin-left: 40px;
         margin-right: 40px;
         border-bottom: #C0392B dashed 2px;
     } #charGoBack {
-        height: 20px;
+        height: 12px;
         cursor: pointer;
     } #charText {
         margin-top: 40px;
         margin-left: 40px;
         margin-right: 40px;
+        margin-bottom: 40px;
+    } #pages {
+        margin-bottom: 20px;
+        margin-top: 20px;
+    } #pages p {
+        margin-left: 10px;
+        margin-right: 10px;
+        cursor: pointer;
+    } .active {
+        color: #C0392B;
+        border-bottom: #C0392B solid 2px;
+    } .inactive {
+        color: #000;
     }
 }   
 
@@ -68,7 +83,7 @@
         height: 200px;
         width: 100%;
     } #charAbout {
-        height: 400px;
+        min-height: 400px;
         width: 100%;
     } #charImg {
         margin-left: 40px;
@@ -95,6 +110,19 @@
         margin-top: 40px;
         margin-left: 40px;
         margin-right: 40px;
+        margin-bottom: 40px;
+    } #pages {
+        margin-bottom: 20px;
+        margin-top: 20px;
+    } #pages p {
+        margin-left: 10px;
+        margin-right: 10px;
+        cursor: pointer;
+    } .active {
+        color: #C0392B;
+        border-bottom: #C0392B solid 2px;
+    } .inactive {
+        color: #000;
     }
 }   
 
@@ -102,39 +130,36 @@
 @media screen and (min-width: 1024px) and (max-width: 1369px) {
     #bibliography {
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+        flex-direction: column;
 
-        margin-top: 10%;
-        margin-bottom: 7%;
+        margin-top: 15%;
+        margin-bottom: 13%;
         margin-left: 10%;
         width: 80%;
-        height: 60vh;
     } #charImgAndInfo {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
 
-        height: 100%;
-        width: 30%;
+        margin-bottom: 5%;
+
+        height: 200px;
+        width: 100%;
     } #charAbout {
-        height: 100%;
-        width: 60%;
+        min-height: 400px;
+        width: 100%;
     } #charImg {
-        margin-top: 40px;
+        margin-left: 40px;
+        margin-right: 40px;
 
-        height: 25%;
-        width: 80%;
+        height: 50%;
+        width: 30%;
 
-        border-bottom: solid #000 2px;
+        /* border-bottom: solid #000 2px; */
     } #charInfoDiv {
-        margin-top: 40px;
-
         width: 80%;
         height: 45%;
-    } #charInfo {
-        /* margin-bottom: 20px; */
-    } #charHeader {
+    }#charHeader {
         margin-top: 40px;
         margin-left: 40px;
         margin-right: 40px;
@@ -146,6 +171,19 @@
         margin-top: 40px;
         margin-left: 40px;
         margin-right: 40px;
+        margin-bottom: 40px;
+    } #pages {
+        margin-bottom: 20px;
+        margin-top: 20px;
+    } #pages p {
+        margin-left: 10px;
+        margin-right: 10px;
+        cursor: pointer;
+    } .active {
+        color: #C0392B;
+        border-bottom: #C0392B solid 2px;
+    } .inactive {
+        color: #000;
     }
 }
 
@@ -160,16 +198,16 @@
         margin-bottom: 7%;
         margin-left: 10%;
         width: 80%;
-        height: 60vh;
+        min-height: 500px;
     } #charImgAndInfo {
         display: flex;
         flex-direction: column;
         align-items: center;
 
-        height: 100%;
+        min-height: 500px;
         width: 30%;
     } #charAbout {
-        height: 100%;
+        min-height: 500px;
         width: 60%;
     } #charImg {
         margin-top: 40px;
@@ -178,18 +216,11 @@
         width: 80%;
 
         border-bottom: solid #000 2px;
-
-        /* background-image: url("../../images/website/images/char_girl.png");
-        background-size: contain;
-        background-position: 0% 50%;
-        background-repeat: no-repeat; */
     } #charInfoDiv {
         margin-top: 40px;
 
         width: 80%;
         height: 45%;
-    } #charInfo {
-        /* margin-bottom: 20px; */
     } #charHeader {
         margin-top: 40px;
         margin-left: 40px;
@@ -202,6 +233,18 @@
         margin-top: 40px;
         margin-left: 40px;
         margin-right: 40px;
+    } #pages {
+        margin-bottom: 20px;
+        margin-top: 20px;
+    } #pages p {
+        margin-left: 10px;
+        margin-right: 10px;
+        cursor: pointer;
+    } .active {
+        color: #C0392B;
+        border-bottom: #C0392B solid 2px;
+    } .inactive {
+        color: #000;
     }
 }
 

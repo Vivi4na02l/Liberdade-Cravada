@@ -547,4 +547,14 @@
     background-size: contain;
     background-position: 50%, 50%;
     background-repeat: no-repeat;
+} #salazar {
+    background-image: url("../../images/website/images/char_salazar.png");
+    background-size: contain;
+    background-position: 50%, 50%;
+    background-repeat: no-repeat;
+} #marcello {
+    background-image: url("../../images/website/images/char_marcello.png");
+    background-size: contain;
+    background-position: 50%, 50%;
+    background-repeat: no-repeat;
 }

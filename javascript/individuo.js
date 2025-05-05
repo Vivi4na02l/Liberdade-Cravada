@@ -29,7 +29,7 @@ let characters = [
         img: "../../images/website/images/char_man_poor.png",
         title: "Povo português",
         info: ["Possuíam salários extremamente baixos;","O acesso a serviços essenciais básicos era extremamente limitado;","Muitos foram obrigados a limitar para melhores chances de vida."],
-        text: ["O regime de Salazar promovia uma imagem de ordem e estabilidade, mas na realidade, grande parte da população vivia em pobreza extrema, com acesso limitado a serviços básicos como saúde, educação e habitação. A classe média em Portugal enfrentava dificuldades económicas significativas, muitas vezes vivendo em condições semelhantes às das classes mais pobres. Apenas uma pequena percentagem possuía riqueza e poder, não existindo um verdadeiro meio-termo entre os muito ricos e os muito pobres.",
+        text: ["O regime de <a id='salazar' class='redirect red'>Salazar</a> promovia uma imagem de ordem e estabilidade, mas na realidade, grande parte da população vivia em pobreza extrema, com acesso limitado a serviços básicos como saúde, educação e habitação. A classe média em Portugal enfrentava dificuldades económicas significativas, muitas vezes vivendo em condições semelhantes às das classes mais pobres. Apenas uma pequena percentagem possuía riqueza e poder, não existindo um verdadeiro meio-termo entre os muito ricos e os muito pobres.",
             "Para aceder aos serviços públicos de saúde, os mais pobres tinham de apresentar um atestado de pobreza para receberem atendimento. Este documento, emitido pelas Juntas de Freguesia, excluía-os de direitos políticos, como o voto. Assim, os cidadãos eram forçados a escolher entre o acesso à saúde e a cidadania plena.",
             "No campo, a maioria dos trabalhadores agrícolas vivia em habitações degradadas, com rendimentos baixos e acesso limitado a serviços básicos. Nas cidades, muitos residiam em bairros de barracas sem saneamento ou eletricidade.",
             "O regime atribuía a responsabilidade da pobreza a falhas individuais, como preguiça ou vícios, e não a fatores estruturais. À procura de melhores condições de vida, muitos portugueses emigraram para o estrangeiro. No entanto, tal saída em massa não foi o suficiente para resolver os problemas estruturais internos, perpetuando o ciclo de pobreza."]
@@ -48,16 +48,13 @@ let characters = [
     {
         char: "military",
         img: "../../images/website/images/char_military_MFA.png",
-        title: "Militares MFA",
-        info: ["1","2","3"],
-        text: ["oaosdkoekqwdoas"]
-    },
-    {
-        char: "richMan",
-        img: "../../images/website/images/char_man_rich.png",
-        title: "Homem rico",
-        info: ["1","2","3","4"],
-        text: ["oaosdkoekqwdoas"]
+        title: "Forças Armadas",
+        info: ["Contribuiram para a ascensão e manutenção do Estado Novo;","Combateram nas guerras coloniais contrariados;","Responsáveis pela queda do Estado Novo."],
+        text: ["Durante o Estado Novo, as Forças Armadas portuguesas desempenharam um papel fundamental na consolidção inicial do regime, e na sustentação do mesmo. Estas tornaram-se um dos pilares do regime, sendo responsáveis pela defesa nacional e pela manutenção da ordem interna.",
+            "A partir de 1961, com o início da Guerra Colonial em África, as Forças Armadas foram mobilizadas para combater os movimentos de independência nas colónias portuguesas. Este conflito prolongado e desgastante levou a um crescente descontentamento entre os militares que questionavam a justiça e a viabilidade da guerra. A falta de perspetivas de vitória e as condições difíceis no terreno contribuíram para a extinção do apoio militar ao regime.",
+            "O descontentamento levou à formação do Movimento das Forças Armadas (MFA), composto por oficiais que planeavam uma mudança política. Em 25 de abril de 1974, o MFA liderou um golpe militar que derrubou o regime do Estado Novo, num evento conhecido como a Revolução dos Cravos. Este movimento foi amplamente apoiado pela população e resultou na transição pacífica para a democracia em Portugal.",
+            "Desde as primeiras horas da revolução, os militares cercaram a sede da <a id='PIDE' class='redirect red'>PIDE</a>, exigindo a rendição dos mesmos. Apesar das tentativas de negociação, os agentes da <a id='PIDE' class='redirect red'>polícia política</a> abriram fogo sobre a multidão, resultando na morte de quatro civis, as únicas vítimas consequentes da Revolução."
+        ]
     },
     {
         char: "PIDE",

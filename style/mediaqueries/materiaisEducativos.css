@@ -301,7 +301,7 @@
         display: flex;
         flex-direction: row;
 
-        min-height: 600px; /* 800 */
+        height: 600px; /* 800 */
         width: 80%;
         padding-left: 10%;
         /* padding-right: 10%; */
@@ -346,14 +346,14 @@
 
     /** TIMELINE DESCRIPTION/INFO CONTENT */
     #timelineDescriptionBg {
-        min-height: 100%;
+        height: 100%;
         width: 100%;
 
         background-image: url(../../images/website/images/pgPrincipal2.png);
         background-size: cover;
         background-repeat: no-repeat;
     } #timelineDescription {
-        min-height: 100%;
+        height: 100%;
         width: 101%;
 
         background-image: linear-gradient(to right, #434343e8 , #434343);
@@ -558,5 +558,6 @@
     background-position: 50%, 50%;
     background-repeat: no-repeat;
 } .underlined {
-    border-bottom: #C0392B solid 1px;
+    border-bottom: #C0392B solid 2px;
+    font-weight: bold;
 }

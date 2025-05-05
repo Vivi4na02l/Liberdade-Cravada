@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre o Projeto</title>
+    <title>Eleições Pós-Revolução</title>
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="../style/style.css">
     <link rel="stylesheet" type="text/css" href="../style/structuring.css">
     <link rel="stylesheet" type="text/css" href="../style/mediaqueries/everyPage.css">
-    <link rel="stylesheet" type="text/css" href="../style/mediaqueries/sobreProjeto.css">
+    <link rel="stylesheet" type="text/css" href="../style/mediaqueries/eleicoes.css">
 
     <!-- font JERSEY -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Jersey+10&display=swap" rel="stylesheet">
+
+    <!-- P5.JS -->
+    <script src="../libraries/p5.min.js"></script>
+    <script src="../libraries/p5.sound.min.js"></script>
 </head>
 <body class="bgGrey">
     <!-- NAVBAR -->
@@ -26,16 +30,16 @@
     
             <div id="links" class="dflex fdr jcsb">
                 <a href="JogosEducativos.html" class="btnNavbar">
-                    <p class="m0 jersey beige fontOutline navlinkInactive">Jogos Educativos</p>
+                    <p class="m0 jersey beige fontOutline navlinkActive">Jogos Educativos</p>
                 </a>
                 <a href="MateriaisEducativos.html" class="btnNavbar">
                     <p class="m0 jersey beige fontOutline navlinkInactive">Materiais Educativos</p>
                 </a>
                 <a href="SobreProjeto.html" class="btnNavbar">
-                    <p class="m0 jersey beige fontOutline navlinkActive">Sobre o Projeto</p>
+                    <p class="m0 jersey beige fontOutline navlinkInactive">Sobre o Projeto</p>
                 </a>
             </div>
-        
+
             <!-- menu hamburger -->
             <div id="iconHamburger">
                 <img src="../images/website/iconography/hamburger_menu.png" height="100%">
@@ -55,7 +59,7 @@
         <ul class="hamburger-sidebar-navigation">
             <li>
                 <a role="menuitem" href="JogosEducativos.html">
-                    <p class="m0 jersey grey navlinkInactiveHamburger">Jogos Educativos</p>
+                    <p class="m0 jersey red navlinkActive">Jogos Educativos</p>
                 </a>
             </li>
             <li>
@@ -65,41 +69,44 @@
             </li>
             <li>
                 <a role="menuitem" href="SobreProjeto.html">
-                    <p class="m0 jersey red navlinkActive">Sobre o Projeto</p>
+                    <p class="m0 jersey grey navlinkInactiveHamburger">Sobre o Projeto</p>
                 </a>
             </li>
         </ul>
     </nav>
 
-    <!-- first section -->
-    <div id="firstSection" class="dflex jcc aic sectionsHeight">
-        <p class="m0 jersey fontSubtitleSize2 beige">"Vivemos num presente cuja liberdade foi cravada pelo passado."</p>
-    </div>
+    <!-- CHART -->
+    <div id="electionsDiv" class="bgBeige">
+        <p id="electionsTitle" class="m0 p0 jersey red fontSubtitleSize">O voto é a voz da liberdade</p>
 
-    <!-- second section -->
-    <div id="secondSection" class="dflex jcc aic bgBeige">
-        <div id="secondContent" class="mainWidth">
-            <img src="../images/website/images/pgPrincipal1_uncropped.jpg">
+        <p id="electionsTxt" class="m0 IBM fontNormalSize2">
+            Nesta página podes explorar, através de gráficos interativos, os resultados eleitorais de Portugal desde o fim da ditadura. Compara o desempenho dos partidos ao longo dos anos e percebe como o país foi evoluindo politicamente.
+        </p>
 
-            <div id="secondSectionTxt" class="dflex fdc">
-                <span class="dflex fdr">
-                    <p class="m0 jersey fontSubtitleSize red">Liberdade Cravada</p>
-                </span>
-                <p class="m0 jersey fontSubtitleSize2">Passar adiante a palavra da história.</p>
-                <p class="m0 IBM fontNormalSize">
-                    Este recurso foi concebido para reconstruir a sequência dos acontecimentos que antecederam a Revolução dos Cravos e para demonstrar como o 25 de Abril transformou o panorama social e político de Portugal. A iniciativa destina-se a preservar a memória coletiva, estimular a reflexão e promover a compreensão dos valores democráticos que moldaram a história do país, visto que as gerações mais jovens são as que escolhem e constroem o futuro de Portugal.
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- third section -->
-    <div id="thirdSection" class="dflex jcc aic sectionsHeight">
-        <div class="mainWidth bgBeige">
-            <p id="contentCreditsTxt" class="m0 IBM fontNormalSize">
-                O conteúdo histórico presente em Liberty Breakout foi cuidadosamente baseado em fontes fidedignas, garantindo a precisão e a autenticidade dos acontecimentos retratados. Para isso, recorremos a plataformas de preservação digital, como o Arquivo.pt, bem como a materiais de investigação e outros recursos historiográficos. O objetivo é proporcionar uma experiência educativa sustentada em factos verificados, permitindo aos jogadores explorar a Revolução dos Cravos de forma informada e envolvente.
+        <!-- CHOOSE YEAR TO SEE -->
+        <div id="yearsDiv" class="dflex fdr aic">
+            <p id="yearsTxt" class="m0 IBM fontNormalSize2">
+                Escolha um ano das eleições legislativas:    
             </p>
+            
+            <select id="sltYears" class="IBM">
+                <option id="year" value="1975">1975</option>
+                <option id="year" value="1999">1999</option>
+                <option id="year" value="2002">2002</option>
+                <option id="year" value="2005">2005</option>
+                <option id="year" value="2009">2009</option>
+                <option id="year" value="2011">2011</option>
+                <option id="year" value="2015">2015</option>
+                <option id="year" value="2019">2019</option>
+                <option id="year" value="2022">2022</option>
+                <option id="year" value="2024">2024</option>
+            </select>
         </div>
+        
+        <!-- <form id="electionsYear">
+        </form> -->
+        
+        <div id="chart" class="dflex jcc"></div>
     </div>
 
     <!-- FOOTER -->
@@ -144,5 +151,6 @@
     </footer>
 
     <script src="../javascript/everyPage.js"></script>
+    <script src="../javascript/eleicoes.js" type="module"></script>
 </body>
 </html>

@@ -5,13 +5,10 @@ let content = [
         allText: [ /** posPage */
             { page: 1,
                 active: true,
-                text: "texto1" },
+                text: 'Em 1928, Portugal encontrava-se numa situação de profunda crise política e económica. A situação agravava-se com sucessivas mudanças de liderança e a incapacidade dos militares em estabilizar o país.<br><br> Reconhecendo a necessidade urgente de remediar as finanças públicas, Óscar Carmona, Presidente da República, convidou António de Oliveira Salazar, professor de Economia da Universidade de Coimbra, com esperança de resolver os problemas económicos eminentes. <span class="red underlined">Salazar aceitou o cargo a 27 de abril de 1928</span>, impondo condições rigorosas: controle total sobre os orçamentos de todos os ministérios e direito de veto sobre quaisquer aumentos de despesa. Com poderes amplos, Salazar implementou uma política de austeridade severa, aumentando impostos, adiando obras públicas e congelando salários. Estas medidas permitiram, pela primeira vez em 15 anos, alcançar um saldo orçamental positivo, o que levou a ser reconhecido de <i class="red underlined">"salvador da pátria"</i>.' },
             { page: 2,
                 active: false,
-                text: "texto2" },
-            { page: 3,
-                active: false,
-                text: "texto3" },
+                text: 'A sua competência na gestão económica, e a sua popularidade crescente como "Salvador da Pátria", deram-lhe credibilidade, o que reforçou o seu papel no poder. Gradualmente, Salazar foi alargando a sua autoridade no governo, abrangendo, eventualmente, para além de problemas económicos, os problemas políticos e militares do País. Em 1929, disse pela primeira vez o slogan <i class="red underlined">"Tudo pela Nação, nada contra a Nação"</i>, realçando o seu nacionalismo direitista.' }
         ]
     },
     {

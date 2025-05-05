@@ -43,6 +43,9 @@ window.addEventListener("keydown", function(e) {
 }, false);
 
 let game = sessionStorage.getItem("game");
+if (game == null) {
+    window.location.href = "./JogosEducativos.html";
+}
 
 function preload() {
     if (game == "censorship") {

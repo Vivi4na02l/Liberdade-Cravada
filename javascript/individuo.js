@@ -118,11 +118,16 @@ document.querySelector("#page2").addEventListener("click", () => {
     fillRightInfo(true, 2);
 });
 
-fillRightInfo(false, 0);
+if (sessionStorage.getItem("char") == null) {
+    window.location.href = "./MateriaisEducativos.html";
+} else {
+    fillRightInfo(false, 0);
+}
 
 function fillRightInfo(clicked, page) {
     let char = sessionStorage.getItem("char");
     let pos = characters.findIndex(character => character.char == char);
+    
 
     let chosenChar = characters[pos];
 

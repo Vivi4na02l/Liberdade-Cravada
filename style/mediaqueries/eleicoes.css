@@ -20,9 +20,10 @@
         margin-bottom: 7%;
         margin-left: 10%;
         width: 80%;
-
+    } .sections {
         padding-top: 40px;
         padding-bottom: 40px;
+        margin-bottom: 40px;
     }
     
     #electionsTitle {
@@ -30,13 +31,17 @@
         border-bottom: #C0392B dashed 2px;
 
         margin-left: 40px;
-    } #electionsTxt {
+    } #electionsIntro {
         margin-top: 20px;
         margin-left: 40px;
+        margin-right: 40px;
     }
     
-    #yearsDiv {
-        margin-top: 60px;
+    #yearsIntro {
+        margin-left: 40px;
+        margin-right: 40px;
+    } #yearsDiv {
+        margin-top: 40px;
         margin-left: 40px;
     } #yearsTxt {
         margin-right: 10px;
@@ -47,10 +52,23 @@
         background-color: #FDEBD0;
         color: #000;
         border-color: #000;
-    }
-    
-    #chart {
+    } #chart {
         margin-top: 40px;
+    }
+
+    #partidoIntro {
+        margin-left: 40px;
+        margin-right: 40px;
+    } #formPartido {
+        margin-top: 40px;
+        margin-left: 40px;   
+    } #sltPartido {
+        width: 5%;
+        height: 30px;
+
+        background-color: #FDEBD0;
+        color: #000;
+        border-color: #000;
     }
 }
 

@@ -678,17 +678,25 @@ document.querySelector('#sltPartido').addEventListener('click', () => {
             }
         }
 
-        console.log(partidoStats);
-        // updateYearsSelect(partidoStats);
+        // console.log(partidoStats);
+        updateYearsSelect(partidoStats);
     }
 });
 
 function updateYearsSelect(partido) {
-    let html = '';
-
+    let years = []
     for (const year of partido.years) {
-        
+        if (!years.includes(year.year)) {
+            years.push(year.year);
+        }
     }
+
+    let html = '<option value="">Seleciona um partido primeiro</option>';
+    for (const year of years) {
+        html += `<option value="${year}">${year}</option>`
+    }
+    document.querySelector('#sltPartidoYear').innerHTML = html;
+    
 }
 
 

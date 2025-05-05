@@ -3,15 +3,23 @@ let characters = [
         char: "girl",
         img: "../../images/website/images/char_girl.png",
         title: "Criança - sexo feminino",
-        info: ["1","2","3"],
-        text: ["oaosdkoekqwdoas"]
+        info: ["Induzidas a pensar que se deviam tornar, única e exclusivamente, boas esposas e mães, sendo;","Levadas a acreditar que eram o género mais fraco, por terem menos direitos."],
+        text: ["A escolaridade obrigatória era limitada: inicialmente de três anos para raparigas e quatro para rapazes, sendo alargada para quatro anos para ambos apenas em 1960. Esta centrava-se em ensinar a ler, escrever e contar, com ênfase na moral cristã, no culto à pátria e na obediência às autoridades. As salas de aula exibiam símbolos do regime, como o retrato de Salazar e o crucifixo, e os castigos corporais eram uma prática comum. A educação era separada por género, com horários e recreios separados.",
+            "O ensino para as raparigas incluía disciplinas como economia doméstica, trabalhos manuais e religião, enfatizando a preparação para o papel de esposa e mãe, sendo educadas para assumir o papel de cuidadoras do lar. Através de organizações como a <a id='woman' class='redirect red'>Mocidade Portuguesa Feminina</a>, o regime promovia a ideia de que a mulher ideal era submissa, dedicada à família e afastada da vida pública.",
+            "A participação das raparigas na vida pública era desencorajada, e o acesso ao ensino secundário e superior era limitado. A educação feminina visava, portanto, moldar as mulheres para desempenharem papéis subordinados na sociedade, reforçando a hierarquia de género estabelecida pelo Estado Novo.",
+            "A escola servia mais como um instrumento de controlo social do que como um meio de promoção da igualdade de oportunidades."
+        ]
     },
     {
         char: "boy",
         img: "../../images/website/images/char_boy.png",
         title: "Criança - sexo masculino",
-        info: ["1","2","3"],
-        text: ["oaosdkoekqwdoas"]
+        info: ["Preparados para serem futuros trabalhadores;","Ensinados de forma a induzir obediência e patriotismo."],
+        text: ["A escolaridade centrava-se em ensinar a ler, escrever e contar, com ênfase na moral cristã, no culto à pátria e na obediência às autoridades. As salas de aula exibiam símbolos do regime, como o retrato de <a id='salazar' class='redirect red'>Salazar</a> e o crucifixo, e os castigos corporais eram uma prática comum. A educação era separada por género, com horários e recreios separados.",
+            "Os rapazes eram preparados para serem os futuros trabalhadores e defensores da pátria. A educação enfatizava a disciplina, a obediência e o patriotismo, com atividades físicas e militares. O currículo incluía disciplinas como matemática, história e educação cívica, com o objetivo de formar cidadãos leais ao regime e prontos para servir o país.",
+            "A escola procurava induzir nos rapazes a ideia de que o seu dever era trabalhar arduamente, obedecer às autoridades e defender os valores do Estado Novo. Esta formação visava assegurar a continuidade do regime através da criação de uma geração de homens conformes com os ideais autoritários e nacionalistas.",
+            "Nas zonas rurais e entre as classes mais pobres, muitas crianças não frequentavam a escola ou abandonavam-na precocemente para ajudar nas tarefas domésticas ou no trabalho agrícola. O analfabetismo era elevado, e o acesso à educação era limitado, perpetuando o ciclo de pobreza e exclusão social."
+        ]
     },
     {
         char: "woman",

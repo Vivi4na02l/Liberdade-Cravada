@@ -16,7 +16,7 @@ let npcsFade = 255, npcsFadePerFrame;
 let charIdle, char_idle_1, char_idle_2;
 let pide_running_L, pide_running_M, pide_running_R, pide_idle_1, pide_idle_2;
 let pideIdle, pideRun, pideX, charCutsceneX;
-let dog_running_1, dog_running_2, seagull_1, seagull_2;
+let dog_running_1, dog_running_2, seagull_1, seagull_2, animalSwitch = false;
 let cutsceneStart, cutsceneEnd, cutsceneDuration = 100, endInitialCutscene = false;
 
 let persecution_gameover;
@@ -28,13 +28,8 @@ let endingCutsceneTimer = {
 };
 let endingCutsceneVars = {alpha: 0, gameoverImage: false, slideStarts: false, slide: 0, alphaGameOver: 0};
 
-/** transitions between scenarios */
-let subwayX, subwayY, subwayW, subwayH;
-
-let floor_subway, floor_subway_bg, bg_front_subway, bg_subway;
+let floor_subway, floor_subway_bg, bg_subway;
 let floors = [];
-
-let floor_lisbon;
 
 /** character variables */
 let charX, charY, charW, charH, charYDefault, charYBackToDefault;
@@ -213,6 +208,10 @@ export function persecution_draw() {
     if (!cutscene && !gameOver) {
         gameSpeed += 0.0001;
         // backgroundX -= 0.25 * gameSpeed;
+    }
+
+    if (frameCount % 20 == 0) {
+        animalSwitch = !animalSwitch 
     }
 
     /** BACKGROUND */
@@ -397,38 +396,8 @@ export function persecution_draw() {
         /** if obstacle is offscreen, delete it and add a new one */
         if (obstacles[i].offscreen()) {
             obstacles.splice(i, 1);
-
-            /** COMO EU COSTUMAVA ADICIONAR OBSTACULOS */
-            // if (!gameOver) {
-            //     typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2 */
-                
-            //     if (typeOfObstacle == 1) {
-            //         obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
-            //     } else if (typeOfObstacle == 2) {
-            //         obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
-            //     }
-            // }
         }
     }
-    console.log(obstacles);
-
-    //************ TRANSITIONS */
-    // if (((backgroundX + backgroundW)-width*0.8) <= width) {
-    //     newScenery = sceneryTransition(scenery);
-
-    //     if (newScenery != undefined) {
-    //         scenery = newScenery;    
-    //     }
-
-    //     if (scenery == "subway") {
-    //         /** subway appears to cover most elements on the screen */
-    //         image(bg_front_subway, /* img */
-    //             subwayX, subwayY, /* x, y */
-    //             subwayW, subwayH) /* w, h */   
-
-    //         subwayX -= 20 * gameSpeed;
-    //     }
-    // }
 
     //************ POINTS */
     if (!cutscene && !gameOver) {
@@ -1020,31 +989,6 @@ function charIsFailing(failImage, whenSwitch, angleChanges, angleHowMuch, speedX
     }
 }
 
-// function sceneryTransition(scenery) {
-//     if (scenery == "subway") {
-//         if (subwayX <= width*0.4) { /** when the middle of the subway reaches 60% of the screen */
-//             fill(0, 0, 0, fade)
-//             rect(width/2, height/2, width, height)
-
-//             if (fade <= 255 && fadeIn) { /** black screen fades in and covers everything but the subway */
-//                 fade += 5
-//             } else if (fade >= 250 || (!fadeIn && fade > 0)) {
-//                 fadeIn = false;
-                
-//                 scenery = "";
-//                 fade -= 5;
-//             } else if (fade <= 0) {
-//                 if (subwayX + subwayW/2 < 0) { /** when the end of the subway is no longer visible */
-//                     subwayX = width+subwayW/2; /* reset OG subway position for next time this scene comes */
-//                     fadeIn = true;
-//                     backgroundX = backgroundW/2; /** resets the initial position of the background for the following scene */
-//                     return "Lisboa" /** changes to next scenery */ //* MUDAR PARA RANDOM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-//                 }
-//             }
-//         }
-//     }
-// }
-
 class Floor {
     constructor(floorX, whichScenery) {
         this.floorX = floorX; //width + (floorW/2) totalmente gone -------- width - (floorW/2) aparece a imagem toda encostada à direita
@@ -1098,13 +1042,25 @@ class Obstacle {
     
     display(element) { /** makes the obstacle appear on the canvas */
         if (this.typeOfObstacle == 1) {
-            image(dog_running_1,
-                this.obsX, this.obsY,
-                this.obsW, (this.obsW*dog_running_1.height)/dog_running_1.width)
+            if (animalSwitch) {
+                image(dog_running_1,
+                    this.obsX, this.obsY,
+                    this.obsW, (this.obsW*dog_running_1.height)/dog_running_1.width)
+            } else {
+                image(dog_running_2,
+                    this.obsX, this.obsY,
+                    this.obsW, (this.obsW*dog_running_1.height)/dog_running_1.width)
+            }
         } else {
-            image(seagull_1,
-                this.obsX, this.obsY,
-                this.obsW, (this.obsW*seagull_1.height)/seagull_1.width)
+            if (animalSwitch) {
+                image(seagull_1,
+                    this.obsX, this.obsY,
+                    this.obsW, (this.obsW*seagull_1.height)/seagull_1.width)
+            } else {
+                image(seagull_2,
+                    this.obsX, this.obsY,
+                    this.obsW, (this.obsW*seagull_1.height)/seagull_1.width)
+            }
         }
 
         /* OBSTACLE AND CHARACTER DEBUG HELP */

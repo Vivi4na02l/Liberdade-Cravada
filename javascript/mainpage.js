@@ -38,10 +38,20 @@ function timer(revolutionDate) {
 
     // when it's an anniversary show "years-hours-minutes" instead of "years-hours-days"
 
-    document.querySelector("#yearsNbr").innerHTML = beenYears;
-    document.querySelector("#monthsNbr").innerHTML = beenMonths;
-    document.querySelector("#daysNbr").innerHTML = beenDays;
+    if (beenMonths == 12) {
+        beenYears++;
+        document.querySelector("#monthsNbr").innerHTML = beenDays;
+        document.querySelector("#monthsWord").innerHTML = "Dias";
+        beenDays = currentHours;
+        document.querySelector("#daysNbr").innerHTML = beenDays;
+        document.querySelector("#daysWord").innerHTML = "Horas";
+    } else {
+        document.querySelector("#monthsNbr").innerHTML = beenMonths;
+        document.querySelector("#daysNbr").innerHTML = beenDays;
+    }
 
-    console.log(beenDays);
+    document.querySelector("#yearsNbr").innerHTML = beenYears;
+
+    // console.log(beenDays);
     
 }

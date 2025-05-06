@@ -120,57 +120,73 @@
             </p>
             
             <form id="formPartido">
-                <label for="sltPartido" class="m0 IBM fontNormalSize2">Escolha um partido:</label>
-                <select id="sltPartido" class="IBM">
-                    <option value="">Seleciona um partido</option>
-                    <option id="partido" value="A">A</option>
-                    <option id="partido" value="ADN">ADN</option>
-                    <option id="partido" value="B.E.">B.E.</option>
-                    <option id="partido" value="CDC">CDC</option>
-                    <option id="partido" value="CDS-PP">CDS-PP</option>
-                    <option id="partido" value="CH">CH</option>
-                    <option id="partido" value="E">E</option>
-                    <option id="partido" value="IL">IL</option>
-                    <option id="partido" value="JPP">JPP</option>
-                    <option id="partido" value="L">L</option>
-                    <option id="partido" value="MAS">MAS</option>
-                    <option id="partido" value="MDP/CDE">MDP/CDE</option>
-                    <option id="partido" value="MEP">MEP</option>
-                    <option id="partido" value="MMS">MMS</option>
-                    <option id="partido" value="MPT">MPT</option>
-                    <option id="partido" value="NC">NC</option>
-                    <option id="partido" value="P.H.">P.H.</option>
-                    <option id="partido" value="PAN">PAN</option>
-                    <option id="partido" value="PCP-PEV">PCP-PEV</option>
-                    <option id="partido" value="PCTP/MRPP">PCTP/MRPP</option>
-                    <option id="partido" value="PDA">PDA</option>
-                    <option id="partido" value="PDR">PDR</option>
-                    <option id="partido" value="PND">PND</option>
-                    <option id="partido" value="PNR">PNR</option>
-                    <option id="partido" value="POUS">POUS</option>
-                    <option id="partido" value="PPD/PSD">PPD/PSD</option>
-                    <option id="partido" value="PPM">PPM</option>
-                    <option id="partido" value="PPV">PPV</option>
-                    <option id="partido" value="PS">PS</option>
-                    <option id="partido" value="PSN">PSN</option>
-                    <option id="partido" value="PTP">PTP</option>
-                    <option id="partido" value="PURP">PURP</option>
-                    <option id="partido" value="R.I.R.">R.I.R.</option>
-                    <option id="partido" value="TDA">TDA</option>
-                    <option id="partido" value="UDP">UDP</option>
-                    <option id="partido" value="VP">VP</option>
-                </select>
+                <div id="sltPartidoDiv">
+                    <label for="sltPartido" class="m0 IBM fontNormalSize2">Escolha um partido:</label>
+                    <select id="sltPartido" class="IBM">
+                        <option value="">Seleciona um partido</option>
+                        <option id="partido" value="A">A</option>
+                        <option id="partido" value="ADN">ADN</option>
+                        <option id="partido" value="B.E.">B.E.</option>
+                        <option id="partido" value="CDC">CDC</option>
+                        <option id="partido" value="CDS-PP">CDS-PP</option>
+                        <option id="partido" value="CH">CH</option>
+                        <option id="partido" value="E">E</option>
+                        <option id="partido" value="IL">IL</option>
+                        <option id="partido" value="JPP">JPP</option>
+                        <option id="partido" value="L">L</option>
+                        <option id="partido" value="MAS">MAS</option>
+                        <option id="partido" value="MDP/CDE">MDP/CDE</option>
+                        <option id="partido" value="MEP">MEP</option>
+                        <option id="partido" value="MMS">MMS</option>
+                        <option id="partido" value="MPT">MPT</option>
+                        <option id="partido" value="NC">NC</option>
+                        <option id="partido" value="P.H.">P.H.</option>
+                        <option id="partido" value="PAN">PAN</option>
+                        <option id="partido" value="PCP-PEV">PCP-PEV</option>
+                        <option id="partido" value="PCTP/MRPP">PCTP/MRPP</option>
+                        <option id="partido" value="PDA">PDA</option>
+                        <option id="partido" value="PDR">PDR</option>
+                        <option id="partido" value="PND">PND</option>
+                        <option id="partido" value="PNR">PNR</option>
+                        <option id="partido" value="POUS">POUS</option>
+                        <option id="partido" value="PPD/PSD">PPD/PSD</option>
+                        <option id="partido" value="PPM">PPM</option>
+                        <option id="partido" value="PPV">PPV</option>
+                        <option id="partido" value="PS">PS</option>
+                        <option id="partido" value="PSN">PSN</option>
+                        <option id="partido" value="PTP">PTP</option>
+                        <option id="partido" value="PURP">PURP</option>
+                        <option id="partido" value="R.I.R.">R.I.R.</option>
+                        <option id="partido" value="TDA">TDA</option>
+                        <option id="partido" value="UDP">UDP</option>
+                        <option id="partido" value="VP">VP</option>
+                    </select>
+                </div>
 
-                <label for="sltPartido" class="m0 IBM fontNormalSize2">Escolha os anos que quer comparar:</label>
-                <select id="sltPartidoYear" class="IBM">
-                    <option value="">Seleciona um partido primeiro</option>
-                    <!-- options added thro javascript -->
-                </select>
+                <div id="sltPartidoYearDiv">
+                    <label for="sltPartidoYear" class="m0 IBM fontNormalSize2">Escolha os anos que quer comparar:</label>
+                    <select id="sltPartidoYear" class="IBM">
+                        <option value="">Seleciona um partido primeiro</option>
+                        <!-- options added thro javascript -->
+                    </select>
+                    <button id="btnAdd" class="bgBeige">Adicionar ano</button>
+                    <button id="btnRemove" class="bgBeige">Remover ano</button>
+                </div>
 
-                <button id="btnAdd" class="bgBeige">Adicionar ano</button>
             </form>
 
-            <div id="pie"></div>
+            <div id="cantComparePlaceholder" class="dflex jcc">
+                <p id="almostThere" class="m0 IBM red fontNormalSize2"><i>⚠ Quase lá... Adicione mais pelo menos mais um ano para visualizar a comparação. ⚠</i></p>
+
+                <div id="cantCompare" class="dflex fdc aic">
+                    <img src="../images/website/iconography/unavailable.png" width="50%">
+                    <p id="cantCompareSorry" class="m0 jersey fontSubtitleSize2">Pedimos desculpa.</p>
+                    <p class="m0 IBM fontNormalSize2">Ainda não é possível comparar resultados de anos diferentes deste partido, uma vez que este ainda só participou numa única eleição.</p>
+                </div>
+            </div>
+
+            <div id="pie" class="dflex jcc">
+            </div>
         </div>
     </div>
 

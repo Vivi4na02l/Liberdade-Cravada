@@ -627,14 +627,11 @@ function createChart(electionsYear) {
 let partidoDefault;
 let partidoPie = [];
 let partidoArray = [];
+let cantCompare = false;
 document.querySelector('#sltPartido').addEventListener('click', () => {
     let partido = document.querySelector('#sltPartido').value;
-    console.log(partidoDefault);
-    console.log(partido);
 
     if (partidoDefault != partido && partido != '') {
-        console.log('voltei');
-        
         partidoPie = []
 
         let partidoStats = {
@@ -706,40 +703,78 @@ function updateYearsSelect(partido) {
     }
     document.querySelector('#sltPartidoYear').innerHTML = html;
 
+    if (years.length == 1) {
+        cantCompare = true;
+    } else {
+        cantCompare = false;
+    }
+
     // getsYearsUserClicked(partido, partidoPie);
 }
 
-let partidoYearDefault;
-// function getsYearsUserClicked(partido, partidoPie) {    
-    document.querySelector('#formPartido').addEventListener('submit', (event) => {
-        event.preventDefault();
+// let partidoYearDefault;
+document.querySelector('#btnAdd').addEventListener('click', (event) => {
+    event.preventDefault();
 
-        let partidoYear = document.querySelector('#sltPartidoYear').value;
-    
-        if (partidoYearDefault != partidoYear && partidoYear != '') {
-            partidoYearDefault = partidoYear
-            
-            if (partidoPie.length == 0 || (partidoPie.length != 0 && !partidoPie.find(eachYear => eachYear.year == partidoYear))) {
-                for (const eachYear of partidoArray.years) {
-                    if (eachYear.year == partidoYear) {
-                        partidoPie.push(eachYear);
-                    }
+    let partidoYear = document.querySelector('#sltPartidoYear').value;
+
+    if (partidoYear != '') { //partidoYearDefault != partidoYear && 
+        // partidoYearDefault = partidoYear
+        
+        if (partidoPie.length == 0 || (partidoPie.length != 0 && !partidoPie.find(eachYear => eachYear.year == partidoYear))) {
+            for (const eachYear of partidoArray.years) {
+                if (eachYear.year == partidoYear) {
+                    partidoPie.push(eachYear);
                 }
             }
-            // else {
-            //     let newPartidoPie = partidoPie.filter(eachYear => eachYear.year != partidoYear);
-            //     partidoPie = newPartidoPie;
-            // }
         }
+        // else {
+        //     let newPartidoPie = partidoPie.filter(eachYear => eachYear.year != partidoYear);
+        //     partidoPie = newPartidoPie;
+        // }
+    }
 
-        console.log(partidoPie);
+    // console.log(partidoPie);
+    checkBeforePie(partidoPie);
+})
+
+document.querySelector('#btnRemove').addEventListener('click', (event) => {
+    event.preventDefault();
+
+    let partidoYear = document.querySelector('#sltPartidoYear').value;
+
+    if (partidoPie.length != 0 && partidoPie.find(eachYear => eachYear.year == partidoYear)) {
+        let newPartidoPie = partidoPie.filter(eachYear => eachYear.year != partidoYear);
+        partidoPie = newPartidoPie;
+    }
+
+    console.log(partidoPie);
+    document.querySelector('#pie').innerHTML = '';
+    // if (partidoPie.length != 0) {
+        checkBeforePie(partidoPie);
+    // }
+})
+
+function checkBeforePie(partidoPie) {
+    if (partidoPie.length == 0) {
+        document.querySelector("#cantCompare").style.display = "none";
+        document.querySelector("#almostThere").style.display = "none";
+    } else if (cantCompare) {
+        document.querySelector("#cantCompare").style.display = "flex";
+        document.querySelector("#almostThere").style.display = "none";
+    } else if (partidoPie.length == 1) {
+        document.querySelector("#cantCompare").style.display = "none";
+        document.querySelector("#almostThere").style.display = "block";
+    } else {
+        document.querySelector("#cantCompare").style.display = "none";
+        document.querySelector("#almostThere").style.display = "none";
+        
         pie(partidoPie);
-    })
-// }
+    }
+}
 
 function pie(data) {
-    console.log(data);
-    
+    // console.log(data);
     document.querySelector('#pie').innerHTML = '';
 
     const width = 928;
@@ -780,7 +815,7 @@ function pie(data) {
         .attr("width", width)
         .attr("height", height)
         .attr("viewBox", [-width / 2, -height / 2, width, height])
-        .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
+        .attr("style", "max-width: 100%; height: auto; font: 15px sans-serif;");
 
     // Add a sector path for each frequency.
     svg.append("g")

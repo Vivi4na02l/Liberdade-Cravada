@@ -62,19 +62,46 @@
     } #formPartido {
         margin-top: 40px;
         margin-left: 40px;   
+    } #sltPartidoDiv {
+        margin-bottom: 20px;
     } #sltPartido, #sltPartidoYear {
         height: 30px;
+        margin-left: 10px;
 
         background-color: #FDEBD0;
         color: #000;
         border-color: #000;
-    } #btnAdd {
+    } #btnAdd, #btnRemove {
         height: 30px;
         background-color: #434343;
         color: #FDEBD0;
         border: none;
+        margin-left: 5px;
         /* border: #C0392B 2px solid; */
+    } #sltPartidoYearDiv {
+        display: flex;
+        flex-direction: row;
+    }
 
+    #almostThere {
+        display: none;
+        margin-top: 40px; 
+        margin-left: 40px;
+        margin-right: 40px;
+    } #cantComparePlaceholder {
+        width: 100%;
+    } #cantCompare {
+        display: none;
+        margin-top: 80px;
+        margin-left: 40px;
+        margin-right: 40px;
+        width: 50%;
+    } #cantCompareSorry {
+        margin-top: 40px;
+    }
+
+    #pie {
+        margin-top: 40px;
     }
 }
 

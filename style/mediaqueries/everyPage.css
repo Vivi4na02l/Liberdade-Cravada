@@ -161,6 +161,8 @@
     } #footerLink {
         margin-top: 10%;
         margin-bottom: 10%;
+    } #footerLink2 {
+        margin-top: 10%;
     }
 }
 
@@ -326,7 +328,9 @@
     } #footerLink {
         margin-top: 10%;
         margin-bottom: 10%;
-    }  
+    }   #footerLink2 {
+        margin-top: 10%;
+    }
 }
 
 /** desktop screen */
@@ -514,6 +518,8 @@
     } #footerLink {
         margin-top: 10%;
         margin-bottom: 10%;
+    } #footerLink2 {
+        margin-top: 10%;
     }
 }
 
@@ -641,5 +647,7 @@
     } #footerLink {
         margin-top: 10%;
         margin-bottom: 10%;
+    } #footerLink2 {
+        margin-top: 10%;
     }
 }

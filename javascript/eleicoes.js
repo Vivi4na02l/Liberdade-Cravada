@@ -465,7 +465,7 @@ window.addEventListener("resize", () => {
 
 /** GETS THE YEAR THAT THE USER WANTS TO SEE THE ELECTION'S RESULTS OFF */
 // let yearDefault = 2024;
-document.querySelector('#sltYears').addEventListener('click', () => {
+document.querySelector('#btnYear').addEventListener('click', () => {
     let year = document.querySelector('#sltYears').value;
 
     // if (yearDefault != year) {
@@ -598,7 +598,9 @@ let partidoDefault;
 let partidoPie = [];
 let partidoArray = [];
 let cantCompare = false;
-document.querySelector('#sltPartido').addEventListener('click', () => {
+document.querySelector('#btnPartido').addEventListener('click', (event) => {
+    event.preventDefault();
+    
     let partido = document.querySelector('#sltPartido').value;
 
     if (partidoDefault != partido && partido != '') {

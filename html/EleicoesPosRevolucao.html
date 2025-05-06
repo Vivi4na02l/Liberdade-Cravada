@@ -101,22 +101,26 @@
 
             <!-- CHOOSE YEAR TO SEE -->
             <div id="yearsDiv" class="dflex fdr aic">
-                <p id="yearsTxt" class="m0 IBM fontNormalSize2">
-                    Ano das eleições legislativas selecionado:
-                </p>
+                <div id="formYear">
+                    <p id="yearsTxt" class="m0 IBM fontNormalSize2">
+                        Ano das eleições legislativas selecionado:
+                    </p>
                 
-                <select id="sltYears" class="IBM">
-                    <option id="year" value="1975">1975</option>
-                    <option id="year" value="1999">1999</option>
-                    <option id="year" value="2002">2002</option>
-                    <option id="year" value="2005">2005</option>
-                    <option id="year" value="2009">2009</option>
-                    <option id="year" value="2011">2011</option>
-                    <option id="year" value="2015">2015</option>
-                    <option id="year" value="2019">2019</option>
-                    <option id="year" value="2022">2022</option>
-                    <option id="year" value="2024" selected>2024</option>
-                </select>
+                    <select id="sltYears" class="IBM">
+                        <option id="year" value="1975">1975</option>
+                        <option id="year" value="1999">1999</option>
+                        <option id="year" value="2002">2002</option>
+                        <option id="year" value="2005">2005</option>
+                        <option id="year" value="2009">2009</option>
+                        <option id="year" value="2011">2011</option>
+                        <option id="year" value="2015">2015</option>
+                        <option id="year" value="2019">2019</option>
+                        <option id="year" value="2022">2022</option>
+                        <option id="year" value="2024" selected>2024</option>
+                    </select>
+
+                    <button id="btnYear" class="bgBeige">Concluir</button>
+                </div>
             </div>
         
             <div id="chart" class="dflex jcc"></div>
@@ -169,6 +173,8 @@
                         <option id="partido" value="UDP">UDP</option>
                         <option id="partido" value="VP">VP</option>
                     </select>
+
+                    <button id="btnPartido" class="bgBeige">Selecionar partido</button>
                 </div>
 
                 <div id="sltPartidoYearDiv">

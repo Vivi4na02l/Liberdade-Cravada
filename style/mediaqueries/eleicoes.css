@@ -51,7 +51,7 @@
         margin-top: 40px;
         margin-left: 40px;   
     } #sltPartidoDiv, #sltPartidoYearDiv2 {
-        margin-bottom: 20px;
+        margin-bottom: 2px;
         display: flex;
         flex-direction: column;
     } #sltPartido, #sltPartidoYear {
@@ -64,7 +64,7 @@
         background-color: #FDEBD0;
         color: #000;
         border-color: #000;
-    } #btnAdd, #btnRemove {
+    } #btnAdd, #btnRemove, #btnYear, #btnPartido {
         height: 12px;
         font-size: 7px;
         background-color: #434343;
@@ -72,6 +72,9 @@
         border: none;
         margin-right: 5px;
         /* border: #C0392B 2px solid; */
+    } #btnPartido {
+        margin-top: 2px;
+        width: 125px;
     } #sltPartidoYearDiv {
         display: flex;
         flex-direction: column;
@@ -129,17 +132,22 @@
     } #yearsDiv {
         margin-top: 40px;
         margin-left: 40px;
-    } #yearsTxt {
-        margin-right: 10px;
     } #sltYears {
         height: 30px;
         width: 100px;
+
+        margin-left: 10px;
+        margin-right: 10px;
 
         background-color: #FDEBD0;
         color: #000;
         border-color: #000;
     } #chart {
         margin-top: 40px;
+    } #formYear {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 
     #partidoIntro {
@@ -157,7 +165,7 @@
         background-color: #FDEBD0;
         color: #000;
         border-color: #000;
-    } #btnAdd, #btnRemove {
+    } #btnAdd, #btnRemove, #btnYear, #btnPartido {
         height: 30px;
         background-color: #434343;
         color: #FDEBD0;
@@ -232,6 +240,10 @@
         border-color: #000;
     } #chart {
         margin-top: 40px;
+    } #formYear {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 
     #partidoIntro {
@@ -249,7 +261,7 @@
         background-color: #FDEBD0;
         color: #000;
         border-color: #000;
-    } #btnAdd, #btnRemove {
+    } #btnAdd, #btnRemove, #btnYear, #btnPartido {
         height: 30px;
         background-color: #434343;
         color: #FDEBD0;
@@ -324,6 +336,10 @@
         border-color: #000;
     } #chart {
         margin-top: 40px;
+    } #formYear {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 
     #partidoIntro {
@@ -341,7 +357,7 @@
         background-color: #FDEBD0;
         color: #000;
         border-color: #000;
-    } #btnAdd, #btnRemove {
+    } #btnAdd, #btnRemove, #btnYear, #btnPartido {
         height: 30px;
         background-color: #434343;
         color: #FDEBD0;

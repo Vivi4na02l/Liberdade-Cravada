@@ -561,68 +561,6 @@ function createBarChart(data) {
     //     .text("Votos (%)");    
 }
 
-
-// createChart(elections[0].partidos);
-function createChart(electionsYear) {
-    // Declare the chart dimensions and margins.
-    const width = window.innerWidth*0.7;
-    const height = 500;
-    const marginTop = 30;
-    const marginRight = 0;
-    const marginBottom = 30;
-    const marginLeft = 40;
-
-    // Declare the x (horizontal position) scale.
-    const x = d3.scaleBand()
-        .domain(d3.groupSort(electionsYear, ([d]) => -d.frequency, (d) => d.partido)) // descending frequency
-        .range([marginLeft, width - marginRight])
-        .padding(0.1);
-
-    // Declare the y (vertical position) scale.
-    const y = d3.scaleLinear()
-        .domain([0, d3.max(electionsYear, (d) => d.frequency)])
-        .range([height - marginBottom, marginTop]);
-
-    // Create the SVG container.
-    const svg = d3.create("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .attr("viewBox", [0, 0, width, height])
-        .attr("style", "max-width: 100%; height: auto;");
-
-    // Add a rect for each bar.
-    svg.append("g")
-        .attr("fill", "#C0392B")
-    .selectAll()
-    .data(electionsYear)
-    .join("rect") /* x,y,h,w */
-        .attr("x", (d) => x(d.partido))
-        .attr("y", (d) => y(d.frequency))
-        .attr("height", (d) => y(0) - y(d.frequency))
-        .attr("width", x.bandwidth());
-
-    // Add the x-axis and label.
-    svg.append("g")
-        .attr("transform", `translate(0,${height - marginBottom})`)
-        .call(d3.axisBottom(x).tickSizeOuter(0));
-
-    // Add the y-axis and label, and remove the domain line.
-    svg.append("g")
-        .attr("transform", `translate(${marginLeft},0)`)
-        .call(d3.axisLeft(y).tickFormat((y) => (y * 100).toFixed()))
-        .call(g => g.select(".domain").remove())
-        .call(g => g.append("text")
-            .attr("x", -marginLeft)
-            .attr("y", 10)
-            .attr("fill", "currentColor")
-            .attr("text-anchor", "start")
-            .text("↑ Votos (%) / Partido"));
-
-    // Append the SVG element.
-    chart.append(svg.node());
-}
-
-
 /** GETS THE YEAR THAT THE USER WANTS TO SEE THE ELECTION'S RESULTS OFF */
 let partidoDefault;
 let partidoPie = [];
@@ -748,7 +686,7 @@ document.querySelector('#btnRemove').addEventListener('click', (event) => {
         partidoPie = newPartidoPie;
     }
 
-    console.log(partidoPie);
+    // console.log(partidoPie);
     document.querySelector('#pie').innerHTML = '';
     // if (partidoPie.length != 0) {
         checkBeforePie(partidoPie);
@@ -781,9 +719,10 @@ function pie(data) {
     const height = Math.min(width, 500);
 
     // Create the color scale.
+    const generatedColors = d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length - 1).reverse();
     const color = d3.scaleOrdinal()
         .domain(data.map(d => d.partido))
-        .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length).reverse())
+        .range(["#C0392B", ...generatedColors]);
 
     // Create the pie layout and arc generator.
     const pie = d3.pie()

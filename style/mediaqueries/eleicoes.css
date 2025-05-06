@@ -10,7 +10,94 @@
 
 /** desktop screen */
 @media screen and (min-width: 1024px) and (max-width: 1369px) {
+    #electionsDiv {
+        margin-top: 10%;
+        margin-bottom: 7%;
+        margin-left: 10%;
+        width: 80%;
+    } .sections {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        margin-bottom: 40px;
+    }
     
+    #electionsTitle {
+        display: inline;
+        border-bottom: #C0392B dashed 2px;
+
+        margin-left: 40px;
+    } #electionsIntro {
+        margin-top: 20px;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+    
+    #yearsIntro {
+        margin-left: 40px;
+        margin-right: 40px;
+    } #yearsDiv {
+        margin-top: 40px;
+        margin-left: 40px;
+    } #yearsTxt {
+        margin-right: 10px;
+    } #sltYears {
+        width: 5%;
+        height: 30px;
+
+        background-color: #FDEBD0;
+        color: #000;
+        border-color: #000;
+    } #chart {
+        margin-top: 40px;
+    }
+
+    #partidoIntro {
+        margin-left: 40px;
+        margin-right: 40px;
+    } #formPartido {
+        margin-top: 40px;
+        margin-left: 40px;   
+    } #sltPartidoDiv {
+        margin-bottom: 20px;
+    } #sltPartido, #sltPartidoYear {
+        height: 30px;
+        margin-left: 10px;
+
+        background-color: #FDEBD0;
+        color: #000;
+        border-color: #000;
+    } #btnAdd, #btnRemove {
+        height: 30px;
+        background-color: #434343;
+        color: #FDEBD0;
+        border: none;
+        margin-left: 5px;
+        /* border: #C0392B 2px solid; */
+    } #sltPartidoYearDiv {
+        display: flex;
+        flex-direction: row;
+    }
+
+    #almostThere {
+        display: none;
+        margin-top: 40px; 
+        margin-left: 40px;
+        margin-right: 40px;
+    } #cantComparePlaceholder {
+        width: 100%;
+    } #cantCompare {
+        display: none;
+        margin-top: 80px;
+        margin-left: 40px;
+        margin-right: 40px;
+        width: 50%;
+    } #cantCompareSorry {
+        margin-top: 40px;
+    }
+
+    #pie {
+        margin-top: 40px;
+    }
 }
 
 /** bigger desktop screen */

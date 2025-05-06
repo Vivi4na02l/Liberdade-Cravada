@@ -426,12 +426,12 @@
         margin-top: 35px;
         margin-right: 35px;
     } .hamburger-sidebar-navigation {
-        margin-top: 15vh;
+        margin-top: 10vh;
     } .hamburger-sidebar-navigation li {
         list-style: none;
         margin-bottom: 20%;
     } .hamburger-sidebar-navigation p {
-        font-size: 32px;
+        font-size: 28px;
         /* color: #000; */
         display: inline-block;
     } #btnCloseHamburger {
@@ -440,7 +440,7 @@
         margin: 0;
         padding: 0;
     } #btnCloseHamburger img {
-        height: 40px;
+        height: 30px;
     }
     
     /** BUTTONS */

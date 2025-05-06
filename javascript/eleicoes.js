@@ -429,6 +429,39 @@ let fontSize = "15px"
 let fontSizeX = "10px"
 let fontSizeY = "15px"
 
+let chartW;
+let margin;
+
+checkDevice();
+function checkDevice() {
+    if (window.innerWidth < 767) {
+        fontSize = "7px"
+        fontSizeX = "7px"
+        fontSizeY = "7px"
+        chartW = window.innerWidth * 0.7
+
+        margin = { top: 0, right: 30, bottom: 0, left: 100 }
+    } else if (window.innerWidth >= 768 && window.innerWidth < 1023) {
+        fontSize = "10px"
+        fontSizeX = "10px"
+        fontSizeY = "10px"
+        chartW = window.innerWidth * 0.7
+
+        margin = { top: 0, right: 45, bottom: 0, left: 150 }
+    }  else if (window.innerWidth >= 1024) {
+        fontSize = "15px"
+        fontSizeX = "15px"
+        fontSizeY = "15px"
+        chartW = window.innerWidth * 0.7
+
+        margin = { top: 0, right: 65, bottom: 0, left: 200 }
+    }
+}
+
+window.addEventListener("resize", () => {
+    checkDevice();
+})
+
 
 /** GETS THE YEAR THAT THE USER WANTS TO SEE THE ELECTION'S RESULTS OFF */
 let yearDefault = 2024;
@@ -453,8 +486,7 @@ document.querySelector('#sltYears').addEventListener('click', () => {
 /** CREATES BAR CHART OF EACH YEAR OF ELECTIONS */
 createBarChart(elections[elections.length-1].partidos);
 function createBarChart(data) {
-    const margin = { top: 0, right: 200, bottom: 0, left: 200 }
-    const width = window.innerWidth*0.7 - margin.left - margin.right
+    const width = chartW - margin.left - margin.right
     const height = 700 - margin.top - margin.bottom
 
     // Create the SVG container for the chart
@@ -715,7 +747,7 @@ function pie(data) {
     // console.log(data);
     document.querySelector('#pie').innerHTML = '';
 
-    const width = 928;
+    const width = window.innerWidth * 0.5;
     const height = Math.min(width, 500);
 
     // Create the color scale.
@@ -754,7 +786,7 @@ function pie(data) {
         .attr("width", width)
         .attr("height", height)
         .attr("viewBox", [-width / 2, -height / 2, width, height])
-        .attr("style", "max-width: 100%; height: auto; font: 15px sans-serif;");
+        .attr("style", `max-width: 100%; height: auto; font: ${fontSize} sans-serif;`);
 
     // Add a sector path for each frequency.
     svg.append("g")

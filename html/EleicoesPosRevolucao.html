@@ -30,10 +30,13 @@
     
             <div id="links" class="dflex fdr jcsb">
                 <a href="JogosEducativos.html" class="btnNavbar">
-                    <p class="m0 jersey beige fontOutline navlinkActive">Jogos Educativos</p>
+                    <p class="m0 jersey beige fontOutline navlinkInactive">Jogos Educativos</p>
                 </a>
                 <a href="MateriaisEducativos.html" class="btnNavbar">
                     <p class="m0 jersey beige fontOutline navlinkInactive">Materiais Educativos</p>
+                </a>
+                <a href="EleicoesPosRevolucao.html" class="btnNavbar">
+                    <p class="m0 jersey beige fontOutline navlinkActive">Eleições</p>
                 </a>
                 <a href="SobreProjeto.html" class="btnNavbar">
                     <p class="m0 jersey beige fontOutline navlinkInactive">Sobre o Projeto</p>
@@ -59,12 +62,17 @@
         <ul class="hamburger-sidebar-navigation">
             <li>
                 <a role="menuitem" href="JogosEducativos.html">
-                    <p class="m0 jersey red navlinkActive">Jogos Educativos</p>
+                    <p class="m0 jersey grey navlinkInactiveHamburger">Jogos Educativos</p>
                 </a>
             </li>
             <li>
                 <a role="menuitem" href="MateriaisEducativos.html">
                     <p class="m0 jersey grey navlinkInactiveHamburger">Materiais Educativos</p>
+                </a>
+            </li>
+            <li>
+                <a role="menuitem" href="EleicoesPosRevolucao.html">
+                    <p class="m0 jersey red navlinkActive">Eleições</p>
                 </a>
             </li>
             <li>
@@ -164,13 +172,17 @@
                 </div>
 
                 <div id="sltPartidoYearDiv">
-                    <label for="sltPartidoYear" class="m0 IBM fontNormalSize2">Escolha os anos que quer comparar:</label>
-                    <select id="sltPartidoYear" class="IBM">
-                        <option value="">Seleciona um partido primeiro</option>
-                        <!-- options added thro javascript -->
-                    </select>
-                    <button id="btnAdd" class="bgBeige">Adicionar ano</button>
-                    <button id="btnRemove" class="bgBeige">Remover ano</button>
+                    <div id="sltPartidoYearDiv2" class="dflex fdr">
+                        <label for="sltPartidoYear" class="m0 IBM fontNormalSize2">Escolha os anos que quer comparar:</label>
+                        <select id="sltPartidoYear" class="IBM">
+                            <option value="">Seleciona um partido primeiro</option>
+                            <!-- options added thro javascript -->
+                        </select>
+                    </div>
+                    <div id="sltPartidoYearDiv3" class="dflex fdr">
+                        <button id="btnAdd" class="bgBeige">Adicionar ano</button>
+                        <button id="btnRemove" class="bgBeige">Remover ano</button>
+                    </div>
                 </div>
 
             </form>

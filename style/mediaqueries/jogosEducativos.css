@@ -9,35 +9,18 @@
     
     #timelineContent {
         padding-top: 25%; /* 10 */
-    } #txtIntroJogos {
+    } #titleIntroJogos {
         width: 80%;
-    }
-
-    /** TIME LINE BAR */
-    #timelineBar {
-        margin-top: 2%;
-        margin-bottom: 20%;
-
-        width: 100%;
-        height: 10px;
-
-        border-radius: 10px;
-    } #timelineBarFilled {
-        width: 20%; /* to be changed by js frontend*/
-        height: 10px;
-
-        border-radius: 10px;
-    } #timelineBall {
-        width: 20px;
-        height: 20px;
-
-        border-radius: 12.5px;
-
-        position: relative;
-        top: -5px; /* (timelineBall_height - timelineBar_height) / 2 */
-    } #yearOnTimeline {
-        position: relative;
-        top: 125%;
+    } #titleIntroJogos p {
+        border-bottom: #FDEBD0 dashed 2px;
+    } #introJogos {
+        width: 80%;
+        margin-top: 20px;
+    } #txtIntroJogos {
+       display: inline;
+    } #aTxtIntroJogos {
+        /* border-bottom-style: dashed;
+        border-width: 1px; */
     }
 
     /** YEAR GAME LIST TITLE */
@@ -78,6 +61,27 @@
 
         border-radius: 20px;
     }
+
+    #sorry {
+        display: flex;
+        width: 100%;
+        height: 40vh;
+        margin-bottom: 20%;
+        margin-top: 25px;
+    } #sorry div {
+        width: 70%;
+        height: 100%;
+    } #sorry p {
+        text-align: center;
+    } #sorry img {
+        height: 30%;
+    }
+    
+    #gameTitle {
+        display: none;
+    } #gameSection {
+        display: none;
+    }
 }
 
 /** tablet vertical portrait */
@@ -90,34 +94,19 @@
     }
 
     #timelineContent {
-        padding-top: 25%; /* 10 */
-    }
-
-    /** TIME LINE BAR */
-    #timelineBar {
-        margin-top: 2%;
-        margin-bottom: 20%;
-
-        width: 100%;
-        height: 15px;
-
-        border-radius: 10px;
-    } #timelineBarFilled {
-        width: 20%; /* to be changed by js frontend*/
-        height: 15px;
-
-        border-radius: 10px;
-    } #timelineBall {
-        width: 25px;
-        height: 25px;
-
-        border-radius: 12.5px;
-
-        position: relative;
-        top: -5px; /* (timelineBall_height - timelineBar_height) / 2 */
-    } #yearOnTimeline {
-        position: relative;
-        top: 125%;
+        padding-top: 20%; /* 10 */
+    } #titleIntroJogos {
+        width: 80%;
+    } #titleIntroJogos p {
+        border-bottom: #FDEBD0 dashed 2px;
+    } #introJogos {
+        width: 80%;
+        margin-top: 50px;
+    } #txtIntroJogos {
+       display: inline;
+    } #aTxtIntroJogos {
+        /* border-bottom-style: dashed;
+        border-width: 1px; */
     }
 
     /** YEAR GAME LIST TITLE */
@@ -154,6 +143,26 @@
         height: 80%;
 
         border-radius: 20px;
+    }
+
+    #sorry {
+        display: flex;
+        width: 100%;
+        height: 40vh;
+        margin-bottom: 10%;
+    } #sorry div {
+        width: 70%;
+        height: 100%;
+    } #sorry p {
+        text-align: center;
+    } #sorry img {
+        height: 30%;
+    }
+    
+    #gameTitle {
+        display: none;
+    } #gameSection {
+        display: none;
     }
 }
 
@@ -168,69 +177,39 @@
 
     #timelineContent {
         padding-top: 14%; /* 10 */
-    }
-
-    /** TIME LINE BAR */
-    #timelineBar {
-        margin-top: 2%;
-        margin-bottom: 10%;
-
-        width: 100%;
-        height: 15px;
-
-        border-radius: 10px;
-    } #timelineBarFilled {
-        width: 20%; /* to be changed by js frontend*/
-        height: 15px;
-
-        border-radius: 10px;
-    } #timelineBall {
-        width: 25px;
-        height: 25px;
-
-        border-radius: 12.5px;
-
-        position: relative;
-        top: -5px; /* (timelineBall_height - timelineBar_height) / 2 */
-    } #yearOnTimeline {
-        position: relative;
-        top: 125%;
-    }
-
-    /** YEAR GAME LIST TITLE */
-    .yearGameTitle {
-        width: 10%;
-        border-bottom: solid #C0392B;
-        border-radius: 5px;
-    } .yearGameTitle2 {
-        width: 70%;
-        border-bottom: solid #C0392B;
-        border-radius: 5px;
-    }
-
-    /** GAME LIST */
-    #gameSection {
-        padding-top: 2.5%;
-        padding-bottom: 2.5%;
-        margin-bottom: 100px;
-    } #gameList {
+    } #titleIntroJogos {
         width: 80%;
-        display: grid;
-        grid-template-columns: 30% 30% 30%;
-        grid-auto-rows: 180px;
-        row-gap: 40px;
-        column-gap: 5%;
-    } .divGame {
-        width: 100%;
-        height: 180px;
-    } #divGameTitle {
-        width: 100%;
-        height: 20%;
-    } #divGameImg {
-        width: 100%;
-        height: 80%;
+    } #titleIntroJogos p {
+        border-bottom: #FDEBD0 dashed 2px;
+    } #introJogos {
+        width: 80%;
+        margin-top: 50px;
+        margin-bottom: 80px;
+    } #txtIntroJogos {
+       display: inline;
+    } #aTxtIntroJogos {
+        /* border-bottom-style: dashed;
+        border-width: 1px; */
+    }
 
-        border-radius: 20px;
+    #sorry {
+        display: flex;
+        width: 100%;
+        height: 50vh;
+        margin-bottom: 10%;
+    } #sorry div {
+        width: 70%;
+        height: 100%;
+    } #sorry p {
+        text-align: center;
+    } #sorry img {
+        height: 50%;
+    }
+    
+    #gameTitle {
+        display: none;
+    } #gameSection {
+        display: none;
     }
 }
 
@@ -258,37 +237,6 @@
     } #aTxtIntroJogos {
         /* border-bottom-style: dashed;
         border-width: 1px; */
-    }
-
-    /** TIME LINE BAR */
-    #timelineBarP5 {
-        /* width: 80%; */
-        height: 30px;
-        border-radius: 10px;
-    } #timelineBar {
-        margin-top: 2%;
-        margin-bottom: 10%;
-
-        width: 100%;
-        height: 15px;
-
-        border-radius: 10px;
-    } #timelineBarFilled {
-        width: 20%; /* to be changed by js frontend*/
-        height: 15px;
-
-        border-radius: 10px;
-    } #timelineBall {
-        width: 25px;
-        height: 25px;
-
-        border-radius: 12.5px;
-
-        position: relative;
-        top: -5px; /* (timelineBall_height - timelineBar_height) / 2 */
-    } #yearOnTimeline {
-        position: relative;
-        top: 125%;
     }
 
     /** YEAR GAME LIST TITLE */
@@ -344,5 +292,13 @@
         background-size: cover;
         background-position: 0% 50%;
         background-repeat: no-repeat;
+    }
+
+    #sorry {
+        display: none;
+    } #gameTitle {
+        display: flex;
+    } #gameSection {
+        display: flex;
     }
 }

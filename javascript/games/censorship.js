@@ -213,6 +213,9 @@ class Scribble {
         }
   
         ellipse(this.pos.x, this.pos.y, this.radius, this.radius);
+
+        /* DEBUG */
+        // ellipse(this.pos.x, this.pos.y+this.radius/2, 10, 10);
     }
     
     offscreen() {
@@ -221,12 +224,16 @@ class Scribble {
     }
   
     collides(element) {
+        /* DEBUG */
+        // ellipse(element.x, element.y+element.h/2, 10, 10);
         if (!this.toRemove) {
             let d = dist(this.pos.x, this.pos.y, element.x, element.y);
-    
-            if (this.pos.x + this.radius > element.x && this.pos.x - this.radius < element.x + element.w &&
-                this.pos.y + this.radius > element.y && this.pos.y - this.radius < element.y + element.h && !element.hasBeenHit) {
-    
+
+            
+            //o ponto mais à direita do tiro ser maior (mais à direita) que a parte mais à esquerda da palavra
+            if (this.pos.x + this.radius/2 > element.x-element.w/2 && this.pos.x - this.radius/2 < element.x + element.w/2 && //&& o ponto mais à esquerda do tiro ser menor (mais à esquerda) que a parte mais à direita da palavra
+                this.pos.y + this.radius/2 > element.y-element.h/2 && this.pos.y - this.radius/2 < element.y+element.h/2 && !element.hasBeenHit) { //o ponto mais alto do tiro ser menos (mais para cima) que a parte mais baixa da palavra
+            //o ponto mais baixa do tiro ser maior (mais para baixo) que a parte mais superior da palavra
                 element.hasBeenHit = true;
                 this.toRemove = true;
                 return true;

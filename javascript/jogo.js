@@ -6,22 +6,44 @@ let games = [
         game: "persecution",
         title: "Fugitivo",
         description: "Estavas a apreciar a paisagem na ponte com demasiados amigos, e agora o governo considera-te uma ameaça. Um agente da PIDE começa a seguir-te. Se fores apanhado, sabes que vais preso. Corre!",
-        controls: ["space","downArrow"]
+        controls: [{src: "../images/website/iconography/pause.png",
+                    instruction: "Para pausar o jogo."},
+                    {src: "../images/website/iconography/spacebar.png",
+                    instruction: "Para saltar."},
+                    {src: "../images/website/iconography/arrowDown.png",
+                    instruction: "Para deslizar."}]
     },{
         game: "bricks",
         title: "Demolição do muro",
         description: "Já estás há tanto tempo neste regime opressivo que a tua própria mente criou um muro que te impede de seres quem realmente és. Derruba esse muro, acertando nos tijolos simbólicos da opressão, quanto mais, melhor!",
-        controls: ["space","leftArrow","rightArrow"]
+        controls: [{src: "../images/website/iconography/pause.png",
+                    instruction: "Para pausar o jogo."},
+                    {src: "../images/website/iconography/spacebar.png",
+                    instruction: "Para lançar a pedra."},
+                    {src: "../images/website/iconography/arrowRight.png",
+                    instruction: "Para mover para a direita."},
+                    {src: "../images/website/iconography/arrowLeft.png",
+                    instruction: "Para mover para a esquerda."}]
     },{
         game: "censorship",
         title: "Lápis azul",
         description: "És um agente da PIDE e, umas das tuas funções é censurar tudo o que consideres uma ameaça aos ideais do Estado. Aponta o lápis azul às palavras proibidas e censura-as.",
-        controls: ["space","leftArrow","rightArrow"]
+        controls: [{src: "../images/website/iconography/spacebar.png",
+                    instruction: "Para soltar pigmento azul."},
+                    {src: "../images/website/iconography/arrowRight.png",
+                    instruction: "Para apontar mais para a direita."},
+                    {src: "../images/website/iconography/arrowLeft.png",
+                    instruction: "Para apontar mais para a direita."}]
     },{
         game: "basketFood",
         title: "Tempos difíceis",
         description: "Nasceste durante o Salazarismo, numa família pobre. A tua família tem dificuldade em sustentar-se, e a comida, por vezes, escasseia. Tenta recolher o máximo de comida que conseguires para ti e para a tua família!",
-        controls: ["leftArrow","rightArrow"]
+        controls: [{src: "../images/website/iconography/pause.png",
+                    instruction: "Para pausar o jogo."},
+                    {src: "../images/website/iconography/arrowRight.png",
+                    instruction: "Para mover para a direita."},
+                    {src: "../images/website/iconography/arrowLeft.png",
+                    instruction: "Para mover para a esquerda."}]
     },
 ];
 
@@ -31,6 +53,17 @@ function updateInfo() {
 
     document.querySelector('#gameTitle').innerHTML = games[pos].title;
     document.querySelector('#gameDescription').innerHTML = games[pos].description;
+
+    let html = '';
+    for (const control of games[pos].controls) {
+        html += `
+            <div class="w100 dflex fdc jcc aic">
+                <img src="${control.src}" height="50px">
+                <p id="gameDescription" class="m0 p0 IBM fontNormalSize2">${control.instruction}</p>
+            </div>
+        `
+    }
+    document.querySelector('#controls').innerHTML = html;
 };
 
 import {

@@ -16,6 +16,7 @@ let npcsFade = 255, npcsFadePerFrame;
 let charIdle, char_idle_1, char_idle_2;
 let pide_running_L, pide_running_M, pide_running_R, pide_idle_1, pide_idle_2;
 let pideIdle, pideRun, pideX, charCutsceneX;
+let dog_running_1, dog_running_2, seagull_1, seagull_2;
 let cutsceneStart, cutsceneEnd, cutsceneDuration = 100, endInitialCutscene = false;
 
 let persecution_gameover;
@@ -60,6 +61,13 @@ let obsX, obsY, obsW, obsH; /* short obstacle on the floor */
 let tallObsX, tallObsY, tallObsW, tallObsH; /* obstacle too tall (player needs to roll) */
 let obstacles = [];
 let typeOfObstacle = 1, typeOfObstacleHit;
+let firstObstacleAdded = false;
+let obstacleSpawn = {
+    isCounting: false,
+    timerStart: 0,
+    timerShouldEnd: 200,
+    timerEnded: false,
+};
 
 let fail = false
 let obstacleHit, hitWhenSwitch, hitObstacleStart, hitObstacleEnd, hitObstacleSwitch;
@@ -78,6 +86,11 @@ let runSwitch = true, runWhenSwitch = 20, runWhenSwitchStart, runWhenSwitchEnd, 
 export function persecution_preload() {
     font = loadFont('.././fonts/Jersey_10/Jersey10-Regular.ttf');
     
+    dog_running_1 = loadImage('../images/games/elements/dog_running_1.png');
+    dog_running_2 = loadImage('../images/games/elements/dog_running_2.png');
+    seagull_1 = loadImage('../images/games/elements/seagull_1.png');
+    seagull_2 = loadImage('../images/games/elements/seagull_2.png');
+
     /** ENTRY CUTSCENE */
     npc1_idle_1 = loadImage('../images/games/characters/npc1_idle_1.png');
     npc1_idle_2 = loadImage('../images/games/characters/npc1_idle_2.png');
@@ -117,7 +130,6 @@ export function persecution_preload() {
     char_jumping_2 = loadImage('../images/games/characters/char_jumping_2.png');
     char_jumping_3 = loadImage('../images/games/characters/char_jumping_3.png');
     char_jumping_4 = loadImage('../images/games/characters/char_jumping_4.png');
-    char_jumping_5 = loadImage('../images/games/characters/char_jumping_5.png');
 
     char_tripping_forward_1 = loadImage('../images/games/characters/char_tripping_forward_1.png');
     char_tripping_forward_2 = loadImage('../images/games/characters/char_tripping_forward_2.png');
@@ -132,10 +144,10 @@ export function persecution_preload() {
     /** SCENERY */
     floor_subway = loadImage('../images/games/scenery/floor_subway.png');
     floor_subway_bg = loadImage('../images/games/scenery/floor_subway_bg.png');
-    bg_front_subway = loadImage('../images/games/scenery/bg_front_subway.png');
+    // bg_front_subway = loadImage('../images/games/scenery/bg_front_subway.png');
     bg_subway = loadImage('../images/games/scenery/bg_subway_blurred.png');
 
-    floor_lisbon = loadImage('../images/games/scenery/floor_lisbon.png');
+    // floor_lisbon = loadImage('../images/games/scenery/floor_lisbon.png');
 }
 
 export function persecution_setup() {
@@ -178,10 +190,10 @@ export function persecution_setup() {
     tallObsX = width*0.7;
     tallObsY = floorYPlacement - charH;
 
-    subwayH = height/1.7;
-    subwayW = (bg_front_subway.width*(subwayH))/bg_front_subway.height;
-    subwayX = width+subwayW/2;
-    subwayY = height-(subwayH)/2;
+    // subwayH = height/1.7;
+    // subwayW = (bg_front_subway.width*(subwayH))/bg_front_subway.height;
+    // subwayX = width+subwayW/2;
+    // subwayY = height-(subwayH)/2;
 
     //* GAME OVER
     char_fail = {
@@ -200,7 +212,7 @@ export function persecution_draw() {
     //************ MOVEMENT and SCENERY */
     if (!cutscene && !gameOver) {
         gameSpeed += 0.0001;
-        backgroundX -= 0.25 * gameSpeed;
+        // backgroundX -= 0.25 * gameSpeed;
     }
 
     /** BACKGROUND */
@@ -329,23 +341,54 @@ export function persecution_draw() {
             openingCutscene(npc3, charX + 3*(charW/4)+width/3, charYDefault + charH/2, -1, 47, npcsFade); //charImage, posX, posY, facingDirection, frameCycle
         }
     }
+    
 
     //************ OBSTACLES */
     /** spawns the first obstacle */
-    if (!cutscene && points == 10) {
-        typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2,3 */ //* MUDAR PARA 33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333 */
+    if (!cutscene) {
+        if (!firstObstacleAdded) {
+            firstObstacleAdded = true;
+            typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2 */
 
-        if (typeOfObstacle == 1) {
-            obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
-        } else if (typeOfObstacle == 2) {
-            obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
+            if (typeOfObstacle == 1) {
+                obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
+            } else if (typeOfObstacle == 2) {
+                obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
+            }
+        } else {
+            if (!gameOver) {
+                /* starts the timer responsible for adding a new obstacle on screen */
+                obstacleSpawn = timer(obstacleSpawn.isCounting, obstacleSpawn.timerStart, obstacleSpawn.timerShouldEnd);
+                if (obstacleSpawn.timerEnded) { //if the timer ended
+                    obstacleSpawn.timerEnded = false;
+
+                    if (obstacleSpawn.timerShouldEnd >= 125) { //doesn't let the food spawn any faster than every X frames                
+                        obstacleSpawn.timerShouldEnd -= 5 * gameSpeed; //reduces the amount of timer needed to spawn the next food
+                    } else if (obstacleSpawn.timerShouldEnd >= 100) {
+                        obstacleSpawn.timerShouldEnd -= 2 * gameSpeed;
+                        // basketSpeed += 0.05;
+                    } else if (obstacleSpawn.timerShouldEnd >= 50) {
+                        obstacleSpawn.timerShouldEnd -= 1 * gameSpeed;
+                        // basketSpeed += 0.1;
+                    } else {
+                        obstacleSpawn.timerShouldEnd -= 0.1 * gameSpeed;
+                    }
+
+                    /* adds new obstacle on screen */
+                    typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2 */
+                            
+                    if (typeOfObstacle == 1) {
+                        obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
+                    } else if (typeOfObstacle == 2) {
+                        obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
+                    }
+                }
+            }
         }
     }
 
     for (let i = obstacles.length - 1; i >= 0; i--) {
-        // if (!gameOver) {
-            obstacles[i].update();
-        // }
+        obstacles[i].update();
         obstacles[i].display(char_position);
         if (obstacles[i].collides(char_position)) {
             gameOver = true;
@@ -355,36 +398,37 @@ export function persecution_draw() {
         if (obstacles[i].offscreen()) {
             obstacles.splice(i, 1);
 
-            if (!gameOver) {
-                typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2,3 */ //* MUDAR PARA 33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333 */
+            /** COMO EU COSTUMAVA ADICIONAR OBSTACULOS */
+            // if (!gameOver) {
+            //     typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2 */
                 
-                if (typeOfObstacle == 1) {
-                    obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
-                } else if (typeOfObstacle == 2) {
-                    obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
-                }
-            }
+            //     if (typeOfObstacle == 1) {
+            //         obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
+            //     } else if (typeOfObstacle == 2) {
+            //         obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
+            //     }
+            // }
         }
     }
-
+    console.log(obstacles);
 
     //************ TRANSITIONS */
-    if (((backgroundX + backgroundW)-width*0.8) <= width) {
-        newScenery = sceneryTransition(scenery);
+    // if (((backgroundX + backgroundW)-width*0.8) <= width) {
+    //     newScenery = sceneryTransition(scenery);
 
-        if (newScenery != undefined) {
-            scenery = newScenery;    
-        }
+    //     if (newScenery != undefined) {
+    //         scenery = newScenery;    
+    //     }
 
-        if (scenery == "subway") {
-            /** subway appears to cover most elements on the screen */
-            image(bg_front_subway, /* img */
-                subwayX, subwayY, /* x, y */
-                subwayW, subwayH) /* w, h */   
+    //     if (scenery == "subway") {
+    //         /** subway appears to cover most elements on the screen */
+    //         image(bg_front_subway, /* img */
+    //             subwayX, subwayY, /* x, y */
+    //             subwayW, subwayH) /* w, h */   
 
-            subwayX -= 20 * gameSpeed;
-        }
-    }
+    //         subwayX -= 20 * gameSpeed;
+    //     }
+    // }
 
     //************ POINTS */
     if (!cutscene && !gameOver) {
@@ -976,30 +1020,30 @@ function charIsFailing(failImage, whenSwitch, angleChanges, angleHowMuch, speedX
     }
 }
 
-function sceneryTransition(scenery) {
-    if (scenery == "subway") {
-        if (subwayX <= width*0.4) { /** when the middle of the subway reaches 60% of the screen */
-            fill(0, 0, 0, fade)
-            rect(width/2, height/2, width, height)
+// function sceneryTransition(scenery) {
+//     if (scenery == "subway") {
+//         if (subwayX <= width*0.4) { /** when the middle of the subway reaches 60% of the screen */
+//             fill(0, 0, 0, fade)
+//             rect(width/2, height/2, width, height)
 
-            if (fade <= 255 && fadeIn) { /** black screen fades in and covers everything but the subway */
-                fade += 5
-            } else if (fade >= 250 || (!fadeIn && fade > 0)) {
-                fadeIn = false;
+//             if (fade <= 255 && fadeIn) { /** black screen fades in and covers everything but the subway */
+//                 fade += 5
+//             } else if (fade >= 250 || (!fadeIn && fade > 0)) {
+//                 fadeIn = false;
                 
-                scenery = "";
-                fade -= 5;
-            } else if (fade <= 0) {
-                if (subwayX + subwayW/2 < 0) { /** when the end of the subway is no longer visible */
-                    subwayX = width+subwayW/2; /* reset OG subway position for next time this scene comes */
-                    fadeIn = true;
-                    backgroundX = backgroundW/2; /** resets the initial position of the background for the following scene */
-                    return "Lisboa" /** changes to next scenery */ //* MUDAR PARA RANDOM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-                }
-            }
-        }
-    }
-}
+//                 scenery = "";
+//                 fade -= 5;
+//             } else if (fade <= 0) {
+//                 if (subwayX + subwayW/2 < 0) { /** when the end of the subway is no longer visible */
+//                     subwayX = width+subwayW/2; /* reset OG subway position for next time this scene comes */
+//                     fadeIn = true;
+//                     backgroundX = backgroundW/2; /** resets the initial position of the background for the following scene */
+//                     return "Lisboa" /** changes to next scenery */ //* MUDAR PARA RANDOM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+//                 }
+//             }
+//         }
+//     }
+// }
 
 class Floor {
     constructor(floorX, whichScenery) {
@@ -1008,10 +1052,6 @@ class Floor {
     }
     
     update() {
-        // if (previousFloorX == "none") {
-        //     this.floorX = width - (floorW/2)
-        // }
-
         this.floorX -= 5 * gameSpeed;
         /** "minus" to make the floor move from right to left
          * "5" is the default speed
@@ -1028,10 +1068,6 @@ class Floor {
             image(floor_subway_bg, /* img */
                 this.floorX, floorY/2+floorH/2-((floor_subway_bg.height*floorW)/floor_subway_bg.width)/2, /* x, y */
                 floorW, (floor_subway_bg.height*floorW)/floor_subway_bg.width) /* w, h */
-        } else if (this.whichScenery == "Lisboa") {
-            image(floor_lisbon, /* img */
-                this.floorX, floorY, /* x, y */
-                floorW, floorH) /* w, h */
         }
     }
     
@@ -1061,23 +1097,31 @@ class Obstacle {
     }
     
     display(element) { /** makes the obstacle appear on the canvas */
-        rect(this.obsX, this.obsY, this.obsW, this.obsH)
+        if (this.typeOfObstacle == 1) {
+            image(dog_running_1,
+                this.obsX, this.obsY,
+                this.obsW, (this.obsW*dog_running_1.height)/dog_running_1.width)
+        } else {
+            image(seagull_1,
+                this.obsX, this.obsY,
+                this.obsW, (this.obsW*seagull_1.height)/seagull_1.width)
+        }
 
         /* OBSTACLE AND CHARACTER DEBUG HELP */
         // fill("#FF0000")
-        // rect(this.obsX-this.obsW/2, this.obsY-this.obsH/2, 10, 10)
-        // rect(element.x-element.w/2, element.y, 10, 10)
+        // rect(this.obsX-this.obsW/2*0.9, this.obsY-this.obsH/2, 10, 10)
+        // rect(element.x, element.y, 10, 10)
 
     }
     
     offscreen() {
         /** if obstacle left the screen */
-        return (this.obsX < 0);
+        return (this.obsX+this.obsW/2 < 0);
     }
   
     collides(element) {
         /* "0.9" is the "tolerance of hit" */
-        if (typeOfObstacle == 1 /** obstacle that player has to jump over */
+        if (this.typeOfObstacle == 1 /** obstacle that player has to jump over */
             && this.obsX - this.obsW/2 < element.x*0.9 /** if farthest point on the left of obstacle is "more to the left" than the farthest point to the right of the character */
             && this.obsX + this.obsW/2 > element.x - element.w*0.9 /** if farthest point on the right of obstacle is "more to the right" than the farthest point to the left of the character */
             && this.obsY - this.obsH/2 < element.y) { /** if the highest point of the obstacle is ABOVE(<) the lowest point of the character */
@@ -1086,7 +1130,7 @@ class Obstacle {
             obstacleHit = 1;
 
             return true;
-        } else if (typeOfObstacle == 2 /** obstacle that player has to roll under */
+        } else if (this.typeOfObstacle == 2 /** obstacle that player has to roll under */
             && this.obsX - this.obsW/2 < element.x*0.9 /** if farthest point on the left of obstacle is "more to the left" than the farthest point to the right of the character */
             && this.obsX + this.obsW/2 > element.x - element.w*0.4 /** if farthest point on the right of obstacle is "more to the right" than the farthest point to the left of the character */
             && this.obsY + this.obsH/2 >= element.y - element.h) { /** if the lowest point of the obstacle is BELOW(>) the highest point of the character */

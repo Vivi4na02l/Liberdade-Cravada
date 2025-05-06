@@ -114,3 +114,10 @@
         margin: 80px;
     }
 }
+
+body {
+    background-image: url("../../images/website/images/grey_elements_bg.png");
+    background-size: contain;
+    background-position: 0% 50%;
+    background-repeat: repeat;
+}

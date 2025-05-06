@@ -1,7 +1,7 @@
 let characters = [
     {
         char: "girl",
-        img: "../../images/website/images/char_girl.png",
+        img: "../images/website/images/char_girl.png",
         title: "Criança - sexo feminino",
         info: ["Induzidas a pensar que se deviam tornar, única e exclusivamente, boas esposas e mães, sendo;","Levadas a acreditar que eram o género mais fraco, por terem menos direitos."],
         text: ["A escolaridade obrigatória era limitada: inicialmente de três anos para raparigas e quatro para rapazes, sendo alargada para quatro anos para ambos apenas em 1960. Esta centrava-se em ensinar a ler, escrever e contar, com ênfase na moral cristã, no culto à pátria e na obediência às autoridades. As salas de aula exibiam símbolos do regime, como o retrato de Salazar e o crucifixo, e os castigos corporais eram uma prática comum. A educação era separada por género, com horários e recreios separados.",
@@ -12,7 +12,7 @@ let characters = [
     },
     {
         char: "boy",
-        img: "../../images/website/images/char_boy.png",
+        img: "../images/website/images/char_boy.png",
         title: "Criança - sexo masculino",
         info: ["Preparados para serem futuros trabalhadores;","Ensinados de forma a induzir obediência e patriotismo."],
         text: ["A escolaridade centrava-se em ensinar a ler, escrever e contar, com ênfase na moral cristã, no culto à pátria e na obediência às autoridades. As salas de aula exibiam símbolos do regime, como o retrato de <a id='salazar' class='redirect red'>Salazar</a> e o crucifixo, e os castigos corporais eram uma prática comum. A educação era separada por género, com horários e recreios separados.",
@@ -23,7 +23,7 @@ let characters = [
     },
     {
         char: "woman",
-        img: "../../images/website/images/char_woman.png",
+        img: "../images/website/images/char_woman.png",
         title: "Mulher",
         info: ['Descrita como "Cuidadora e educadora, subordinada ao marido";',"O regime promovia a ideia de que o lugar da mulher era em casa;","Apenas mulheres chefes de família (sem marido presente) podiam votar."],
         text: ['Dia 16 de março de 1933, num discurso, <a id="salazar" class="redirect red">Salazar</a> disse que "o trabalho da mulher fora do lar desagrega este, separa os membros da família, torna-os um pouco estranhos uns aos outros. Desaparece a vida comum, sofre a obra educativa das crianças, diminui o número delas. E com o mau ou impossível funcionamento da alimentação e do vestuário verifica-se uma perda importante, raro, materialmente compensado pelo salário recebido". <a id="salazar" class="redirect red">Salazar</a> acreditava que a <i>missão natural</i> de uma mulher era procriar e apresentar submissão à sua cara metade.',
@@ -34,7 +34,7 @@ let characters = [
     },
     {
         char: "poorMan",
-        img: "../../images/website/images/char_man_poor.png",
+        img: "../images/website/images/char_man_poor.png",
         title: "Povo português",
         info: ["Possuíam salários extremamente baixos;","O acesso a serviços essenciais básicos era extremamente limitado;","Muitos foram obrigados a limitar para melhores chances de vida."],
         text: ["O regime de <a id='salazar' class='redirect red'>Salazar</a> promovia uma imagem de ordem e estabilidade, mas na realidade, grande parte da população vivia em pobreza extrema, com acesso limitado a serviços básicos como saúde, educação e habitação. A classe média em Portugal enfrentava dificuldades económicas significativas, muitas vezes vivendo em condições semelhantes às das classes mais pobres. Apenas uma pequena percentagem possuía riqueza e poder, não existindo um verdadeiro meio-termo entre os muito ricos e os muito pobres.",
@@ -44,7 +44,7 @@ let characters = [
     },
     {
         char: "humberto",
-        img: "../../images/website/images/char_humberto_delgado.png",
+        img: "../images/website/images/char_humberto_delgado.png",
         title: "Humberto Delgado",
         info: ["Nasceu dia 15 de maio de 1906;",'Conhecido como "General sem medo";','"Quiseram calar-nos... Não se assassina a liberdade";',"Morreu dia 13 de fevereiro de 1965."],
         text: ['Humberto Delgado, conhecido como o "General sem medo", foi uma figura central na oposição ao regime ditatorial de Salazar. Iniciou a sua carreira militar no Colégio Militar e destacou-se na Aeronáutic, sendo um dos fundadores da TAP em 1945. A sua carreira militar incluiu missões internacionais e cargos de destaque, mas foi afastado por razões políticas.',
@@ -55,7 +55,7 @@ let characters = [
     },
     {
         char: "military",
-        img: "../../images/website/images/char_military_MFA.png",
+        img: "../images/website/images/char_military_MFA.png",
         title: "Forças Armadas",
         info: ["Contribuiram para a ascensão e manutenção do Estado Novo;","Combateram nas guerras coloniais contrariados;","Responsáveis pela queda do Estado Novo."],
         text: ["Durante o Estado Novo, as Forças Armadas portuguesas desempenharam um papel fundamental na consolidção inicial do regime, e na sustentação do mesmo. Estas tornaram-se um dos pilares do regime, sendo responsáveis pela defesa nacional e pela manutenção da ordem interna.",
@@ -66,7 +66,7 @@ let characters = [
     },
     {
         char: "PIDE",
-        img: "../../images/website/images/char_agent_PIDE.png",
+        img: "../images/website/images/char_agent_PIDE.png",
         title: "D.G.S. / P.I.D.E.",
         info: ["Fundada em 1933 com o nome de Polícia de Vigilância e Defesa do Estado Novo (PVDE);","Designada também de Polícia Internacional e de Defesa do Estado (PIDE) e Direção-Geral de Segurança (DGS);","Tinha muito poder, estando quase acima da lei."],
         text: ["A PIDE foi criada em 1945, sucedendo à PVDE, que foi fundada em 1933, com o objetivo de proteger o regime do Estado Novo contra qualquer forma de oposição. A PIDE acumulava funções administrativas e repressivas, controlando fronteiras, emigração e a permanência de estrangeiros, além de investigar crimes políticos e de segurança do Estado. A sua atuação estendia-se também às colónias, especialmente durante a Guerra Colonial.",
@@ -77,7 +77,7 @@ let characters = [
     },
     {
         char: "marcello",
-        img: "../../images/website/images/char_marcello.png",
+        img: "../images/website/images/char_marcello.png",
         title: "Marcello Caetano",
         info: ["Nasceu dia 17 de agosto de 1906;","Foi chefe do governo português entre 1968 e 1974;","Morreu dia 26 de outubro de 1980."],
         text: ["Após licenciar-se em Direito e doutorar-se em Ciências Político-Económicas, tornou-se professor catedrático na Faculdade de Direito da Universidade de Lisboa. Iniciou a sua carreira política nos anos 1930, alinhando-se com o regime do Estado Novo. Em 1968, após o afastamento de <a id='salazar' class='redirect red'>Salazar</a> por motivos de saúde, foi nomeado Presidente do Conselho de Ministros, tornando-se o último líder do regime autoritário português.",
@@ -88,7 +88,7 @@ let characters = [
     },
     {
         char: "salazar",
-        img: "../../images/website/images/char_salazar.png",
+        img: "../images/website/images/char_salazar.png",
         title: "António de Oliveira Salazar",
         info: ["Nasceu dia 28 de abril de 1889;", "Tornou-se a personagem política mais marcante do século XX português;","Foi chefe do governo português entre 1932 e 1968;","Morreu dia 27 de julho de 1970."],
         text: ["Salazar era uma pessoa com ideais conservadores, católicos e autoritários. Estudou e conclui o curso de Direito na Universidade de Coimbra, onde mais tarde se tornou professor de Economia Política e Finanças. Em 1921, foi eleito deputado pelo Centro Católico Português (CCP), partido que ajudou a fundar. No entanto, renunciou ao cargo poucos dias depois.",

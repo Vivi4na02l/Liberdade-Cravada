@@ -467,13 +467,17 @@ window.addEventListener("resize", () => {
 // let yearDefault = 2024;
 document.querySelector('#btnYear').addEventListener('click', () => {
     let year = document.querySelector('#sltYears').value;
-
+    
     // if (yearDefault != year) {
-    //     yearDefault = year;
+        //     yearDefault = year;
         document.querySelector('#chart').innerHTML = '';
         let pos = elections.findIndex(years => years.year == year);
-    
         let electionsYear = elections[pos].partidos
+
+        document.querySelector('#numero').innerHTML = (elections[pos].percentageVoted*100).toFixed(2) + "%";
+        document.querySelector('#inscritos').innerHTML = "Inscritos: "+ elections[pos].nbrCouldVote;
+        document.querySelector('#votantes').innerHTML = "Votantes: "+ elections[pos].nbrVoted;
+
         createBarChart(electionsYear);
 
         // year: 1975,

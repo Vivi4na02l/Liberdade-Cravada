@@ -95,6 +95,33 @@
     } #section3Img3 {
         display: none;
     }
+    
+    #section4 {
+        padding-top: 15%; /* 15 */
+        padding-bottom: 15%; /* 15 */
+    } #section4Content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        width: 80%;
+        padding-top: 2%;
+        padding-bottom: 2%;
+    } #section4Txt {
+        padding-top: 5%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    } #section4Txt a {
+        margin-top: 20px;
+    } #section4Img {
+        width: 100%;
+        height: 180px;
+        background-image: url("https://50anos25abril.pt/wp-content/uploads/2024/10/Screenshot-2024-09-20-at-11.02.55-1.jpg");
+        background-size: cover;
+        background-position: 50%, 50%;
+    }
 }
 
 /** tablet vertical portrait */
@@ -203,6 +230,32 @@
         background-size: cover;
         background-repeat: no-repeat;
     }
+
+    #section4 {
+        padding-top: 10%; /* 10 */
+        padding-bottom: 10%; /* 10 */
+    } #section4Content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        width: 80%;
+        padding-top: 2%;
+        padding-bottom: 2%;
+    } #section4Txt {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    } #section4Txt a {
+        margin-top: 20px;
+    } #section4Img {
+        width: 100%;
+        height: 200px;
+        background-image: url("https://50anos25abril.pt/wp-content/uploads/2024/10/Screenshot-2024-09-20-at-11.02.55-1.jpg");
+        background-size: cover;
+        background-position: 50%, 50%;
+    }
 }
 
 /** desktop screen */
@@ -295,6 +348,27 @@
         background-size: cover;
         background-repeat: no-repeat;
     }
+
+    #section4 {
+        padding-top: 6%; /* half of section2's padding */
+        padding-bottom: 6%; /* half of section2's padding */
+    } #section4Content {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+        width: 80%;
+        padding-top: 2%;
+        padding-bottom: 2%;
+    } #section4Txt {
+        width: 50%;
+        margin-left: 5%;
+    } #section4Img {
+        width: 50%;
+        height: 350px;
+        background-image: url("https://50anos25abril.pt/wp-content/uploads/2024/10/Screenshot-2024-09-20-at-11.02.55-1.jpg");
+        background-size: cover;
+    }
 }
 
 /** bigger desktop screen */
@@ -385,5 +459,26 @@
         background-image: url("https://www.jpn.up.pt/wp-content/uploads/2016/04/Sem-Título-18.jpg");
         background-size: cover;
         background-repeat: no-repeat;
+    }
+
+    #section4 {
+        padding-top: 5%; /* half of section2's padding */
+        padding-bottom: 5%; /* half of section2's padding */
+    } #section4Content {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+        width: 80%;
+        padding-top: 2%;
+        padding-bottom: 2%;
+    } #section4Txt {
+        width: 50%;
+        margin-left: 5%;
+    } #section4Img {
+        width: 50%;
+        height: 500px;
+        background-image: url("https://50anos25abril.pt/wp-content/uploads/2024/10/Screenshot-2024-09-20-at-11.02.55-1.jpg");
+        background-size: cover;
     }
 }

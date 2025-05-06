@@ -403,19 +403,28 @@ class Ball {
         this.bPos.add(this.bAngle);
         image(imgRock, this.bPos.x, this.bPos.y)
             // this.bR, (imgRock.height*this.bR)/imgRock.width);
+
+        /* DEBUG */
+        // fill("#C02")
+        // circle(this.bPos.x - this.bR/2, this.bPos.y + this.bR/2, 10)
     }
   
     collides(element) {
-        if (this.bPos.x + this.bR >= element.x
+        /* DEBUG */
+        // fill("#C02")
+        // circle(element.x, element.y, 10)
+
+           // mais à direita           mais à esquerda
+        if (this.bPos.x + this.bR/2 >= element.x
                 //NOT to the left
                 &&
-                this.bPos.x <= element.x + element.w
+                this.bPos.x - this.bR/2 <= element.x + element.w
                 //NOT to the right
                 &&
-                this.bPos.y + this.bR >= element.y
+                this.bPos.y + this.bR/2 >= element.y
                 //NOT above
                 &&
-                this.bPos.y <= element.y + element.h
+                this.bPos.y - this.bR/2 <= element.y + element.h
                 //NOT below
                 &&
                 element.hasBeenHit == false) {
@@ -428,17 +437,20 @@ class Ball {
     afterRectangle() {
         points += 5;
 
-        this.bAngle.x *= -1;
+        // this.bAngle.x *= -1;
         this.bAngle.y *= -1;
         this.draw();
     }
   
     afterBorder() {
-        if (this.bPos.x + this.bR >= width) {
+        if (this.bPos.x + this.bR/2 >= width) {
+            this.bPos.x = width-this.bR;
             this.bAngle.x *= -1;
         } else if (this.bPos.x - this.bR/2 <= 0) {
+            this.bPos.x = this.bR;
             this.bAngle.x *= -1;
         } else if (this.bPos.y - this.bR/2 <= 0) {
+            this.bPos.y = this.bR;
             this.bAngle.y *= -1;
         }
         

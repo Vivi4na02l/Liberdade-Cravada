@@ -1,6 +1,10 @@
 let canvasW, canvasH;
 
 let game = sessionStorage.getItem("game");
+if (game == null) {
+    window.location.href = "./JogosEducativos.html";
+}
+
 let games = [
     {
         game: "persecution",
@@ -108,10 +112,6 @@ window.addEventListener("keydown", function(e) {
         e.preventDefault();
     }
 }, false);
-
-if (game == null) {
-    window.location.href = "./JogosEducativos.html";
-}
 
 function preload() {
     if (game == "censorship") {

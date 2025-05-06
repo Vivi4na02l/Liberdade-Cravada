@@ -8,33 +8,32 @@ let scribbles = [];
 let fontPX;
 
 let sentences = [{
-    txt: "O governo enfrenta críticas crescentes devido à sua política de medidas rigorosas contra a contestação.",
-    censured: ["medidas", "rigorosas"]
+    txt: "Para Salazar, desde que não pensem por si mesmas, as mulheres portuguesas são exaltadas como exemplo.",
+    censured: ["desde", "que", "não", "pensem", "por", "si","mesmas,"]
   },
   {
-    txt: "Os indivíduos exigem mais espaço para expressão e o fim da regulação estatal.",
-    censured: ["indivíduos", "mais", "espaço", "para", "expressão", "regulação"]
+    txt: "Os indivíduos exigem mais espaço para expressão e fim da regulação governamental.",
+    censured: ["espaço", "para", "expressão", "e", "fim", "da"]
   },
   {
-    txt: "A autoridade policial deteve vários militantes que protestavam pacificamente contra o regime.",
-    censured: ["autoridade", "policial", "militantes"]
+    txt: "A autoridade policial deteve vários militantes que protestavam pacificamente contra o regime. ",
+    censured: ["pacificamente", "contra", "o", "regime."]
   },
-  {
-    txt: "O líder da parte contrária denunciou publicamente questões controversas cometidas pelo Estado.",
-    censured: ["parte", "contrária", "questões", "controversas"]
-  },
-  {
-    txt: "Os pensadores organizam-se secretamente para expressar suas opiniões do regime.",
-    censured: ["pensadores", "expressar", "suas", "opiniões"]
-  },
-  //novas
-  {
+//   {
+//     txt: "Relativamente às guerras na rádio fala-se de vitórias, mas nos hospitais vê-se amputações.",
+//     censured: ["mas", "nos", "hospitais", "vê-se", "amputações"]
+//   },
+//   {
+//     txt: "Delgado, para o Estado, foi um dos opositores mais perigosos.",
+//     censured: ["para", "o", "Estado,", "opositores"]
+//   },
+  { //* check */
     txt: "As escolas estão cheias de jovens, embora muitos desistam por precisarem trabalhar para sustentar a família.",
     censured: ["embora", "muitos", "desistam", "por", "precisarem", "trabalhar"]
   },
   {
-    txt: "A biblioteca abriu portas, com livros restritos e vigilância constante.",
-    censured: ["com", "livros", "restritos", "e", "vigilância", "constante"]
+    txt: "A biblioteca abriu portas, com livros restritos e vigilância constante. ",
+    censured: ["com", "livros", "restritos", "e", "vigilância", "constante."]
   },
 ];
 
@@ -167,6 +166,9 @@ function newspaper() {
                 hasBeenHit: false
             }) 
         }
+
+        console.log(wordsCensuredAll);
+        
   
         marginLeftLeft = width/2-imgNews.width/2 + imgNews.width*0.1
         marginLeftTop = imgNews.height*0.35;

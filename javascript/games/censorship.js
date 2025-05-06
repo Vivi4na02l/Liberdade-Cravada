@@ -27,6 +27,15 @@ let sentences = [{
     txt: "Os pensadores organizam-se secretamente para expressar suas opiniões do regime.",
     censured: ["pensadores", "expressar", "suas", "opiniões"]
   },
+  //novas
+  {
+    txt: "As escolas estão cheias de jovens, embora muitos desistam por precisarem trabalhar para sustentar a família.",
+    censured: ["embora", "muitos", "desistam", "por", "precisarem", "trabalhar"]
+  },
+  {
+    txt: "A biblioteca abriu portas, com livros restritos e vigilância constante.",
+    censured: ["com", "livros", "restritos", "e", "vigilância", "constante"]
+  },
 ];
 
 let wordsCensuredAll = [];

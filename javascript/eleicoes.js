@@ -625,11 +625,17 @@ function createChart(electionsYear) {
 
 /** GETS THE YEAR THAT THE USER WANTS TO SEE THE ELECTION'S RESULTS OFF */
 let partidoDefault;
+let partidoPie = [];
+let partidoArray = [];
 document.querySelector('#sltPartido').addEventListener('click', () => {
     let partido = document.querySelector('#sltPartido').value;
+    console.log(partidoDefault);
+    console.log(partido);
 
     if (partidoDefault != partido && partido != '') {
-        let partidoPie = []
+        console.log('voltei');
+        
+        partidoPie = []
 
         let partidoStats = {
             partido: partido,
@@ -651,7 +657,7 @@ document.querySelector('#sltPartido').addEventListener('click', () => {
                 partidoStats.years.push({
                     partido: year.partidos[pos].partido,
                     year: year.year,
-                    frequency: year.partidos[pos].frequency,
+                    frequency: (year.partidos[pos].frequency*100).toFixed(2),
                 })
 
             } else if (year.partidos.some(
@@ -680,12 +686,13 @@ document.querySelector('#sltPartido').addEventListener('click', () => {
             }
         }
 
+        partidoArray = partidoStats;
         // console.log(partidoStats);
-        updateYearsSelect(partidoStats, partidoPie);
+        updateYearsSelect(partidoStats);
     }
 });
 
-function updateYearsSelect(partido, partidoPie) {
+function updateYearsSelect(partido) {
     let years = []
     for (const year of partido.years) {
         if (!years.includes(year.year)) {
@@ -698,36 +705,43 @@ function updateYearsSelect(partido, partidoPie) {
         html += `<option value="${year}">${year}</option>`
     }
     document.querySelector('#sltPartidoYear').innerHTML = html;
-    
-    getsYearsUserClicked(partido, partidoPie);
+
+    // getsYearsUserClicked(partido, partidoPie);
 }
 
 let partidoYearDefault;
-function getsYearsUserClicked(partido, partidoPie) {    
-    document.querySelector('#sltPartidoYear').addEventListener('click', () => {
+// function getsYearsUserClicked(partido, partidoPie) {    
+    document.querySelector('#formPartido').addEventListener('submit', (event) => {
+        event.preventDefault();
+
         let partidoYear = document.querySelector('#sltPartidoYear').value;
     
         if (partidoYearDefault != partidoYear && partidoYear != '') {
             partidoYearDefault = partidoYear
             
             if (partidoPie.length == 0 || (partidoPie.length != 0 && !partidoPie.find(eachYear => eachYear.year == partidoYear))) {
-                for (const eachYear of partido.years) {
+                for (const eachYear of partidoArray.years) {
                     if (eachYear.year == partidoYear) {
                         partidoPie.push(eachYear);
                     }
                 }
-            } else {
-                let newPartidoPie = partidoPie.filter(eachYear => eachYear.year != partidoYear);
-                partidoPie = newPartidoPie;
             }
+            // else {
+            //     let newPartidoPie = partidoPie.filter(eachYear => eachYear.year != partidoYear);
+            //     partidoPie = newPartidoPie;
+            // }
         }
 
         console.log(partidoPie);
         pie(partidoPie);
     })
-}
+// }
 
 function pie(data) {
+    console.log(data);
+    
+    document.querySelector('#pie').innerHTML = '';
+
     const width = 928;
     const height = Math.min(width, 500);
 

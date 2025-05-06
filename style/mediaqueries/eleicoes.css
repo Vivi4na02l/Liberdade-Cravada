@@ -68,6 +68,13 @@
         background-color: #FDEBD0;
         color: #000;
         border-color: #000;
+    } #btnAdd {
+        height: 30px;
+        background-color: #434343;
+        color: #FDEBD0;
+        border: none;
+        /* border: #C0392B 2px solid; */
+
     }
 }
 

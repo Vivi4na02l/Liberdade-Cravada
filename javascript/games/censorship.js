@@ -1,11 +1,19 @@
+let heart, heartW, lives = 7, points = 0;
 let imgBgLvl1, imgNews, imgPencil;
 let imgPencilRotate = -90;
 let goingLeft = false, goingRight = false;
+let gameOver = false, won = false;
+
+let fadeTxtStart = 255, fadeTxtStartSwitch = false;
+let fadeIn = 0;
+
+let gameOverScreenStart = 0, gameOverScreen = false;
 
 let isScenarioCreated;
 
 let scribbles = [];
-let fontPX;
+let scribbleCollided = false;
+let fontPX, font;
 
 let sentences = [{
     txt: "Para Salazar, desde que não pensem por si mesmas, as mulheres portuguesas são exaltadas como exemplo.",
@@ -43,16 +51,21 @@ let randomNbr1, randomNbr2;
 let marginLeftLeft, marginLeftTop, marginRightLeft, marginRightTop, maxWidth;
 
 export function censorship_preload() {
-    //* font */
-    fontPX = loadFont('.././fonts/VT323/VT323-Regular.ttf');
-
+    heart = loadImage('../images/games/elements/heart.png');
+    
     imgBgLvl1 = loadImage('../images/games/scenery/bg_people_jornal.png');
     imgNews = loadImage('.././images/games/elements/jornal.png');
     imgPencil = loadImage('.././images/games/elements/blue_pencil.png');
+
+    //* font */
+    fontPX = loadFont('.././fonts/VT323/VT323-Regular.ttf');
+    font = loadFont('.././fonts/Jersey_10/Jersey10-Regular.ttf');
 };
 
 export function censorship_setup() {
     rectMode(CENTER);
+
+    heartW = width*0.03;
 }
 
 export function censorship_draw() {
@@ -64,27 +77,59 @@ export function censorship_draw() {
     imgNews.resize(0, height);
     image(imgNews, width/2, height-(imgNews.height/2));
 
-    for (let i = scribbles.length - 1; i >= 0; i--) {
-        scribbles[i].update();
-        scribbles[i].display();
+    if (!gameOver) {
+        if (scribbles.length != 0) {
+            projectileCollidesElement(wordsCensuredAll);
+        }
 
-        if (scribbles[i].offscreen()) {
-            scribbles.splice(i, 1);
+        for (let i = scribbles.length - 1; i >= 0; i--) {
+            scribbles[i].update();
+            scribbles[i].display();
+
+            /** if scribble collides with basket */
+            scribbleCollided = false;
+            
+
+            // if (scribbleCollided) {
+            //     // scribbleCollided = false;
+            // } else {
+                if (scribbles[i].offscreen()) {
+                    scribbles.splice(i, 1);
+                    lives--;
+                // };
+            }
+        }
+
+        let allWordsCensured = (currentValue) => currentValue.hasBeenHit == true;
+    
+        //* if not every word has been censored yet */
+        if (wordsCensuredAll.length == 0 || !wordsCensuredAll.every(allWordsCensured)) {
+            newspaper();
+        } else {  //* else */
+            gameOver = true;
+            won = true;
+        }
+
+        // projectileCollidesElement(wordsCensuredAll);
+        movingPencil();
+    } else { //* if game IS over */
+        if (won) {
+            gameEnded(false);
+        } else {
+            gameEnded(true);
         }
     }
 
-    let allWordsCensured = (currentValue) => currentValue.hasBeenHit == true;
-  
-    //* if not every word has been censored yet */
-    if (wordsCensuredAll.length == 0 || !wordsCensuredAll.every(allWordsCensured)) {
-        newspaper();
-    } else {  //* else */
-        isGameOver = true;
+    txtDisplay(points, width*0.5, height*0.05, 40, false);
+
+    if (lives == 0) {
+        gameOver = true;
+        won = false;
     }
 
-    projectileCollidesElement(wordsCensuredAll);
-    
-    movingPencil();
+    if (!gameOver) {
+        livesDisplay();
+    }
 }
 
 export function censorship_keyPressed() {
@@ -167,7 +212,7 @@ function newspaper() {
             }) 
         }
 
-        console.log(wordsCensuredAll);
+        // console.log(wordsCensuredAll);
         
   
         marginLeftLeft = width/2-imgNews.width/2 + imgNews.width*0.1
@@ -336,8 +381,7 @@ function txtDimensions(sentence, sent, maxWidth, marginLeft, marginTop) {
             if (censuredWord.sentence == sentence && censuredWord.word == word && censuredWord.hasBeenHit) {
                 fill('#0099d6');
                 rect(censuredWord.x, censuredWord.y, censuredWord.w, censuredWord.h);
-                console.log(censuredWord);
-                
+                // console.log(censuredWord);
             }
         }
     }
@@ -351,9 +395,104 @@ function projectileCollidesElement(elements) {
     
         for (const element of elements) {
             if (scribble.collides(element)) {
-            // ball.afterRectangle();
-            scribble.update()
+                points += 5;
+                
+                scribbles.splice(i, 1);
             }
+        }
+    }
+}
+
+function livesDisplay() {
+    for (let i = 1; i <= lives; i++) {
+        image(heart,
+            width-heartW*i - heartW*0.1*i, heartW,
+            heartW, (heart.height*heartW)/heart.width)
+    }
+}
+
+/**
+ * diplays sentence on screen
+ * @param {string} sentence the sentence that is displayed on screen
+ * @param {int} posX it's position in X
+ * @param {int} posY it's position in Y
+ * @param {int} size the text size
+ * @param {boolean} isFade either TRUE or FALSE. If "TRUE" it has a constant fading animtion
+ */
+function txtDisplay(sentence, posX, posY, size, isFade) {
+    /** TEXTO */
+    if (isFade) {
+        if (frameCount % 100 == 0) {
+            fadeTxtStartSwitch = !fadeTxtStartSwitch;
+        }
+    
+        if (fadeTxtStartSwitch) {
+            fadeTxtStart += 2;
+        } else {
+            fadeTxtStart -= 2;
+        }
+        fill(255, 255, 255, fadeTxtStart)
+    } else {
+        fill(255, 255, 255, 255)
+    }
+
+    textFont(font, size);
+    stroke(0, 0, 0, fadeTxtStart);
+    strokeWeight(3);
+    textAlign(CENTER, CENTER)
+    text(sentence, posX, posY);
+}
+
+function gameEnded(lost) {
+    // if (frameCount % 50 == 0) {
+        
+    // }
+    if (fadeIn != 180) {
+        fadeIn += 3;
+    }
+
+    fill(0, 0, 0, fadeIn)
+    rect(width/2, height/2,
+        width, height)
+
+    if (fadeIn >= 180) {
+        if (lost) {
+            txtDisplay("Fizeste "+points+" pontos.", width/2, height/2*0.9, 32, false)
+
+            fill("#C0392B");
+            textFont(font, 44);
+            stroke(0, 0, 0, 255);
+            strokeWeight(3);
+            textAlign(CENTER, CENTER)
+            text("GAMEOVER", width/2, height/2);
+
+            txtDisplay("Clica para recomeçar.", (width/2), height/2*1.1, 32, true)
+        } else {
+            txtDisplay("Fizeste "+points+" pontos.", (width/2), height/2*0.9, 32, false)
+            txtDisplay("Clica para continuar.", (width/2), height/2, 32, true)
+        }
+    }
+}   
+
+export function censorShip_mouseClicked() {
+if (mouseX > 0 && mouseX < width 
+    && mouseY > 0 && mouseY < height
+    && gameOver) {
+
+        if (won) {
+            scribbles = [];
+            wordsCensuredAll = []
+            gameOver = false
+            won = false;
+            isScenarioCreated = false;
+        } else {
+            points = 0;
+            lives = 7;
+            scribbles = [];
+            wordsCensuredAll = []
+            gameOver = false
+            won = false;
+            isScenarioCreated = false;
         }
     }
 }

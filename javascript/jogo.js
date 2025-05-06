@@ -39,6 +39,7 @@ import {
     censorship_draw,
     censorship_keyPressed,
     censorship_keyReleased,
+    censorShip_mouseClicked,
 } from './games/censorship.js';
 
 import {
@@ -159,6 +160,8 @@ function mouseClicked() {
         persecution_mouseClicked();
     } else if (game == "basketFood") {
         basketFood_mouseClicked();
+    } else if (game == "censorship") {
+        censorShip_mouseClicked();
     }
 }
 

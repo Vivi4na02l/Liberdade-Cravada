@@ -292,6 +292,11 @@
         background-size: cover;
         background-position: 0% 50%;
         background-repeat: no-repeat;
+    } #censorship div {
+        background-image: url("../../images/games/thumbnails/censorship_thumbnail.png");
+        background-size: cover;
+        background-position: 50% 0%;
+        background-repeat: no-repeat;
     }
 
     #sorry {

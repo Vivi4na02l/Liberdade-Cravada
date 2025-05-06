@@ -1,5 +1,38 @@
 let canvasW, canvasH;
 
+let game = sessionStorage.getItem("game");
+let games = [
+    {
+        game: "persecution",
+        title: "Fugitivo",
+        description: "Estavas a apreciar a paisagem na ponte com demasiados amigos, e agora o governo considera-te uma ameaça. Um agente da PIDE começa a seguir-te. Se fores apanhado, sabes que vais preso. Corre!",
+        controls: ["space","downArrow"]
+    },{
+        game: "bricks",
+        title: "Demolição do muro",
+        description: "Já estás há tanto tempo neste regime opressivo que a tua própria mente criou um muro que te impede de seres quem realmente és. Derruba esse muro, acertando nos tijolos simbólicos da opressão, quanto mais, melhor!",
+        controls: ["space","leftArrow","rightArrow"]
+    },{
+        game: "censorship",
+        title: "Lápis azul",
+        description: "És um agente da PIDE e, umas das tuas funções é censurar tudo o que consideres uma ameaça aos ideais do Estado. Aponta o lápis azul às palavras proibidas e censura-as.",
+        controls: ["space","leftArrow","rightArrow"]
+    },{
+        game: "basketFood",
+        title: "Tempos difíceis",
+        description: "Nasceste durante o Salazarismo, numa família pobre. A tua família tem dificuldade em sustentar-se, e a comida, por vezes, escasseia. Tenta recolher o máximo de comida que conseguires para ti e para a tua família!",
+        controls: ["leftArrow","rightArrow"]
+    },
+];
+
+updateInfo();
+function updateInfo() {
+    let pos = games.findIndex(eachGame => eachGame.game == game);
+
+    document.querySelector('#gameTitle').innerHTML = games[pos].title;
+    document.querySelector('#gameDescription').innerHTML = games[pos].description;
+};
+
 import {
     censorship_preload,
     censorship_setup,
@@ -42,7 +75,6 @@ window.addEventListener("keydown", function(e) {
     }
 }, false);
 
-let game = sessionStorage.getItem("game");
 if (game == null) {
     window.location.href = "./JogosEducativos.html";
 }

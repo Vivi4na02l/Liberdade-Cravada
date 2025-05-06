@@ -753,10 +753,22 @@ function pie(data) {
     const height = Math.min(width, 500);
 
     // Create the color scale.
-    const generatedColors = d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length - 1).reverse();
-    const color = d3.scaleOrdinal()
-        .domain(data.map(d => d.partido))
-        .range(["#C0392B", ...generatedColors]);
+    const domain = data.map(d => d.partido);
+const numColors = domain.length;
+
+const redInterpolator = d3.interpolateRgbBasis(["#C0392B", "#00d32d", "#ffcc00"]);
+// Podes ajustar os tons como quiseres
+
+const generatedColors = d3.quantize(redInterpolator, numColors);
+
+const color = d3.scaleOrdinal()
+    .domain(domain)
+    .range(generatedColors);
+
+    // const generatedColors = d3.quantize(t => d3.interpolateSpectral(t * 0.6 + 0.3), data.length - 1).reverse();
+    // const color = d3.scaleOrdinal()
+    //     .domain(data.map(d => d.partido))
+    //     .range(["#C0392B", ...generatedColors]);
 
     // Create the pie layout and arc generator.
     const pie = d3.pie()

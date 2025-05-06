@@ -62,8 +62,7 @@
     } #formPartido {
         margin-top: 40px;
         margin-left: 40px;   
-    } #sltPartido {
-        width: 5%;
+    } #sltPartido, #sltPartidoYear {
         height: 30px;
 
         background-color: #FDEBD0;

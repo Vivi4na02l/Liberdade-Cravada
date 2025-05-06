@@ -629,6 +629,8 @@ document.querySelector('#sltPartido').addEventListener('click', () => {
     let partido = document.querySelector('#sltPartido').value;
 
     if (partidoDefault != partido && partido != '') {
+        let partidoPie = []
+
         let partidoStats = {
             partido: partido,
             years: [
@@ -679,11 +681,11 @@ document.querySelector('#sltPartido').addEventListener('click', () => {
         }
 
         // console.log(partidoStats);
-        updateYearsSelect(partidoStats);
+        updateYearsSelect(partidoStats, partidoPie);
     }
 });
 
-function updateYearsSelect(partido) {
+function updateYearsSelect(partido, partidoPie) {
     let years = []
     for (const year of partido.years) {
         if (!years.includes(year.year)) {
@@ -697,24 +699,106 @@ function updateYearsSelect(partido) {
     }
     document.querySelector('#sltPartidoYear').innerHTML = html;
     
+    getsYearsUserClicked(partido, partidoPie);
 }
 
-
-/** GETS THE PARTIDO THAT THE USER WANTS TO COMPARE BETWEEN DIFF YEARS */
-// document.querySelector('#formPartido').addEventListener('submit', () => {
-//     let partido = document.querySelector('#sltPartido').value;
-
-//     if (yearDefault != year) {
-//         yearDefault = year;
-//         document.querySelector('#chart').innerHTML = '';
-//         let pos = elections.findIndex(years => years.year == year);
+let partidoYearDefault;
+function getsYearsUserClicked(partido, partidoPie) {    
+    document.querySelector('#sltPartidoYear').addEventListener('click', () => {
+        let partidoYear = document.querySelector('#sltPartidoYear').value;
     
-//         let electionsYear = elections[pos].partidos
-//         createBarChart(electionsYear);
+        if (partidoYearDefault != partidoYear && partidoYear != '') {
+            partidoYearDefault = partidoYear
+            
+            if (partidoPie.length == 0 || (partidoPie.length != 0 && !partidoPie.find(eachYear => eachYear.year == partidoYear))) {
+                for (const eachYear of partido.years) {
+                    if (eachYear.year == partidoYear) {
+                        partidoPie.push(eachYear);
+                    }
+                }
+            } else {
+                let newPartidoPie = partidoPie.filter(eachYear => eachYear.year != partidoYear);
+                partidoPie = newPartidoPie;
+            }
+        }
 
-//         // year: 1975,
-//         // percentageVoted: 0.9166,
-//         // nbrVoted: 5711829,
-//         // nbrCouldVote: 6231539,
-//     }
-// });
+        console.log(partidoPie);
+        pie(partidoPie);
+    })
+}
+
+function pie(data) {
+    const width = 928;
+    const height = Math.min(width, 500);
+
+    // Create the color scale.
+    const color = d3.scaleOrdinal()
+        .domain(data.map(d => d.partido))
+        .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length).reverse())
+
+    // Create the pie layout and arc generator.
+    const pie = d3.pie()
+        .sort(null)
+        .value(d => d.frequency);
+
+    const arc = d3.arc()
+        .innerRadius(0)
+        .outerRadius(Math.min(width, height) / 2 - 1);
+
+    const labelRadius = arc.outerRadius()() * 0.8;
+
+    // A separate arc generator for labels.
+    const arcLabel = d3.arc()
+        .innerRadius(labelRadius)
+        .outerRadius(labelRadius);
+
+    const arcs = pie(data);
+
+    //   const svg = d3.select("#chart").append("svg")
+    //   .attr("width", width + margin.left + margin.right)
+    //   .attr("height", height + margin.top + margin.bottom)
+    //   .append("g")
+    //   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // Create the SVG container.
+    //   const svg = d3.create("svg")
+        const svg = d3.select("#pie").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("viewBox", [-width / 2, -height / 2, width, height])
+        .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
+
+    // Add a sector path for each frequency.
+    svg.append("g")
+        .attr("stroke", "white")
+        .selectAll()
+        .data(arcs)
+        .join("path")
+        .attr("fill", d => color(d.data.partido))
+        .attr("d", arc)
+        .append("title")
+        .text(d => `${d.data.partido}: ${d.data.frequency.toLocaleString("en-US")}`);
+
+    // Create a new arc generator to place a label close to the edge.
+    // The label shows the frequency if there is enough room.
+    svg.append("g")
+        .attr("text-anchor", "middle")
+        .selectAll()
+        .data(arcs)
+        .join("text")
+        .attr("transform", d => `translate(${arcLabel.centroid(d)})`)
+        .call(text => text.append("tspan")
+            .attr("y", "-0.4em")
+            .attr("font-weight", "bold")
+            .text(d => d.data.year))
+        .call(text => text.filter(d => (d.endAngle - d.startAngle) > 0.25).append("tspan")
+            .attr("x", 0)
+            .attr("y", "0.7em")
+            .attr("fill-opacity", 0.7)
+            .text(d => d.data.frequency.toLocaleString("en-US")+"%"))
+        .call(text => text.filter(d => (d.endAngle - d.startAngle) > 0.25).append("tspan")
+            .attr("x", "0")
+            .attr("y", "1.8em")
+            .attr("fill-opacity", 0.7)
+            .text(d => d.data.partido.toLocaleString("en-US")));
+}

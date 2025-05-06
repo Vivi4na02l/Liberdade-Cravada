@@ -120,7 +120,7 @@ export function censorship_draw() {
         }
     }
 
-    txtDisplay(points, width*0.5, height*0.05, 40, false);
+    txtDisplay("Pontos: "+points, textWidth("Pontos: "+points)*1.5, heartW, 40, false); //width-heartW*i - heartW*0.1*i, heartW,
 
     if (lives == 0) {
         gameOver = true;

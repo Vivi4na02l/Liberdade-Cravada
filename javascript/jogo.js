@@ -126,9 +126,9 @@ function preload() {
 }
 
 function setup() {
-    //* CREATING CANVAS */
-    canvasW = document.querySelector('#gameP5js').offsetWidth;
-    canvasH = document.querySelector('#gameP5js').offsetHeight;
+    //* CREATING CANVAS */                                       offset - y
+    canvasW = document.querySelector('#gameP5js').offsetWidth; //1920 - 920
+    canvasH = (document.querySelector('#gameP5js').offsetWidth*920)/1920;
 
     let gameCanvas = createCanvas(canvasW, canvasH);
     gameCanvas.parent("gameP5js")

@@ -464,12 +464,12 @@ window.addEventListener("resize", () => {
 
 
 /** GETS THE YEAR THAT THE USER WANTS TO SEE THE ELECTION'S RESULTS OFF */
-let yearDefault = 2024;
+// let yearDefault = 2024;
 document.querySelector('#sltYears').addEventListener('click', () => {
     let year = document.querySelector('#sltYears').value;
 
-    if (yearDefault != year) {
-        yearDefault = year;
+    // if (yearDefault != year) {
+    //     yearDefault = year;
         document.querySelector('#chart').innerHTML = '';
         let pos = elections.findIndex(years => years.year == year);
     
@@ -480,7 +480,7 @@ document.querySelector('#sltYears').addEventListener('click', () => {
         // percentageVoted: 0.9166,
         // nbrVoted: 5711829,
         // nbrCouldVote: 6231539,
-    }
+    // }
 });
 
 /** CREATES BAR CHART OF EACH YEAR OF ELECTIONS */

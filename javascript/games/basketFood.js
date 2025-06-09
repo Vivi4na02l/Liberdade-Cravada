@@ -1,3 +1,7 @@
+let gameControlsChosen = false;
+let controls;
+let controlsPosX, controlsW;
+
 /** game variables */
 let font;
 let gameStarted = false, gamePaused = false, gameOver = false;
@@ -48,6 +52,9 @@ export function basketFood_preload() {
 };
 
 export function basketFood_setup() {
+    controlsPosX = width*0.3;
+    controlsW = height/3;
+
     rectMode(CENTER);
 
     heartW = width*0.05;
@@ -119,159 +126,163 @@ export function basketFood_draw() {
         width/2, height/2,
         width, height);
 
-    if (lives <= 0) {
-        //* GAME OVER */
-        gameStarted = false;
-        gameOver = true;
-        sentence = "Clica para recomeçar."
-        basketPos.x = width/2;
-    }
-
-    if (gameStarted) {
-        gameSpeed += 0.0001;
-
-        /** ADDS THE FIRST FOOD */
-        if (!firstFoodAdded) {   
-            firstFoodAdded = true;
-            let whichFood = Math.floor(Math.random() * typeOfFood.length);
-
-            foods.push(new Food(gameSpeed, typeOfFood[whichFood].foodW, typeOfFood[whichFood].foodH, typeOfFood[whichFood].image, typeOfFood[whichFood].isBad)); //gameSpeed, foodW, foodH, imageFood, isBad
+    if (!gameControlsChosen) {
+        gameControls();
+    } else {
+        if (lives <= 0) {
+            //* GAME OVER */
+            gameStarted = false;
+            gameOver = true;
+            sentence = "Clica para recomeçar."
+            basketPos.x = width/2;
         }
 
-        /** MAKES THE FOOD APPEAR ON SCREEN */
-        for (let i = foods.length - 1; i >= 0; i--) {
-            foods[i].update();
-            foods[i].display(basketPos);
+        if (gameStarted) {
+            gameSpeed += 0.0001;
+
+            /** ADDS THE FIRST FOOD */
+            if (!firstFoodAdded) {   
+                firstFoodAdded = true;
+                let whichFood = Math.floor(Math.random() * typeOfFood.length);
+
+                foods.push(new Food(gameSpeed, typeOfFood[whichFood].foodW, typeOfFood[whichFood].foodH, typeOfFood[whichFood].image, typeOfFood[whichFood].isBad)); //gameSpeed, foodW, foodH, imageFood, isBad
+            }
+
+            /** MAKES THE FOOD APPEAR ON SCREEN */
+            for (let i = foods.length - 1; i >= 0; i--) {
+                foods[i].update();
+                foods[i].display(basketPos);
+                
+                /** if food collides with basket */
+                if (foods[i].collides(basketPos)) {
+                    foods.splice(i, 1); //deletes the food
+                };
+        
+                /** if floor is offscreen, delete it */
+                if (foods.length != 0 && foods[i].offscreen()) {
+                    lives -= 1;
+                    foods.splice(i, 1); //deletes the food that got off bounds
+                }
+            }
             
-            /** if food collides with basket */
-            if (foods[i].collides(basketPos)) {
-                foods.splice(i, 1); //deletes the food
-            };
-    
-            /** if floor is offscreen, delete it */
-            if (foods.length != 0 && foods[i].offscreen()) {
-                lives -= 1;
-                foods.splice(i, 1); //deletes the food that got off bounds
-            }
-        }
-        
-        /* starts the timer responsible for adding a new food on screen */
-        foodSpawn = timer(foodSpawn.isCounting, foodSpawn.timerStart, foodSpawn.timerShouldEnd);
-        if (foodSpawn.timerEnded) { //if the timer ended
-            foodSpawn.timerEnded = false;
+            /* starts the timer responsible for adding a new food on screen */
+            foodSpawn = timer(foodSpawn.isCounting, foodSpawn.timerStart, foodSpawn.timerShouldEnd);
+            if (foodSpawn.timerEnded) { //if the timer ended
+                foodSpawn.timerEnded = false;
 
-            if (foodSpawn.timerShouldEnd >= 125) { //doesn't let the food spawn any faster than every X frames                
-                foodSpawn.timerShouldEnd -= 5 * gameSpeed; //reduces the amount of timer needed to spawn the next food
-            } else if (foodSpawn.timerShouldEnd >= 100) {
-                foodSpawn.timerShouldEnd -= 2 * gameSpeed;
-                basketSpeed += 0.05;
-            } else if (foodSpawn.timerShouldEnd >= 50) {
-                foodSpawn.timerShouldEnd -= 1 * gameSpeed;
-                basketSpeed += 0.1;
-            } else {
-                foodSpawn.timerShouldEnd -= 0.1 * gameSpeed;
-            }
-
-            /* adds new food on screen */
-            let whichFood = Math.floor(Math.random() * typeOfFood.length);
-            foods.push(new Food(gameSpeed, typeOfFood[whichFood].foodW, typeOfFood[whichFood].foodH, typeOfFood[whichFood].image, typeOfFood[whichFood].isBad)); //gameSpeed, foodW, foodH, imageFood, isBad
-        }
-        
-
-        /** BASKET MOVEMENT */
-        basketMovement();
-        txtDisplay(points, width*0.5, height*0.05, 40, false);
-
-        /** saves the last frame before player lost */
-        gameEndedFrame = frameCount
-    }
-
-    else {
-        if (gameOver) {
-            endCutsceneSlides = true;
-            if (frameCount - gameEndedFrame > 50) {
-
-                image(basketFood_gameover, /* img */
-                    width/2, height/2, /* x, y */
-                    width, height) /* w, h */  
-
-                if (endCutsceneSlide == 0) {
-                    endCutsceneSlideSentences("Antes da Revolução dos Cravos, muitos trabalhadores recebiam salários muito baixos.");
-                } else if (endCutsceneSlide == 1) {
-                    endCutsceneSlideSentences("Mal conseguindo alimentar as suas famílias.");
-                } else if (endCutsceneSlide == 2) {
-                    let sentenceEndCutscene;
-
-                    if (points < 50) {
-                        sentenceEndCutscene = "pouquíssimos dias"
-                    } else if (points >= 50 && points < 100) {
-                        sentenceEndCutscene = "alguns dias"
-                    } else {
-                        sentenceEndCutscene = "semanas"
-                    }
-
-                    endCutsceneSlideSentences("Com a quantidade de comida que apanhaste, conseguirias alimentar uma família de 4 por "+sentenceEndCutscene+"!");
-                } else if (endCutsceneSlide == 3) {
-                    if (frameCount % 5 == 0) {
-                        alphaGameOver += 20;
-                    }
-
-                    fill("#000000");
-                    rect(width/2, height/2, width, height);
-
-                    txtDisplay("Pontos feitos: "+points, width/2, height*0.45, 25, false);
-                    textFont(font, 100);
-                    fill(192, 57, 43, alphaGameOver);
-                    stroke(0, 0, 0, alphaGameOver);
-                    strokeWeight(3);
-                    textAlign(CENTER, CENTER)
-                    text("GAME OVER", width/2, height/2);
-                    txtDisplay("Clique para tentar novamente.", width/2, height*0.6, 20, true);
+                if (foodSpawn.timerShouldEnd >= 125) { //doesn't let the food spawn any faster than every X frames                
+                    foodSpawn.timerShouldEnd -= 5 * gameSpeed; //reduces the amount of timer needed to spawn the next food
+                } else if (foodSpawn.timerShouldEnd >= 100) {
+                    foodSpawn.timerShouldEnd -= 2 * gameSpeed;
+                    basketSpeed += 0.05;
+                } else if (foodSpawn.timerShouldEnd >= 50) {
+                    foodSpawn.timerShouldEnd -= 1 * gameSpeed;
+                    basketSpeed += 0.1;
                 } else {
-                    endCutsceneSlides = false;
-                    gameOver = false;
+                    foodSpawn.timerShouldEnd -= 0.1 * gameSpeed;
+                }
 
-                    image(bg_basketFood,
-                        width/2, height/2,
-                        width, height);
-
-                    image(basket, /* img */
-                        basketPos.x, basketPos.y, /* x, y */
-                        basketPos.w, basketPos.h) /* w, h */
+                /* adds new food on screen */
+                let whichFood = Math.floor(Math.random() * typeOfFood.length);
+                foods.push(new Food(gameSpeed, typeOfFood[whichFood].foodW, typeOfFood[whichFood].foodH, typeOfFood[whichFood].image, typeOfFood[whichFood].isBad)); //gameSpeed, foodW, foodH, imageFood, isBad
+            }
             
-                    txtDisplay(sentence, width*0.5, height*0.5, 32, true);
+
+            /** BASKET MOVEMENT */
+            basketMovement();
+            txtDisplay(points, width*0.5, height*0.05, 40, false);
+
+            /** saves the last frame before player lost */
+            gameEndedFrame = frameCount
+        }
+
+        else {
+            if (gameOver) {
+                endCutsceneSlides = true;
+                if (frameCount - gameEndedFrame > 50) {
+
+                    image(basketFood_gameover, /* img */
+                        width/2, height/2, /* x, y */
+                        width, height) /* w, h */  
+
+                    if (endCutsceneSlide == 0) {
+                        endCutsceneSlideSentences("Antes da Revolução dos Cravos, muitos trabalhadores recebiam salários muito baixos.");
+                    } else if (endCutsceneSlide == 1) {
+                        endCutsceneSlideSentences("Mal conseguindo alimentar as suas famílias.");
+                    } else if (endCutsceneSlide == 2) {
+                        let sentenceEndCutscene;
+
+                        if (points < 50) {
+                            sentenceEndCutscene = "pouquíssimos dias"
+                        } else if (points >= 50 && points < 100) {
+                            sentenceEndCutscene = "alguns dias"
+                        } else {
+                            sentenceEndCutscene = "semanas"
+                        }
+
+                        endCutsceneSlideSentences("Com a quantidade de comida que apanhaste, conseguirias alimentar uma família de 4 por "+sentenceEndCutscene+"!");
+                    } else if (endCutsceneSlide == 3) {
+                        if (frameCount % 5 == 0) {
+                            alphaGameOver += 20;
+                        }
+
+                        fill("#000000");
+                        rect(width/2, height/2, width, height);
+
+                        txtDisplay("Pontos feitos: "+points, width/2, height*0.45, 25, false);
+                        textFont(font, 100);
+                        fill(192, 57, 43, alphaGameOver);
+                        stroke(0, 0, 0, alphaGameOver);
+                        strokeWeight(3);
+                        textAlign(CENTER, CENTER)
+                        text("GAME OVER", width/2, height/2);
+                        txtDisplay("Clique para tentar novamente.", width/2, height*0.6, 20, true);
+                    } else {
+                        endCutsceneSlides = false;
+                        gameOver = false;
+
+                        image(bg_basketFood,
+                            width/2, height/2,
+                            width, height);
+
+                        image(basket, /* img */
+                            basketPos.x, basketPos.y, /* x, y */
+                            basketPos.w, basketPos.h) /* w, h */
+                
+                        txtDisplay(sentence, width*0.5, height*0.5, 32, true);
+                    }
+                } else {
+                    endCutsceneFadeIn += (255/50);
+
+                    push();
+                    tint(255, endCutsceneFadeIn);
+                    image(basketFood_gameover, /* img */
+                        width/2, height/2, /* x, y */
+                        width, height) /* w, h */  
+                    pop();  
                 }
             } else {
-                endCutsceneFadeIn += (255/50);
+                image(bg_basketFood,
+                    width/2, height/2,
+                    width, height);
 
-                push();
-                tint(255, endCutsceneFadeIn);
-                image(basketFood_gameover, /* img */
-                    width/2, height/2, /* x, y */
-                    width, height) /* w, h */  
-                pop();  
+                image(basket, /* img */
+                    basketPos.x, basketPos.y, /* x, y */
+                    basketPos.w, basketPos.h) /* w, h */
+        
+                txtDisplay(sentence, width*0.5, height*0.5, 32, true);
             }
-        } else {
-            image(bg_basketFood,
-                width/2, height/2,
-                width, height);
-
-            image(basket, /* img */
-                basketPos.x, basketPos.y, /* x, y */
-                basketPos.w, basketPos.h) /* w, h */
-    
-            txtDisplay(sentence, width*0.5, height*0.5, 32, true);
         }
-    }
 
-    /** draws the hearts corresponding to how many lives the player still has available */
-    if (!gameOver) {
-        livesDisplay();
-    }
+        /** draws the hearts corresponding to how many lives the player still has available */
+        if (!gameOver) {
+            livesDisplay();
+        }
 
-    //* PAUSES GAME */
-    if (!gameOver) {
-        pauseGame();
+        //* PAUSES GAME */
+        if (!gameOver) {
+            pauseGame();
+        }
     }
 }
 
@@ -426,9 +437,27 @@ export function basketFood_keyReleased() {
 }
 
 export function basketFood_mouseClicked() {
-    if (mouseX > 0 && mouseX < width 
+    //* mouse clicked on "teclado"(keyboard) control option */
+    if (!gameControlsChosen &&
+        (mouseX > controlsPosX-controlsW/2 && mouseX < controlsPosX+controlsW/2) &&
+        (mouseY > (height/2-controlsW/2) && mouseY < (height/2+controlsW/2))) {
+        controls = "keyboard";
+        gameControlsChosen = true;
+    }
+
+    //* mouse clicked on "mãos"(hands) control option */
+    else if (!gameControlsChosen &&
+        (mouseX > (width-controlsPosX)-controlsW/2 && mouseX < (width-controlsPosX)+controlsW/2) &&
+        (mouseY > (height/2-controlsW/2) && mouseY < (height/2+controlsW/2))) {
+        controls = "hands";
+        console.log(controls);
+        gameControlsChosen = true;
+    }
+    
+    else if (mouseX > 0 && mouseX < width 
         && mouseY > 0 && mouseY < height
-        && !gameStarted && !endCutsceneSlides) {
+        && !gameStarted && !endCutsceneSlides
+        && gameControlsChosen) {
 
         foodSpawn = {
             isCounting: false,
@@ -540,4 +569,23 @@ function endCutsceneSlideSentences(sentence) {
 
     txtDisplay(sentence, width/2, rectY-rectH*0.1, 25, false);
     txtDisplay("Clique para continuar", width/2, rectY+rectH*0.15, 20, true);
+}
+
+
+//* TO CHOOSE GAME CONTROLS */
+function gameControls() {
+    textFont(font, 20);
+    textAlign(CENTER, CENTER)
+
+    fill(253, 235, 208);
+    strokeWeight(4);
+    stroke("#C0392B");
+
+    square(controlsPosX, height/2, controlsW);
+    square(width-controlsPosX, height/2, controlsW);
+
+    noStroke();
+    fill("#000")
+    text("Teclado", controlsPosX, height/2+controlsW*0.4);
+    text("Controlo com mãos", width-controlsPosX, height/2+controlsW*0.4);
 }

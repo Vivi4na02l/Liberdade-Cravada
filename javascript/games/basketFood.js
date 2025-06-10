@@ -1,6 +1,15 @@
 let gameControlsChosen = false;
 let controls;
 let controlsPosX, controlsW;
+//* ML5 handpose webcam variables */
+let ml5Setup = true;
+let handpose;
+let video;
+let predictions = [];
+let dims = {};
+let averageX = 0;
+let newAverageX;
+let handSkeletonColor = "#FFFF00"
 
 /** game variables */
 let font;
@@ -55,6 +64,7 @@ export function basketFood_setup() {
     controlsPosX = width*0.3;
     controlsW = height/3;
 
+    //* normal setup */
     rectMode(CENTER);
 
     heartW = width*0.05;
@@ -129,6 +139,31 @@ export function basketFood_draw() {
     if (!gameControlsChosen) {
         gameControls();
     } else {
+        //* ML5 */
+        if (controls == "hands") {
+            if (ml5Setup) {
+                //* ML5 */
+                video = createCapture(VIDEO, webcamIsReady);
+                handpose = ml5.handpose(video, console.log("Model is ready!"));
+                handpose.on("predict", results => {
+                    predictions = results;
+                });
+                video.hide();
+
+                ml5Setup = false;
+            }
+            // translate(width, 0);
+            // scale(-1, 1); /* inverts canvas so that the webcam hand captation mechanic is less confusion for the player */
+            // if (calibration) {
+            //     tint(255, 51);
+            //     image(video, 0, 0, width, height);
+            // }
+
+            // if (calibration || (!joyStick && gameStarted)) {
+                drawKeypoints();
+            // }    
+        }
+
         if (lives <= 0) {
             //* GAME OVER */
             gameStarted = false;
@@ -450,7 +485,6 @@ export function basketFood_mouseClicked() {
         (mouseX > (width-controlsPosX)-controlsW/2 && mouseX < (width-controlsPosX)+controlsW/2) &&
         (mouseY > (height/2-controlsW/2) && mouseY < (height/2+controlsW/2))) {
         controls = "hands";
-        console.log(controls);
         gameControlsChosen = true;
     }
     
@@ -588,4 +622,32 @@ function gameControls() {
     fill("#000")
     text("Teclado", controlsPosX, height/2+controlsW*0.4);
     text("Controlo com mãos", width-controlsPosX, height/2+controlsW*0.4);
+}
+
+function webcamIsReady() {
+    dims.canvasWidth = window.innerWidth, dims.canvasHeight = window.innerHeight
+    dims.videoWidth = video.width, dims.videoHeight = video.height
+}
+
+function drawKeypoints() {
+    for (let i = 0; i < predictions.length; i += 1) {
+        const hand = predictions[i];
+
+        for (let j = 0; j < hand.landmarks.length; j += 1) {
+            const keypoint = hand.landmarks[j];
+
+            averageX += keypoint[0];
+            if (j == hand.landmarks.length-1) {
+                averageX = averageX / hand.landmarks.length;
+                // let newAverageX = map(averageX, 0, dims.videoWidth, 0, dims.canvasWidth)
+                newAverageX = map(averageX, 0, dims.videoWidth, 0, width);
+            }
+
+            fill(0, 255, 0);
+            noStroke();
+            ellipse(keypoint[0], keypoint[1], 10, 10);
+        }
+    }
+
+    console.log(newAverageX);
 }

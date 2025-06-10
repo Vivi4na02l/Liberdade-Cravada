@@ -1,6 +1,7 @@
 let gameControlsChosen = false;
 let controls;
 let controlsPosX, controlsW;
+let keyboardImg, handsImg;
 //* ML5 handpose webcam variables */
 let ml5Setup = true;
 let handpose;
@@ -47,6 +48,10 @@ let basketSpeed = 9;
 
 export function basketFood_preload() {
     font = loadFont('.././fonts/Jersey_10/Jersey10-Regular.ttf');
+
+    keyboardImg = loadImage('../images/website/iconography/keyboard.png');
+    handsImg = loadImage('../images/website/iconography/hand.png');
+    
 
     heart = loadImage('../images/games/elements/heart.png');
     bg_basketFood = loadImage('../images/games/scenery/bg_basketFood_blurred.png');
@@ -592,8 +597,8 @@ class Food {
 }
 
 function endCutsceneSlideSentences(sentence) {
-    let rectH = height*0.3
-    let rectY = height*0.7+rectH/2
+    let rectH = height*0.3;
+    let rectY = height*0.7+rectH/2;
     let c = color(0, 0, 0);
     push();
     c.setAlpha(170);
@@ -605,11 +610,10 @@ function endCutsceneSlideSentences(sentence) {
     txtDisplay("Clique para continuar", width/2, rectY+rectH*0.15, 20, true);
 }
 
-
 //* TO CHOOSE GAME CONTROLS */
 function gameControls() {
     textFont(font, 20);
-    textAlign(CENTER, CENTER)
+    textAlign(CENTER, CENTER);
 
     fill(253, 235, 208);
     strokeWeight(4);
@@ -621,7 +625,13 @@ function gameControls() {
     noStroke();
     fill("#000")
     text("Teclado", controlsPosX, height/2+controlsW*0.4);
+    image(keyboardImg,
+        controlsPosX, height/2,
+        controlsW*0.6, ((controlsW*0.6)*keyboardImg.height)/keyboardImg.width);
     text("Controlo com mãos", width-controlsPosX, height/2+controlsW*0.4);
+    image(handsImg,
+        width-controlsPosX, height/2,
+        controlsW*0.3, ((controlsW*0.3)*handsImg.height)/handsImg.width);
 }
 
 function webcamIsReady() {
@@ -641,7 +651,7 @@ function drawKeypoints() {
                 averageX = averageX / hand.landmarks.length;
                 // let newAverageX = map(averageX, 0, dims.videoWidth, 0, dims.canvasWidth)
                 newAverageX = map(averageX, 0, dims.videoWidth, 0, width);
-            }
+            };
 
             fill(0, 255, 0);
             noStroke();

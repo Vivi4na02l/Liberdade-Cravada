@@ -4,8 +4,12 @@ let controlsPosX, controlsW;
 let keyboardImg, handsImg;
 //* ML5 handpose webcam variables */
 let ml5Setup = true;
-let handpose;
 let video;
+let handPose;
+let hands = [];
+
+// let handpose;
+// let video;
 let predictions = [];
 let dims = {};
 let averageX = 0;
@@ -47,6 +51,8 @@ let basketSpeed = 9;
 
 
 export function basketFood_preload() {
+    handPose = ml5.handPose({ flipped: true }); //this would be in preload if only the option to control by hand camera movement existed, and the rest in setup
+
     font = loadFont('.././fonts/Jersey_10/Jersey10-Regular.ttf');
 
     keyboardImg = loadImage('../images/website/iconography/keyboard.png');
@@ -147,26 +153,17 @@ export function basketFood_draw() {
         //* ML5 */
         if (controls == "hands") {
             if (ml5Setup) {
-                //* ML5 */
-                video = createCapture(VIDEO, webcamIsReady);
-                handpose = ml5.handpose(video, console.log("Model is ready!"));
-                handpose.on("predict", results => {
-                    predictions = results;
-                });
+                video = createCapture(VIDEO, { flipped : true });
+                video.size(width, height)
                 video.hide();
+
+                //starts detecting hands
+                handPose.detectStart(video, gotHands);
 
                 ml5Setup = false;
             }
-            // translate(width, 0);
-            // scale(-1, 1); /* inverts canvas so that the webcam hand captation mechanic is less confusion for the player */
-            // if (calibration) {
-            //     tint(255, 51);
-            //     image(video, 0, 0, width, height);
-            // }
 
-            // if (calibration || (!joyStick && gameStarted)) {
-                drawKeypoints();
-            // }    
+            drawHands();
         }
 
         if (lives <= 0) {
@@ -332,10 +329,13 @@ export function basketFood_draw() {
 function basketMovement() {
     if (goingRight
         && (basketPos.x + basketPos.w/2 <= width)) {
+            
         basketPos.x += basketSpeed * gameSpeed;
+        console.log(basketPos.x);
     } else if (goingLeft
         && (basketPos.x - basketPos.w/2 >= 0)) {
         basketPos.x -= basketSpeed * gameSpeed;
+        console.log(basketPos.x);
     }
 
     image(basket, /* img */
@@ -634,30 +634,18 @@ function gameControls() {
         controlsW*0.3, ((controlsW*0.3)*handsImg.height)/handsImg.width);
 }
 
-function webcamIsReady() {
-    dims.canvasWidth = window.innerWidth, dims.canvasHeight = window.innerHeight
-    dims.videoWidth = video.width, dims.videoHeight = video.height
+function gotHands(results) {
+  hands = results;
 }
 
-function drawKeypoints() {
-    for (let i = 0; i < predictions.length; i += 1) {
-        const hand = predictions[i];
+function drawHands() {
+    console.log(hands);
 
-        for (let j = 0; j < hand.landmarks.length; j += 1) {
-            const keypoint = hand.landmarks[j];
+    if (hands.length > 0) {
+        let hand = hands[0];
 
-            averageX += keypoint[0];
-            if (j == hand.landmarks.length-1) {
-                averageX = averageX / hand.landmarks.length;
-                // let newAverageX = map(averageX, 0, dims.videoWidth, 0, dims.canvasWidth)
-                newAverageX = map(averageX, 0, dims.videoWidth, 0, width);
-            };
-
-            fill(0, 255, 0);
-            noStroke();
-            ellipse(keypoint[0], keypoint[1], 10, 10);
+        if (hand.confidence > 0.1) {
+            basketPos.x = hand.wrist.x;
         }
     }
-
-    console.log(newAverageX);
 }

@@ -229,11 +229,11 @@ function newspaper() {
 
 function movingPencil() {
     if (goingLeft == true && (imgPencilRotate >= -150)) {
-        imgPencilRotate -= 5;
+        imgPencilRotate -= 2;
     }
   
     if (goingRight == true && (imgPencilRotate <= -20)) {
-        imgPencilRotate += 5;
+        imgPencilRotate += 2;
     }
   
     imgPencil.resize(width*0.15, 0);

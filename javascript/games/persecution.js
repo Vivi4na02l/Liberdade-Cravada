@@ -201,6 +201,7 @@ export function persecution_setup() {
 }
 
 export function persecution_draw() {
+    clear(); 
     noStroke();
     background('#aaffff');    
 

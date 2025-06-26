@@ -50,7 +50,30 @@ let wordsCensuredAll = [];
 let randomNbr1, randomNbr2;
 let marginLeftLeft, marginLeftTop, marginRightLeft, marginRightTop, maxWidth;
 
+
+//* CHOOSE CONTROLS */
+let gameControlsChosen = false;
+let controls;
+let controlsPosX, controlsW;
+let keyboardImg, handsImg;
+let btnLeft, btnRight, btnShoot, btnsW, btnsH, btnsX, btnsY, btnShootX, btnShootY;
+let isShooting = 0, onLeft, onRight, onShoot;
+//* ML5 */
+let video;
+let handPose;
+let hands = [];
+let ml5Setup = true;
+
 export function censorship_preload() {
+    handPose = ml5.handPose({ flipped: true });
+
+    btnRight = loadImage('../images/games/elements/arrowRightWhite.png');
+    btnLeft = loadImage('../images/games/elements/arrowLeftWhite.png');
+    btnShoot = loadImage('../images/games/elements/shoot.png');
+
+    keyboardImg = loadImage('../images/website/iconography/keyboard.png');
+    handsImg = loadImage('../images/website/iconography/hand.png');
+
     heart = loadImage('../images/games/elements/heart.png');
     
     imgBgLvl1 = loadImage('../images/games/scenery/bg_people_jornal.png');
@@ -65,7 +88,17 @@ export function censorship_preload() {
 export function censorship_setup() {
     rectMode(CENTER);
 
+    btnsW = width*0.07;
+    btnsH = (btnsW*btnLeft.height)/btnLeft.width;
+    btnsX = width*0.78;
+    btnsY = height*0.4;
+    btnShootX = btnsX+(btnsW/2)+(width*0.01)/2
+    btnShootY = btnsY+btnsW+width*0.1;
+
     heartW = width*0.03;
+
+    controlsPosX = width*0.3;
+    controlsW = height/3;
 }
 
 export function censorship_draw() {
@@ -74,61 +107,88 @@ export function censorship_draw() {
     noStroke();
     imgBgLvl1.resize(width, 0);
     image(imgBgLvl1, width-imgBgLvl1.width/2, height-(imgBgLvl1.height/2));
-    imgNews.resize(0, height);
-    image(imgNews, width/2, height-(imgNews.height/2));
 
-    if (!gameOver) {
-        if (scribbles.length != 0) {
-            projectileCollidesElement(wordsCensuredAll);
-        }
+    if (gameControlsChosen) {
+        imgNews.resize(0, height);
+        image(imgNews, width/2, height-(imgNews.height/2));
+    }
 
-        for (let i = scribbles.length - 1; i >= 0; i--) {
-            scribbles[i].update();
-            scribbles[i].display();
+    if (!gameControlsChosen) {
+        gameControls();
+    } else {
+        //* ML5 */
+        if (controls == "hands") {
+            if (ml5Setup) {
+                video = createCapture(VIDEO, { flipped : true });
+                video.size(width, height)
+                video.hide();
 
-            /** if scribble collides with basket */
-            scribbleCollided = false;
-            
+                //starts detecting hands
+                handPose.detectStart(video, gotHands);
 
-            // if (scribbleCollided) {
-            //     // scribbleCollided = false;
-            // } else {
-                if (scribbles[i].offscreen()) {
-                    scribbles.splice(i, 1);
-                    lives--;
-                // };
+                ml5Setup = false;
+            }
+
+            handsButtons();
+            drawHands();
+            if (isShooting == 1) {
+                scribbles.push(new Scribble(createVector(width/2, height-(imgPencil.width*0.2)), imgPencilRotate, imgPencil.height*0.2));
             }
         }
 
-        let allWordsCensured = (currentValue) => currentValue.hasBeenHit == true;
-    
-        //* if not every word has been censored yet */
-        if (wordsCensuredAll.length == 0 || !wordsCensuredAll.every(allWordsCensured)) {
-            newspaper();
-        } else {  //* else */
+        if (!gameOver) {
+            if (scribbles.length != 0) {
+                projectileCollidesElement(wordsCensuredAll);
+            }
+
+            for (let i = scribbles.length - 1; i >= 0; i--) {
+                scribbles[i].update();
+                scribbles[i].display();
+
+                /** if scribble collides with basket */
+                scribbleCollided = false;
+                
+
+                // if (scribbleCollided) {
+                //     // scribbleCollided = false;
+                // } else {
+                    if (scribbles[i].offscreen()) {
+                        scribbles.splice(i, 1);
+                        lives--;
+                    // };
+                }
+            }
+
+            let allWordsCensured = (currentValue) => currentValue.hasBeenHit == true;
+        
+            //* if not every word has been censored yet */
+            if (wordsCensuredAll.length == 0 || !wordsCensuredAll.every(allWordsCensured)) {
+                newspaper();
+            } else {  //* else */
+                gameOver = true;
+                won = true;
+            }
+
+            // projectileCollidesElement(wordsCensuredAll);
+            movingPencil();
+        } else { //* if game IS over */
+            if (won) {
+                gameEnded(false);
+            } else {
+                gameEnded(true);
+            }
+        }
+
+        txtDisplay("Pontos: "+points, textWidth("Pontos: "+points)*1.5, heartW, 40, false); //width-heartW*i - heartW*0.1*i, heartW,
+
+        if (lives == 0) {
             gameOver = true;
-            won = true;
+            won = false;
         }
 
-        // projectileCollidesElement(wordsCensuredAll);
-        movingPencil();
-    } else { //* if game IS over */
-        if (won) {
-            gameEnded(false);
-        } else {
-            gameEnded(true);
+        if (!gameOver) {
+            livesDisplay();
         }
-    }
-
-    txtDisplay("Pontos: "+points, textWidth("Pontos: "+points)*1.5, heartW, 40, false); //width-heartW*i - heartW*0.1*i, heartW,
-
-    if (lives == 0) {
-        gameOver = true;
-        won = false;
-    }
-
-    if (!gameOver) {
-        livesDisplay();
     }
 }
 
@@ -229,11 +289,19 @@ function newspaper() {
 
 function movingPencil() {
     if (goingLeft == true && (imgPencilRotate >= -150)) {
-        imgPencilRotate -= 2;
+        if (controls == "hands") {
+            imgPencilRotate -= 0.3;    
+        } else {
+            imgPencilRotate -= 2;
+        }
     }
   
     if (goingRight == true && (imgPencilRotate <= -20)) {
-        imgPencilRotate += 2;
+        if (controls == "hands") {
+            imgPencilRotate += 0.3;    
+        } else {
+            imgPencilRotate += 2;
+        }
     }
   
     imgPencil.resize(width*0.15, 0);
@@ -475,9 +543,24 @@ function gameEnded(lost) {
 }   
 
 export function censorShip_mouseClicked() {
-if (mouseX > 0 && mouseX < width 
-    && mouseY > 0 && mouseY < height
-    && gameOver) {
+    if (!gameControlsChosen &&
+        (mouseX > controlsPosX-controlsW/2 && mouseX < controlsPosX+controlsW/2) &&
+        (mouseY > (height/2-controlsW/2) && mouseY < (height/2+controlsW/2))) {
+        controls = "keyboard";
+        gameControlsChosen = true;
+    }
+
+    //* mouse clicked on "mãos"(hands) control option */
+    else if (!gameControlsChosen &&
+        (mouseX > (width-controlsPosX)-controlsW/2 && mouseX < (width-controlsPosX)+controlsW/2) &&
+        (mouseY > (height/2-controlsW/2) && mouseY < (height/2+controlsW/2))) {
+        controls = "hands";
+        gameControlsChosen = true;
+    }
+
+    if (mouseX > 0 && mouseX < width 
+        && mouseY > 0 && mouseY < height
+        && gameOver) {
 
         if (won) {
             scribbles = [];
@@ -495,4 +578,121 @@ if (mouseX > 0 && mouseX < width
             isScenarioCreated = false;
         }
     }
+}
+
+//* TO CHOOSE GAME CONTROLS */
+function gameControls() {
+    textFont(font, 20);
+    textAlign(CENTER, CENTER);
+
+    fill(253, 235, 208);
+    strokeWeight(4);
+    stroke("#C0392B");
+
+    square(controlsPosX, height/2, controlsW);
+    square(width-controlsPosX, height/2, controlsW);
+
+    noStroke();
+    fill("#000")
+    text("Teclado", controlsPosX, height/2+controlsW*0.4);
+    image(keyboardImg,
+        controlsPosX, height/2,
+        controlsW*0.6, ((controlsW*0.6)*keyboardImg.height)/keyboardImg.width);
+    text("Controlo com mãos", width-controlsPosX, height/2+controlsW*0.4);
+    image(handsImg,
+        width-controlsPosX, height/2,
+        controlsW*0.3, ((controlsW*0.3)*handsImg.height)/handsImg.width);
+}
+
+function gotHands(results) {
+  hands = results;
+}
+
+function drawHands() {
+    // Ensure at least one hand is detected
+    if (hands.length > 0) {
+        let hand = hands[0];
+
+        if (hand.confidence > 0.1) {
+            let averageX = 0, averageY = 0;
+            // Loop through keypoints and draw circles
+            for (let i = 0; i < hand.keypoints.length; i++) {
+                let keypoint = hand.keypoints[i];
+                averageX += keypoint.x;
+                averageY += keypoint.y;
+
+                if (i == hand.keypoints.length-1) {
+                    averageX = averageX / hand.keypoints.length;
+                    averageY = averageY / hand.keypoints.length;
+                }
+
+                // noStroke();
+                // circle(keypoint.x, keypoint.y, 16);
+            }
+            
+            // circle(averageX, averageY, 30);
+            handsImg.resize(0, width*0.05);
+            image(handsImg, averageX, averageY);
+
+            if (averageX > (btnsX+(btnsW)+width*0.01)-btnsW/2 && averageX < (btnsX+(btnsW)+width*0.01)+btnsW/2
+                && (averageY > btnsY-btnsW/2) && (averageY < btnsY+btnsW/2)) {
+                goingRight = true;
+                onRight = true;
+            } else {
+                goingRight = false;
+                onRight = false;
+            }
+
+            if (averageX > btnsX-btnsW/2 && averageX < btnsX+btnsW/2
+                && (averageY > btnsY-btnsW/2) && (averageY < btnsY+btnsW/2)) {
+                goingLeft = true;
+                onLeft = true;
+            } else {
+                goingLeft = false;
+                onLeft = false;
+            }
+
+            if (averageX > btnShootX-((btnsW*btnShoot.width)/btnShoot.height)/2
+                && averageX < btnShootX+((btnsW*btnShoot.width)/btnShoot.height)/2
+                && (averageY > btnShootY-btnsW/2)
+                && (averageY < btnShootY+btnsW/2)) {
+                isShooting++;
+                onShoot = true;
+            } else {
+                isShooting = 0;
+                onShoot = false;
+            }
+        }
+    }
+}
+
+function handsButtons() {
+    if (onLeft) {
+        tint(192, 57, 43);
+    } else {
+        noTint();
+    };
+    image(btnLeft,
+        btnsX, btnsY,
+        btnsW, btnsH);
+
+    if (onRight) {
+        tint(192, 57, 43);
+    } else {
+        noTint();
+    };
+    image(btnRight,
+        btnsX+(btnsW)+width*0.01, btnsY,
+        btnsW, btnsH);
+
+    if (onShoot) {
+        tint(192, 57, 43);
+    } else {
+        noTint();
+    }
+    image(btnShoot,
+        btnShootX, btnShootY,
+        (btnsW*btnShoot.width)/btnShoot.height, btnsW);
+
+    noTint();
 }

@@ -635,12 +635,10 @@ function gameControls() {
 }
 
 function gotHands(results) {
-  hands = results;
+    hands = results;
 }
 
 function drawHands() {
-    console.log(hands);
-
     if (hands.length > 0) {
         let hand = hands[0];
 

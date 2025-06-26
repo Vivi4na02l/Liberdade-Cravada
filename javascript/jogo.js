@@ -195,6 +195,8 @@ function mouseClicked() {
         basketFood_mouseClicked();
     } else if (game == "censorship") {
         censorShip_mouseClicked();
+    } else if (game == "bricks") {
+        bricks_mouseClicked();
     }
 }
 

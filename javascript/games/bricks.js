@@ -18,11 +18,29 @@ let bricksImgs = [];
 let slingshotX, slingshotSpeed = 8;
 let balls = [];
 let isBallOut = false;
+let ballSpeed = 7;
+
+//* CHOOSE CONTROLS */
+let gameControlsChosen = false;
+let controls;
+let controlsPosX, controlsW;
+let keyboardImg, handsImg;
+let handX;
+//* ML5 */
+let video;
+let handPose;
+let hands = [];
+let ml5Setup = true;
 
 export function bricks_preload() {
+    handPose = ml5.handPose({ flipped: true }); //this would be in preload if only the option to control by hand camera movement existed, and the rest in setup
+
+    keyboardImg = loadImage('../images/website/iconography/keyboard.png');
+    handsImg = loadImage('../images/website/iconography/hand.png');
+
     font = loadFont('.././fonts/Jersey_10/Jersey10-Regular.ttf');
 
-    imgBrickEmpty = loadImage('../images/games/elements/brick.png');
+    imgBrickEmpty = loadImage('../images/games/elements/brick_opacity.png');
     imgBrickComunismo = loadImage('../images/games/elements/brick_comunismo.png');
     imgBrickDitadura = loadImage('../images/games/elements/brick_ditadura.png');
     imgBrickExilio = loadImage('../images/games/elements/brick_exilio.png');
@@ -37,6 +55,9 @@ export function bricks_preload() {
 };
 
 export function bricks_setup() {
+    controlsW = height/3;
+    controlsPosX = width*0.3;
+    
     slingshotX = width/2;
 
     bricksImgs = [{
@@ -81,7 +102,7 @@ export function bricks_setup() {
         },
     ];
 
-    balls.push(new Ball(width/2, height*0.8, width*0.015));
+    // balls.push(new Ball(width/2, height*0.8, width*0.015));
 }
 
 export function bricks_draw() {
@@ -90,101 +111,122 @@ export function bricks_draw() {
         width, height
     );
 
-    let brickDestroyed = (currentValue) => currentValue.hasBeenHit == true;
-
-    if (!bricksImgs.every(brickDestroyed)) {
-        bricks();
+    if (!gameControlsChosen) {
+        gameControls();
     } else {
-        //* GAMEOVER (succeeded) */
-        
-        balls[0].bPos = createVector(width/2, height*0.8); // restarts positioning of the rock
-        balls[0].bAngle = createVector(0, -10); // restarts vector direction of the rock
-        slingshotX = width/2 // restarts positiniong of the slingshot
-        
-        gameStarted = false;
-        isBallOut = false;
+        //* ML5 */
+        if (controls == "hands") {
+            if (ml5Setup) {
+                video = createCapture(VIDEO, { flipped : true });
+                video.size(width*1.1, height*1.1);
+                // video.position(width/2, height/2)
+                video.hide();
 
-        isScenario2Created = false;
-        randomNbrs = [];
-        bricksImgs = [{
-                img: imgBrickComunismo,
-                w: 0,
-                h: 0,
-                x: 0,
-                y: 0,
-                hasBeenHit: false
-            },
-            {
-                img: imgBrickDitadura,
-                w: 0,
-                h: 0,
-                x: 0,
-                y: 0,
-                hasBeenHit: false
-            },
-            {
-                img: imgBrickExilio,
-                w: 0,
-                h: 0,
-                x: 0,
-                y: 0,
-                hasBeenHit: false
-            },
-            {
-                img: imgBrickOpressao,
-                w: 0,
-                h: 0,
-                x: 0,
-                y: 0,
-                hasBeenHit: false
-            },
-            {
-                img: imgBrickPIDE,
-                w: 0,
-                h: 0,
-                x: 0,
-                y: 0,
-                hasBeenHit: false
-            },
-        ];
-        
-        resetPoints = false;
-        sentence = "Pressione espaço para continuar!"
-        txtDisplay(sentence, width*0.5, height*0.5, 32, true);
-    }
+                //starts detecting hands
+                handPose.detectStart(video, gotHands);
 
-    /** Draw ball */
-    if (!isBallOut) {
-        for (let i = 0; i < balls.length; i++) {
-          let ball = balls[i];
-          ball.render();
+                ml5Setup = false;
+            }
+
+            drawHands();
         }
-    } else {
-        for (let i = 0; i < balls.length; i++) {
+
+        let brickDestroyed = (currentValue) => currentValue.hasBeenHit == true;
+
+        if (!bricksImgs.every(brickDestroyed)) {
+            bricks();
+        } else {
+            //* GAMEOVER (succeeded) */
+            
+            balls[0].bPos = createVector(width/2, height*0.8); // restarts positioning of the rock
+            balls[0].bAngle = createVector(0, -10); // restarts vector direction of the rock
+            slingshotX = width/2 // restarts positiniong of the slingshot
+            
+            gameStarted = false;
+            isBallOut = false;
+
+            isScenario2Created = false;
+            randomNbrs = [];
+            bricksImgs = [{
+                    img: imgBrickComunismo,
+                    w: 0,
+                    h: 0,
+                    x: 0,
+                    y: 0,
+                    hasBeenHit: false
+                },
+                {
+                    img: imgBrickDitadura,
+                    w: 0,
+                    h: 0,
+                    x: 0,
+                    y: 0,
+                    hasBeenHit: false
+                },
+                {
+                    img: imgBrickExilio,
+                    w: 0,
+                    h: 0,
+                    x: 0,
+                    y: 0,
+                    hasBeenHit: false
+                },
+                {
+                    img: imgBrickOpressao,
+                    w: 0,
+                    h: 0,
+                    x: 0,
+                    y: 0,
+                    hasBeenHit: false
+                },
+                {
+                    img: imgBrickPIDE,
+                    w: 0,
+                    h: 0,
+                    x: 0,
+                    y: 0,
+                    hasBeenHit: false
+                },
+            ];
+            
+            resetPoints = false;
+            sentence = "Pressione espaço para continuar!"
+            txtDisplay(sentence, width*0.5, height*0.5, 32, true);
+        }
+
+        /** Draw ball */
+        if (!isBallOut) {
+            for (let i = 0; i < balls.length; i++) {
             let ball = balls[i];
-            ball.draw();
-        }
-  
-        ballCollidesElement(bricksImgs);
-  
-        for (let i = 0; i < balls.length; i++) {
-            let ball = balls[i];
-
-            ball.afterBorder();
-        }
-    }
-
-    movingSlingshot();
-
-    /** text showing points */
-    txtDisplay(points, width*0.5, height*0.05, 32, false);
+            ball.render();
+            }
+        } else {
+            for (let i = 0; i < balls.length; i++) {
+                let ball = balls[i];
+                ball.draw();
+            }
     
-    if (!gameStarted) { /** text saying to click space to start/restart */
-        txtDisplay(sentence, width*0.5, height*0.5, 32, true);
-    }
+            ballCollidesElement(bricksImgs);
+    
+            for (let i = 0; i < balls.length; i++) {
+                let ball = balls[i];
 
-    //* PAUSES GAME */
-    pauseGame();
+                ball.afterBorder();
+            }
+        }
+
+        movingSlingshot();
+
+        /** text showing points */
+        txtDisplay(points, width*0.5, height*0.05, 32, false);
+        
+        if (!gameStarted) { /** text saying to click space to start/restart */
+            txtDisplay(sentence, width*0.5, height*0.5, 32, true);
+        }
+
+        //* PAUSES GAME */
+        pauseGame();
+    }
 }
 
 function movingSlingshot() {
@@ -284,7 +326,23 @@ export function bricks_keyReleased() {
 }
 
 export function bricks_mouseClicked() {
-    
+    if (!gameControlsChosen &&
+        (mouseX > controlsPosX-controlsW/2 && mouseX < controlsPosX+controlsW/2) &&
+        (mouseY > (height/2-controlsW/2) && mouseY < (height/2+controlsW/2))) {
+        controls = "keyboard";
+        gameControlsChosen = true;
+        balls.push(new Ball(width/2, height*0.8, width*0.015));
+    }
+
+    //* mouse clicked on "mãos"(hands) control option */
+    else if (!gameControlsChosen &&
+        (mouseX > (width-controlsPosX)-controlsW/2 && mouseX < (width-controlsPosX)+controlsW/2) &&
+        (mouseY > (height/2-controlsW/2) && mouseY < (height/2+controlsW/2))) {
+        controls = "hands";
+        gameControlsChosen = true;
+        ballSpeed = 5;
+        balls.push(new Ball(width/2, height*0.8, width*0.015));
+    }
 }
 
 function bricks() {
@@ -345,8 +403,10 @@ function bricks() {
                 image(imgBrickTop, BWI-(BW*j), BHI-(BH*i))
                     // width*0.1, (imgBrickTop.height*(width*0.1))/imgBrickTop.width);
             } else {
+                // tint(200,200,200,180);
                 image(imgBrickEmpty, BWI-(BW*j), BHI-(BH*i))
                     // width*0.1, (imgBrickEmpty.height*(width*0.1))/imgBrickEmpty.width);
+                // noTint();
             }
         }  
     }
@@ -387,7 +447,7 @@ function txtDisplay(sentence, posX, posY, size, isFade) {
 class Ball {
     constructor(x, y, w) {
         this.bPos = createVector(x, y);
-        this.bSpeed = 10;
+        this.bSpeed = ballSpeed;
         this.bAngle = createVector(this.bSpeed, -this.bSpeed);
         this.bR = w;
     }
@@ -510,6 +570,68 @@ class Ball {
             resetPoints = true;
             sentence = "Pressione espaço para recomeçar!"
             txtDisplay(sentence, width*0.5, height*0.5, 32, true);
+        }
+    }
+}
+
+//* TO CHOOSE GAME CONTROLS */
+function gameControls() {
+    textFont(font, 20);
+    textAlign(CENTER, CENTER);
+
+    fill(253, 235, 208);
+    strokeWeight(4);
+    stroke("#C0392B");
+
+    square(controlsPosX-controlsW/2, height/2-controlsW/2, controlsW);
+    square(width-controlsPosX-controlsW/2, height/2-controlsW/2, controlsW);
+
+    noStroke();
+    fill("#000")
+    text("Teclado", controlsPosX, height/2+controlsW*0.4);
+    image(keyboardImg,
+        controlsPosX, height/2,
+        controlsW*0.6, ((controlsW*0.6)*keyboardImg.height)/keyboardImg.width);
+    text("Controlo com mãos", width-controlsPosX, height/2+controlsW*0.4);
+    image(handsImg,
+        width-controlsPosX, height/2,
+        controlsW*0.3, ((controlsW*0.3)*handsImg.height)/handsImg.width);
+}
+
+function gotHands(results) {
+    hands = results;
+}
+
+function drawHands() {
+    if (hands.length > 0) {
+        let hand = hands[0];
+
+        // if (hand.wrist.x > width/2) {
+        //     handX = hand.wrist.x * 1.2;
+        // } else {
+        //     handX = hand.wrist.x / 1.2;
+        // }
+
+        // if (hand.confidence > 0.1 && isBallOut) {
+        //     // slingshotX = handX;
+        //     slingshotX = hand.wrist.x;
+        // }
+
+        if (hand.confidence > 0.1) {
+            let averageX = 0;
+            // Loop through keypoints and draw circles
+            for (let i = 0; i < hand.keypoints.length; i++) {
+                let keypoint = hand.keypoints[i];
+                averageX += keypoint.x;
+
+                if (i == hand.keypoints.length-1) {
+                    averageX = averageX / hand.keypoints.length;
+                }
+
+                // noStroke();
+                // circle(keypoint.x, keypoint.y, 16);
+                slingshotX = averageX;
+            }
         }
     }
 }

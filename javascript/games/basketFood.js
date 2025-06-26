@@ -154,7 +154,7 @@ export function basketFood_draw() {
         if (controls == "hands") {
             if (ml5Setup) {
                 video = createCapture(VIDEO, { flipped : true });
-                video.size(width, height)
+                video.size(width*1.1, height*1.1)
                 video.hide();
 
                 //starts detecting hands
@@ -643,7 +643,19 @@ function drawHands() {
         let hand = hands[0];
 
         if (hand.confidence > 0.1) {
-            basketPos.x = hand.wrist.x;
+            let averageX = 0;
+            // Loop through keypoints and draw circles
+            for (let i = 0; i < hand.keypoints.length; i++) {
+                let keypoint = hand.keypoints[i];
+                averageX += keypoint.x;
+
+                if (i == hand.keypoints.length-1) {
+                    averageX = averageX / hand.keypoints.length;
+                }
+
+                basketPos.x = averageX;
+                // basketPos.x = hand.wrist.x;
+            }
         }
     }
 }

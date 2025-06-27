@@ -606,17 +606,6 @@ function drawHands() {
     if (hands.length > 0) {
         let hand = hands[0];
 
-        // if (hand.wrist.x > width/2) {
-        //     handX = hand.wrist.x * 1.2;
-        // } else {
-        //     handX = hand.wrist.x / 1.2;
-        // }
-
-        // if (hand.confidence > 0.1 && isBallOut) {
-        //     // slingshotX = handX;
-        //     slingshotX = hand.wrist.x;
-        // }
-
         if (hand.confidence > 0.1) {
             let averageX = 0;
             // Loop through keypoints and draw circles
@@ -628,8 +617,6 @@ function drawHands() {
                     averageX = averageX / hand.keypoints.length;
                 }
 
-                // noStroke();
-                // circle(keypoint.x, keypoint.y, 16);
                 slingshotX = averageX;
             }
         }

@@ -78,7 +78,24 @@ let slideWhenSwitch = 20, slideWhenSwitchStart, slideWhenSwitchEnd, slidingImage
 
 let runSwitch = true, runWhenSwitch = 20, runWhenSwitchStart, runWhenSwitchEnd, runningImages = 0;
 
+//* CHOOSE CONTROLS */
+let gameControlsChosen = false;
+let controls;
+let controlsPosX, controlsW;
+let keyboardImg, handsImg;
+//* ML5 */
+let video;
+let handPose;
+let hands = [];
+let ml5Setup = true;
+let charJumpHand, charSlideHand;
+
 export function persecution_preload() {
+    handPose = ml5.handPose({ flipped: true }); //this would be in preload if only the option to control by hand camera movement existed, and the rest in setup
+
+    keyboardImg = loadImage('../images/website/iconography/keyboard.png');
+    handsImg = loadImage('../images/website/iconography/hand.png');
+
     font = loadFont('.././fonts/Jersey_10/Jersey10-Regular.ttf');
     
     dog_running_1 = loadImage('../images/games/elements/dog_running_1.png');
@@ -146,6 +163,10 @@ export function persecution_preload() {
 }
 
 export function persecution_setup() {
+    /** ML5 related */
+    controlsW = height/3;
+    controlsPosX = width*0.3;
+
     //* background */
     backgroundW = width*1.5;
     backgroundH = height*1.5;
@@ -219,203 +240,225 @@ export function persecution_draw() {
     image(bg_subway, /* img */
         backgroundX, backgroundY*0.8, /* x, y */
         backgroundW, backgroundH) /* w, h */
-        
-        
-    //************ FLOOR */
-    if (floors.length == 0) {   
-        /* Runs the looping depending on how many floors are needed in the screen at the same time to cover its width completely */ /** Math.ceil -> 1.00001 = 2 */
-        for (let i = 0; i < (Math.ceil(width / floorW)+1) ; i++) {
-            if (floors.length == 0) {
-                floors.push(new Floor((width-floorW/2 - floorW), scenery)); /** width-floorW/2 - floorW */ /* the scenery moves from right to left, so naturally the first image needs to be added on the extreme left, this bit of code makes it so the amount left empty on the left screen is filled with the first floor image */
-            } else {
-                floors.push(new Floor((floors[i-1].floorX + floorW), scenery));
+    
+    if (!gameControlsChosen) {
+        gameControls();
+    } else {
+        //* ML5 */
+        if (controls == "hands") {
+            if (ml5Setup) {
+                video = createCapture(VIDEO, { flipped : true });
+                video.size(width*1.1, height*1.1);
+                video.hide();
+
+                //starts detecting hands
+                handPose.detectStart(video, gotHands);
+
+                ml5Setup = false;
             }
         }
-    }
-    
-    for (let i = floors.length - 1; i >= 0; i--) {
-        if (!cutscene && !gameOver) {
-            floors[i].update();
-        }
-        floors[i].display();
-
-        /** if floor is offscreen, delete it and add a new one */
-        if (floors[i].offscreen()) {
-            floors.splice(i, 1);
-            floors.push(new Floor((floors[floors.length-1].floorX + floorW), scenery));
-        }
-    }
-
-
-    //************ CHARACTER */
-    if (!cutscene) {
-        if (!gameOver) {
-            /** when character is jumping */
-            charJump();
-            /** when character is sliding */
-            charSlide();
-            
-            /** when character is just running (default) */
-            if (!jump && !slide) {
-                animationRun(charRun, true, charX);
-            }
-    
-            gameOverStart = frameCount;
-        //************ GAMEOVER */
-        /** character falling/tripping down */
-        } else {
-            if (frameCount - gameOverStart <= 100) {
-                cutsceneRun(width/3, 1, gameOverStart, true);
-                animationRun(pideRun, false, pideX);
-            } else {
-                
-                /** npc 1 */
-                if (obstacleHit == 1) {
-                    openingCutscene(pideIdle, pideX, charYDefault, 1, 45, 255); //charImage, posX, posY, facingDirection, frameCycle
+        
+        //************ FLOOR */
+        if (floors.length == 0) {   
+            /* Runs the looping depending on how many floors are needed in the screen at the same time to cover its width completely */ /** Math.ceil -> 1.00001 = 2 */
+            for (let i = 0; i < (Math.ceil(width / floorW)+1) ; i++) {
+                if (floors.length == 0) {
+                    floors.push(new Floor((width-floorW/2 - floorW), scenery)); /** width-floorW/2 - floorW */ /* the scenery moves from right to left, so naturally the first image needs to be added on the extreme left, this bit of code makes it so the amount left empty on the left screen is filled with the first floor image */
                 } else {
-                    openingCutscene(pideIdle, pideX, charYDefault, -1, 45, 255); //charImage, posX, posY, facingDirection, frameCycle
+                    floors.push(new Floor((floors[i-1].floorX + floorW), scenery));
                 }
             }
-            
-            if (obstacleHit == 1) { /* obstacle to jump over (character trips if failed to jump) */
-                charFails(1);
-            } else { /* obstacle to roll under (character falls backwards if failed to roll) */
-                charFails(-1);
+        }
+        
+        for (let i = floors.length - 1; i >= 0; i--) {
+            if (!cutscene && !gameOver) {
+                floors[i].update();
             }
+            floors[i].display();
 
-            if (frameCount - gameOverStart > 200) {
-                endingCutscene();
+            /** if floor is offscreen, delete it and add a new one */
+            if (floors[i].offscreen()) {
+                floors.splice(i, 1);
+                floors.push(new Floor((floors[floors.length-1].floorX + floorW), scenery));
             }
         }
-    }
 
-    //************ INITIAL CUTSCENE */
-    if (cutscene) {
-        if (!gameStarted) {
-            /** character */
-            openingCutscene(charIdle, charCutsceneX, charYDefault, 1, 40, 255); //charImage, posX, posY, facingDirection, frameCycle
+        for (let i = obstacles.length - 1; i >= 0; i--) {
+            obstacles[i].update();
+            obstacles[i].display(char_position);
+            if (obstacles[i].collides(char_position)) {
+                gameOver = true;
+                // gameSpeed = 1;
+            };
 
-            /** npc 1 */
-            openingCutscene(npc1, charX+charW+width/3, charYDefault, -1, 45, 255); //charImage, posX, posY, facingDirection, frameCycle
-
-            /** npc 2 */
-            openingCutscene(npc2, charX+width/3, charYDefault + charH/2, 1, 42, 255); //charImage, posX, posY, facingDirection, frameCycle
-
-            /** npc 3 */
-            openingCutscene(npc3, charX + 3*(charW/4)+width/3, charYDefault + charH/2, -1, 47, 255); //charImage, posX, posY, facingDirection, frameCycle
-
-            /** TEXTO */
-            txtDisplay(sentence, width/2, height*0.7, 32, true);
+            /** if obstacle is offscreen, delete it and add a new one */
+            if (obstacles[i].offscreen()) {
+                obstacles.splice(i, 1);
+            }
         }
 
-        else {
-            if (!endInitialCutscene) {
-                cutsceneRun(width/3, 1, cutsceneStart, true); /** responsible for the movement of the character/pide */ //finalX, directionMovement, cutsceneStart, isPide
-                animationRun(pideRun, false, pideX); /** responsible for the run animation of the character/pide */
-
-                /** character */
-                openingCutscene(charIdle, charCutsceneX, charYDefault, -1, 40, 255); //charImage, posX, posY, facingDirection, frameCycle
-            } else {
-                //* pide */
-                cutsceneRun(width/3, -1, cutsceneStart, true); /** responsible for the movement of the character/pide */
-                animationRun(pideRun, false, pideX); /** responsible for the run animation of the character/pide */
-                
-                //* char */
-                cutsceneRun(width/3, -1, cutsceneStart, false); /** responsible for the movement of the character/pide */
-                animationRun(charRun, false, charCutsceneX); /** responsible for the run animation of the character/pide */
-            }
-
-            npcsFadePerFrame = 255/25;
-
-            if (frameCount - cutsceneStart > 25) {
-                npcsFade -= npcsFadePerFrame;
-            }
-
-            /** npc 1 */
-            openingCutscene(npc1, charX+charW+width/3, charYDefault, -1, 45, npcsFade); //charImage, posX, posY, facingDirection, frameCycle
-
-            /** npc 2 */
-            openingCutscene(npc2, charX+width/3, charYDefault + charH/2, 1, 42, npcsFade); //charImage, posX, posY, facingDirection, frameCycle
-
-            /** npc 3 */
-            openingCutscene(npc3, charX + 3*(charW/4)+width/3, charYDefault + charH/2, -1, 47, npcsFade); //charImage, posX, posY, facingDirection, frameCycle
+        if (controls == "hands") {
+            drawHands();
         }
-    }
-    
 
-    //************ OBSTACLES */
-    /** spawns the first obstacle */
-    if (!cutscene) {
-        if (!firstObstacleAdded) {
-            firstObstacleAdded = true;
-            typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2 */
 
-            if (typeOfObstacle == 1) {
-                obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
-            } else if (typeOfObstacle == 2) {
-                obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
-            }
-        } else {
+        //************ CHARACTER */
+        if (!cutscene) {
             if (!gameOver) {
-                /* starts the timer responsible for adding a new obstacle on screen */
-                obstacleSpawn = timer(obstacleSpawn.isCounting, obstacleSpawn.timerStart, obstacleSpawn.timerShouldEnd);
-                if (obstacleSpawn.timerEnded) { //if the timer ended
-                    obstacleSpawn.timerEnded = false;
-
-                    if (obstacleSpawn.timerShouldEnd >= 125) { //doesn't let the food spawn any faster than every X frames                
-                        obstacleSpawn.timerShouldEnd -= 5 * gameSpeed; //reduces the amount of timer needed to spawn the next food
-                    } else if (obstacleSpawn.timerShouldEnd >= 100) {
-                        obstacleSpawn.timerShouldEnd -= 2 * gameSpeed;
-                        // basketSpeed += 0.05;
-                    } else if (obstacleSpawn.timerShouldEnd >= 50) {
-                        obstacleSpawn.timerShouldEnd -= 1 * gameSpeed;
-                        // basketSpeed += 0.1;
+                /** when character is jumping */
+                charJump();
+                /** when character is sliding */
+                charSlide();
+                
+                /** when character is just running (default) */
+                if (!jump && !slide) {
+                    animationRun(charRun, true, charX);
+                }
+        
+                gameOverStart = frameCount;
+            //************ GAMEOVER */
+            /** character falling/tripping down */
+            } else {
+                if (frameCount - gameOverStart <= 100) {
+                    cutsceneRun(width/3, 1, gameOverStart, true);
+                    animationRun(pideRun, false, pideX);
+                } else {
+                    
+                    /** npc 1 */
+                    if (obstacleHit == 1) {
+                        openingCutscene(pideIdle, pideX, charYDefault, 1, 45, 255); //charImage, posX, posY, facingDirection, frameCycle
                     } else {
-                        obstacleSpawn.timerShouldEnd -= 0.1 * gameSpeed;
+                        openingCutscene(pideIdle, pideX, charYDefault, -1, 45, 255); //charImage, posX, posY, facingDirection, frameCycle
                     }
+                }
+                
+                if (obstacleHit == 1) { /* obstacle to jump over (character trips if failed to jump) */
+                    charFails(1);
+                } else { /* obstacle to roll under (character falls backwards if failed to roll) */
+                    charFails(-1);
+                }
 
-                    /* adds new obstacle on screen */
-                    typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2 */
-                            
-                    if (typeOfObstacle == 1) {
-                        obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
-                    } else if (typeOfObstacle == 2) {
-                        obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
+                if (frameCount - gameOverStart > 200) {
+                    endingCutscene();
+                }
+            }
+        }
+
+        //************ INITIAL CUTSCENE */
+        if (cutscene) {
+            if (!gameStarted) {
+                /** character */
+                openingCutscene(charIdle, charCutsceneX, charYDefault, 1, 40, 255); //charImage, posX, posY, facingDirection, frameCycle
+
+                /** npc 1 */
+                openingCutscene(npc1, charX+charW+width/3, charYDefault, -1, 45, 255); //charImage, posX, posY, facingDirection, frameCycle
+
+                /** npc 2 */
+                openingCutscene(npc2, charX+width/3, charYDefault + charH/2, 1, 42, 255); //charImage, posX, posY, facingDirection, frameCycle
+
+                /** npc 3 */
+                openingCutscene(npc3, charX + 3*(charW/4)+width/3, charYDefault + charH/2, -1, 47, 255); //charImage, posX, posY, facingDirection, frameCycle
+
+                /** TEXTO */
+                txtDisplay(sentence, width/2, height*0.7, 32, true);
+            }
+
+            else {
+                if (!endInitialCutscene) {
+                    cutsceneRun(width/3, 1, cutsceneStart, true); /** responsible for the movement of the character/pide */ //finalX, directionMovement, cutsceneStart, isPide
+                    animationRun(pideRun, false, pideX); /** responsible for the run animation of the character/pide */
+
+                    /** character */
+                    openingCutscene(charIdle, charCutsceneX, charYDefault, -1, 40, 255); //charImage, posX, posY, facingDirection, frameCycle
+                } else {
+                    //* pide */
+                    cutsceneRun(width/3, -1, cutsceneStart, true); /** responsible for the movement of the character/pide */
+                    animationRun(pideRun, false, pideX); /** responsible for the run animation of the character/pide */
+                    
+                    //* char */
+                    cutsceneRun(width/3, -1, cutsceneStart, false); /** responsible for the movement of the character/pide */
+                    animationRun(charRun, false, charCutsceneX); /** responsible for the run animation of the character/pide */
+                }
+
+                npcsFadePerFrame = 255/25;
+
+                if (frameCount - cutsceneStart > 25) {
+                    npcsFade -= npcsFadePerFrame;
+                }
+
+                /** npc 1 */
+                openingCutscene(npc1, charX+charW+width/3, charYDefault, -1, 45, npcsFade); //charImage, posX, posY, facingDirection, frameCycle
+
+                /** npc 2 */
+                openingCutscene(npc2, charX+width/3, charYDefault + charH/2, 1, 42, npcsFade); //charImage, posX, posY, facingDirection, frameCycle
+
+                /** npc 3 */
+                openingCutscene(npc3, charX + 3*(charW/4)+width/3, charYDefault + charH/2, -1, 47, npcsFade); //charImage, posX, posY, facingDirection, frameCycle
+            }
+        }
+        
+
+        //************ OBSTACLES */
+        /** spawns the first obstacle */
+        if (!cutscene) {
+            if (!firstObstacleAdded) {
+                firstObstacleAdded = true;
+                typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2 */
+
+                if (typeOfObstacle == 1) {
+                    obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
+                } else if (typeOfObstacle == 2) {
+                    obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
+                }
+            } else {
+                if (!gameOver) {
+                    /* starts the timer responsible for adding a new obstacle on screen */
+                    obstacleSpawn = timer(obstacleSpawn.isCounting, obstacleSpawn.timerStart, obstacleSpawn.timerShouldEnd);
+                    if (obstacleSpawn.timerEnded) { //if the timer ended
+                        obstacleSpawn.timerEnded = false;
+
+                        if (obstacleSpawn.timerShouldEnd >= 125) { //doesn't let the obstacle spawn any faster than every X frames                
+                            obstacleSpawn.timerShouldEnd -= 5 * gameSpeed; //reduces the amount of timer needed to spawn the next food
+                        } else if (obstacleSpawn.timerShouldEnd >= 100) {
+                            obstacleSpawn.timerShouldEnd -= 2 * gameSpeed;
+                            // basketSpeed += 0.05;
+                        } else if (obstacleSpawn.timerShouldEnd >= 50) {
+                            obstacleSpawn.timerShouldEnd -= 1 * gameSpeed;
+                            // basketSpeed += 0.1;
+                        } else {
+                            obstacleSpawn.timerShouldEnd -= 0.1 * gameSpeed;
+                        }
+
+                        /* adds new obstacle on screen */
+                        typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2 */
+                                
+                        if (typeOfObstacle == 1) {
+                            obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
+                        } else if (typeOfObstacle == 2) {
+                            obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
+                        }
                     }
                 }
             }
         }
-    }
 
-    for (let i = obstacles.length - 1; i >= 0; i--) {
-        obstacles[i].update();
-        obstacles[i].display(char_position);
-        if (obstacles[i].collides(char_position)) {
-            gameOver = true;
-        };
-
-        /** if obstacle is offscreen, delete it and add a new one */
-        if (obstacles[i].offscreen()) {
-            obstacles.splice(i, 1);
+        //************ POINTS */
+        if (!cutscene && !gameOver) {
+            points++;
         }
-    }
 
-    //************ POINTS */
-    if (!cutscene && !gameOver) {
-        points++;
-    }
+        if (!cutscene && !gameOver) {
+            textSize(32);
+            fill(255);
+            stroke(0);
+            strokeWeight(4);
+            textAlign(CENTER, CENTER)
+            text(points, width/2, height*0.05);
+        }
 
-    if (!cutscene && !gameOver) {
-        textSize(32);
-        fill(255);
-        stroke(0);
-        strokeWeight(4);
-        textAlign(CENTER, CENTER)
-        text(points, width/2, height*0.05);
+        //* PAUSES GAME */
+        pauseGame();
     }
-
-    //* PAUSES GAME */
-    pauseGame();
 }
 
 /**
@@ -526,7 +569,24 @@ function endingCutscene() {
 }
 
 export function persecution_mouseClicked() {
-    if (mouseX > 0 && mouseX < width 
+    //* mouse clicked on "teclado"(keyboard) control option */
+    if (!gameControlsChosen &&
+        (mouseX > controlsPosX-controlsW/2 && mouseX < controlsPosX+controlsW/2) &&
+        (mouseY > (height/2-controlsW/2) && mouseY < (height/2+controlsW/2))) {
+        controls = "keyboard";
+        gameControlsChosen = true;
+    }
+
+    //* mouse clicked on "mãos"(hands) control option */
+    else if (!gameControlsChosen &&
+        (mouseX > (width-controlsPosX)-controlsW/2 && mouseX < (width-controlsPosX)+controlsW/2) &&
+        (mouseY > (height/2-controlsW/2) && mouseY < (height/2+controlsW/2))) {
+        controls = "hands";
+        gameControlsChosen = true;
+    }
+
+    if (gameControlsChosen
+        && mouseX > 0 && mouseX < width 
         && mouseY > 0 && mouseY < height
         && cutscene && !gameStarted) {
 
@@ -534,14 +594,16 @@ export function persecution_mouseClicked() {
         cutsceneStart = frameCount;
     }
     
-    if (mouseX > 0 && mouseX < width 
+    if (gameControlsChosen
+        && mouseX > 0 && mouseX < width 
         && mouseY > 0 && mouseY < height
         && endingCutsceneVars.slideStarts) {
 
         endingCutsceneVars.slide++
     }
 
-    if (mouseX > 0 && mouseX < width 
+    if (gameControlsChosen
+        && mouseX > 0 && mouseX < width 
         && mouseY > 0 && mouseY < height
         && restart) {
 
@@ -553,6 +615,9 @@ export function persecution_mouseClicked() {
         failingImages = 0;
         failEachAnimation = false;
         totalAngle = 0
+        gameSpeed = 1;
+        obstacles = [];
+        obstacleSpawn.timerShouldEnd = 200;
 
         points = 0;
         gameOver = false;
@@ -1099,4 +1164,114 @@ class Obstacle {
             return false;
         }
     }
+}
+
+//* TO CHOOSE GAME CONTROLS */
+function gameControls() {
+    textFont(font, 20);
+    textAlign(CENTER, CENTER);
+
+    fill(253, 235, 208);
+    strokeWeight(4);
+    stroke("#C0392B");
+
+    square(controlsPosX, height/2, controlsW);
+    square(width-controlsPosX, height/2, controlsW);
+
+    noStroke();
+    fill("#000")
+    text("Teclado", controlsPosX, height/2+controlsW*0.4);
+    image(keyboardImg,
+        controlsPosX, height/2,
+        controlsW*0.6, ((controlsW*0.6)*keyboardImg.height)/keyboardImg.width);
+    text("Controlo com mãos", width-controlsPosX, height/2+controlsW*0.4);
+    image(handsImg,
+        width-controlsPosX, height/2,
+        controlsW*0.3, ((controlsW*0.3)*handsImg.height)/handsImg.width);
+}
+
+function gotHands(results) {
+    hands = results;
+}
+
+function drawHands() {
+    if (!gameOver && gameStarted) {
+        setLineDash([30, 20]); //create the dashed line pattern here
+        strokeWeight(2);
+        stroke("white");
+
+        //* jump */
+        line(0, height*0.3, width, height*0.3);
+
+        //* slide */
+        line(0, height*0.7, width, height*0.7);
+
+        drawingContext.setLineDash([]);
+
+        //* jump */
+        textFont(font, 35);
+        fill("#ffffff")
+        stroke("#000000");
+        strokeWeight(3);
+        textAlign(CENTER, CENTER)
+        text("Saltar", width*0.9, height*0.25);
+        //* slide */
+        textFont(font, 35);
+        fill("#ffffff")
+        stroke("#000000");
+        strokeWeight(3);
+        textAlign(CENTER, CENTER)
+        text("Deslizar", width*0.9, height*0.75);
+    }
+
+    if (hands.length > 0) {
+        let hand = hands[0];
+
+        if (hand.confidence > 0.1) {
+            let averageX = 0;
+            let averageY = 0;
+            // Loop through keypoints and draw circles
+            for (let i = 0; i < hand.keypoints.length; i++) {
+                let keypoint = hand.keypoints[i];
+                averageX += keypoint.x;
+                averageY += keypoint.y;
+
+                if (i == hand.keypoints.length-1) {
+                    averageX = averageX / hand.keypoints.length;
+                    averageY = averageY / hand.keypoints.length;
+                }
+
+                // noStroke();
+                // circle(keypoint.x, keypoint.y, 16);
+            }
+
+            if (averageY < height*0.3) {
+                charSlideHand = 0;
+                charJumpHand++
+            
+            } else if (averageY > height*0.7) {
+                charJumpHand = 0;
+                charSlideHand++
+                
+            } else {
+                charJumpHand = 0;
+                charSlideHand = 0;
+            };
+
+            if (charJumpHand == 1) {
+                jump = true;
+                charJump();
+            } else if (charSlideHand == 1) {
+                slide = true;
+                charSlide();
+            }
+
+            handsImg.resize(0, width*0.05);
+            image(handsImg, averageX, averageY);
+        }
+    }
+}
+
+function setLineDash(list) {
+    drawingContext.setLineDash(list);
 }

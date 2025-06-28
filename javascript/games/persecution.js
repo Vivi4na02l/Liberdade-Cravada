@@ -16,7 +16,7 @@ let npcsFade = 255, npcsFadePerFrame;
 let charIdle, char_idle_1, char_idle_2;
 let pide_running_L, pide_running_M, pide_running_R, pide_idle_1, pide_idle_2;
 let pideIdle, pideRun, pideX, charCutsceneX;
-let dog_running_1, dog_running_2, seagull_1, seagull_2, animalSwitch = false;
+let cart, balloon, dog_running_1, dog_running_2, seagull_1, seagull_2, animalSwitch = false;
 let cutsceneStart, cutsceneEnd, cutsceneDuration = 100, endInitialCutscene = false;
 
 let persecution_gameover;
@@ -100,6 +100,8 @@ export function persecution_preload() {
     
     dog_running_1 = loadImage('../images/games/elements/dog_running_1.png');
     dog_running_2 = loadImage('../images/games/elements/dog_running_2.png');
+    cart = loadImage('../images/games/elements/cart.png');
+    balloon = loadImage('../images/games/elements/balloon.png');
     seagull_1 = loadImage('../images/games/elements/seagull_1.png');
     seagull_2 = loadImage('../images/games/elements/seagull_2.png');
 
@@ -403,11 +405,15 @@ export function persecution_draw() {
         if (!cutscene) {
             if (!firstObstacleAdded) {
                 firstObstacleAdded = true;
-                typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2 */
+                typeOfObstacle = Math.ceil(Math.random() * 4) /** 1,2 */
 
                 if (typeOfObstacle == 1) {
                     obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
                 } else if (typeOfObstacle == 2) {
+                    obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
+                } else if (typeOfObstacle == 3) {
+                    obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
+                } else {
                     obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
                 }
             } else {
@@ -430,11 +436,15 @@ export function persecution_draw() {
                         }
 
                         /* adds new obstacle on screen */
-                        typeOfObstacle = Math.ceil(Math.random() * 2) /** 1,2 */
+                        typeOfObstacle = Math.ceil(Math.random() * 4) /** 1,2 */
                                 
                         if (typeOfObstacle == 1) {
                             obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
                         } else if (typeOfObstacle == 2) {
+                            obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
+                        } else if (typeOfObstacle == 3) {
+                            obstacles.push(new Obstacle(gameSpeed, width, obsY, obsW, obsH, typeOfObstacle));
+                        } else {
                             obstacles.push(new Obstacle(gameSpeed, width, tallObsY, tallObsW, tallObsH, typeOfObstacle));
                         }
                     }
@@ -1117,7 +1127,8 @@ class Obstacle {
                     this.obsX, this.obsY,
                     this.obsW, (this.obsW*dog_running_1.height)/dog_running_1.width)
             }
-        } else {
+        
+        } else if (this.typeOfObstacle == 2) {
             if (animalSwitch) {
                 image(seagull_1,
                     this.obsX, this.obsY,
@@ -1127,6 +1138,14 @@ class Obstacle {
                     this.obsX, this.obsY,
                     this.obsW, (this.obsW*seagull_1.height)/seagull_1.width)
             }
+        } else if (this.typeOfObstacle == 3) {
+            image(cart,
+                this.obsX, this.obsY,
+                this.obsW, (this.obsW*dog_running_1.height)/dog_running_1.width)
+        } else {
+            image(balloon,
+                this.obsX, this.obsY,
+                this.obsW, (this.obsW*seagull_1.height)/seagull_1.width)
         }
 
         /* OBSTACLE AND CHARACTER DEBUG HELP */
@@ -1143,7 +1162,7 @@ class Obstacle {
   
     collides(element) {
         /* "0.9" is the "tolerance of hit" */
-        if (this.typeOfObstacle == 1 /** obstacle that player has to jump over */
+        if ((this.typeOfObstacle == 1 || this.typeOfObstacle == 3) /** obstacle that player has to jump over */
             && this.obsX - this.obsW/2 < element.x*0.9 /** if farthest point on the left of obstacle is "more to the left" than the farthest point to the right of the character */
             && this.obsX + this.obsW/2 > element.x - element.w*0.9 /** if farthest point on the right of obstacle is "more to the right" than the farthest point to the left of the character */
             && this.obsY - this.obsH/2 < element.y) { /** if the highest point of the obstacle is ABOVE(<) the lowest point of the character */
@@ -1152,7 +1171,7 @@ class Obstacle {
             obstacleHit = 1;
 
             return true;
-        } else if (this.typeOfObstacle == 2 /** obstacle that player has to roll under */
+        } else if ((this.typeOfObstacle == 2 || this.typeOfObstacle == 4) /** obstacle that player has to roll under */
             && this.obsX - this.obsW/2 < element.x*0.9 /** if farthest point on the left of obstacle is "more to the left" than the farthest point to the right of the character */
             && this.obsX + this.obsW/2 > element.x - element.w*0.4 /** if farthest point on the right of obstacle is "more to the right" than the farthest point to the left of the character */
             && this.obsY + this.obsH/2 >= element.y - element.h) { /** if the lowest point of the obstacle is BELOW(>) the highest point of the character */

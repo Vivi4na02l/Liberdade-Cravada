@@ -45,8 +45,12 @@ function timer(revolutionDate) {
         beenDays = currentHours;
         document.querySelector("#daysNbr").innerHTML = beenDays;
         document.querySelector("#daysWord").innerHTML = "Horas";
-    } else {
+    } else if (beenMonths < 12) {
         document.querySelector("#monthsNbr").innerHTML = beenMonths;
+        document.querySelector("#daysNbr").innerHTML = beenDays;
+    } else {
+        beenYears = beenYears + 1;
+        document.querySelector("#monthsNbr").innerHTML = beenMonths - 12;
         document.querySelector("#daysNbr").innerHTML = beenDays;
     }
 

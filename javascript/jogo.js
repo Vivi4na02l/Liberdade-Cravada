@@ -10,24 +10,30 @@ let games = [
         game: "persecution",
         title: "Fugitivo",
         description: "Estavas a apreciar a paisagem na ponte com demasiados amigos, e agora o governo considera-te uma ameaça. Um agente da PIDE começa a seguir-te. Se fores apanhado, sabes que vais preso. Corre!",
-        controls: [{src: "../images/website/iconography/pause.png",
+        controls: [{src: "../images/website/iconography/escape.png",
                     instruction: "Para pausar o jogo."},
                     {src: "../images/website/iconography/spacebar.png",
                     instruction: "Para saltar."},
                     {src: "../images/website/iconography/arrowDown.png",
-                    instruction: "Para deslizar."}]
+                    instruction: "Para deslizar."}],
+        hand: [{src: "../images/website/games/fugitivoJump.mp4",
+                instruction: "Para saltar, move a mão para cima da linha tracejada superior."},
+                {src: "../images/website/games/fugitivoSlide.mp4",
+                instruction: "Para deslizar, move a mão para baixo da linha tracejada inferior."}]
     },{
         game: "bricks",
         title: "Demolição do muro",
         description: "Já estás há tanto tempo neste regime opressivo que a tua própria mente criou um muro que te impede de seres quem realmente és. Derruba esse muro, acertando nos tijolos simbólicos da opressão, quanto mais, melhor!",
-        controls: [{src: "../images/website/iconography/pause.png",
+        controls: [{src: "../images/website/iconography/escape.png",
                     instruction: "Para pausar o jogo."},
                     {src: "../images/website/iconography/spacebar.png",
                     instruction: "Para lançar a pedra."},
                     {src: "../images/website/iconography/arrowRight.png",
                     instruction: "Para mover para a direita."},
                     {src: "../images/website/iconography/arrowLeft.png",
-                    instruction: "Para mover para a esquerda."}]
+                    instruction: "Para mover para a esquerda."}],
+        hand: [{src: "../images/website/games/demolicaoMuro.mp4",
+                instruction: "A fisga segue o movimento lateral da tua mão."}]
     },{
         game: "censorship",
         title: "Lápis azul",
@@ -37,37 +43,86 @@ let games = [
                     {src: "../images/website/iconography/arrowRight.png",
                     instruction: "Para apontar mais para a direita."},
                     {src: "../images/website/iconography/arrowLeft.png",
-                    instruction: "Para apontar mais para a direita."}]
+                    instruction: "Para apontar mais para a direita."}],
+        hand: [{src: "../images/website/games/lapisAzulMove.mp4",
+                instruction: "Para orientar o lápis, move a mão sobre a seta da direção pretendida."},
+                {src: "../images/website/games/lapisAzulShoot.mp4",
+                instruction: 'Para disparar, passa a mão por cima do botão "Disparar".'}]
     },{
         game: "basketFood",
         title: "Tempos difíceis",
         description: "Nasceste durante o Salazarismo, numa família pobre. A tua família tem dificuldade em sustentar-se, e a comida, por vezes, escasseia. Tenta recolher o máximo de comida que conseguires para ti e para a tua família!",
-        controls: [{src: "../images/website/iconography/pause.png",
+        controls: [{src: "../images/website/iconography/escape.png",
                     instruction: "Para pausar o jogo."},
                     {src: "../images/website/iconography/arrowRight.png",
                     instruction: "Para mover para a direita."},
                     {src: "../images/website/iconography/arrowLeft.png",
-                    instruction: "Para mover para a esquerda."}]
+                    instruction: "Para mover para a esquerda."}],
+        hand: [{src: "../images/website/games/temposDificeis.mp4",
+                instruction: "O cesto segue o movimento lateral da tua mão."}]
     },
 ];
 
 updateInfo();
-function updateInfo() {
+let sltControls = document.querySelector("#sltControls");
+sltControls.addEventListener("click", () => {
+    if (sltControls.value == "keyboard") {
+        for (const hr of document.querySelectorAll(".hr")) {
+            hr.style.width = "40%";
+        }
+
+        updateInfo("keyboard");
+    } else if (sltControls.value == "hand") {
+        for (const hr of document.querySelectorAll(".hr")) {
+            hr.style.width = "30%";
+        }
+
+        updateInfo("hand");
+    } else {
+        updateInfo("tut");
+    }
+})
+
+function updateInfo(controlSelected) {
     let pos = games.findIndex(eachGame => eachGame.game == game);
 
     document.querySelector('#gameTitle').innerHTML = games[pos].title;
     document.querySelector('#gameDescription').innerHTML = games[pos].description;
 
-    let html = '';
-    for (const control of games[pos].controls) {
-        html += `
-            <div class="w100 dflex fdc jcc aic">
-                <img src="${control.src}" height="50px">
-                <p id="gameDescription" class="m0 p0 IBM fontNormalSize2">${control.instruction}</p>
-            </div>
-        `
+    if (controlSelected == "keyboard") {
+        let html = '';
+        for (const control of games[pos].controls) {
+            html += `
+                <div class="w100 dflex fdc jcc aic">
+                    <img src="${control.src}" height="50px">
+                    <p id="gameDescription" class="m0 p0 IBM fontNormalSize2">${control.instruction}</p>
+                </div>
+            `
+        }
+
+        document.querySelector('#handText').style.display = "none";
+        document.querySelector('#controls').innerHTML = html;
+    } else if (controlSelected == "hand") {
+        let html = '';
+        for (const control of games[pos].hand) {
+            html += `
+                <div class="w100 dflex fdc jcc aic">
+                    <video height="200" autoplay loop>
+                        <source src="${control.src}" type="video/mp4">
+                    </video>
+                    <p id="gameDescription" class="m0 p0 IBM fontNormalSize2" style="marginTop: 10px">${control.instruction}</p>
+                </div>
+            `
+        }
+
+        document.querySelector('#handText').style.display = "block";
+        document.querySelector('#controls').innerHTML = html;
+    } else {
+        document.querySelector('#handText').style.display = "none";
+        document.querySelector('#controls').innerHTML = '<div></div>';
     }
-    document.querySelector('#controls').innerHTML = html;
+    
+    
 };
 
 import {

@@ -113,21 +113,42 @@
     <div id="divGame" class="wm">
         <p id="gameTitle" class="m0 p0 jersey beige fontSubtitleSize">Título jogo</p>
         
-        <div id="gameP5js">
-            <!-- GAME ADDED THROUGH P5.JS -->
-        </div>
-        
-        <p class="m0 p0 jersey beige fontSubtitleSize2">Sobre o jogo</p>
         <div id="aboutOrTutorial" class="bgBeige">
             <!-- INFO ADDED THROUGH JAVASCRIPT -->
             
             <p id="gameDescription" class="m0 p0 IBM fontNormalSize2">Donec nec nibh quis ex pharetra pellentesque vitae nec elit. Suspendisse eu hendrerit quam, quis rhoncus mi. Proin ut finibus nulla, ut cursus libero. Aenean suscipit sagittis enim, at porta massa commodo ac. Duis dapibus id eros in luctus. Etiam nulla orci, tincidunt eu enim vitae, hendrerit pharetra erat. Fusce at velit malesuada, finibus dolor a, pulvinar turpis.</p>
             <br><br><br><br>
-            <p class="m0 p0 jersey grey fontSubtitleSize2">Controlos:</p>
+            <div id="controlsTitle" class="dflex fdr jcsb aic">
+                <div class="hr">
+                    <!-- <hr> -->
+                </div>
+
+                <p id="dailySection" class="m0 jersey grey fontSubtitleSize2">
+                    <select id="sltControls" class="m0 jersey grey fontSubtitleSize2">
+                        <option value="tut" class="m0 jersey grey fontSubtitleSize2" selected>Clica para veres como jogar</option>
+                        <option value="keyboard" class="m0 jersey grey fontSubtitleSize2">Teclado</option>
+                        <option value="hand" class="m0 jersey grey fontSubtitleSize2">Movimento com Mãos</option>
+                    </select></p>
+
+                <div class="hr">
+                    <!-- <hr> -->
+                </div>
+            </div>
+            <!-- constrols div -->
+            <div id="handText">
+                <p id="handText" class="m0 p0 IBM fontNormalSize2">Para controlares o jogo com a mão, precisas de ter uma câmara no teu computador ou portátil. Garante que estás num espaço bem iluminado e posiciona a tua mão à frente do ecrã para que seja detetada corretamente.</p>
+            </div>
             <div id="controls" class="dflex fdr jcc">
-                
+                <!-- injected through js -->
             </div>
         </div>
+
+        <div id="gameP5js">
+            <!-- GAME ADDED THROUGH P5.JS -->
+        </div>
+        
+        <!-- <p class="m0 p0 jersey beige fontSubtitleSize2">Sobre o jogo</p> -->
+        
     </div>    
 
     <!-- FOOTER -->

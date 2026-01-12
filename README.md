@@ -27,7 +27,8 @@ Interactive data visualizations built with D3.js, allowing users to:
 Four interactive mini-games:
 * Two improved versions of a previous project of mine ("Liberty Breakout") mini-games
 * Two newly developed games
-With two different interaction modes:
+
+## 🕹️ Game Interaction Modes
 * Keyboard input
 * Hand detection using **ml5.js**
 

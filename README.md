@@ -25,7 +25,7 @@ Interactive data visualizations built with D3.js, allowing users to:
 
 **Games Section**  
 Four interactive mini-games:
-* Two improved versions of a previous project of mine ("Liberty Breakout") mini-games
+* Two improved versions of a previous project of mine ("[Liberty Breakout](https://github.com/Vivi4na02l/Liberty-Breakout)") mini-games
 * Two newly developed games
 
 ## 🕹️ Game Interaction Modes
